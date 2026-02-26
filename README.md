@@ -29,29 +29,29 @@ GTD methodology is built on several fundamental philosophical concepts that form
 The GTD workflow consists of five sequential steps that form a closed-loop system:
 
 ```
-      +──────────+
-      │ Capture  │
-      +────┬─────+
-           │
-           ▼
-      +────┬─────+
-      │ Clarify  │
-      +────┬─────+
-           │
-           ▼
-      +────┬─────+
-      │ Organize │
-      +────┬─────+
-           │
-           ▼
-      +────┬─────+
-      │ Reflect  │
-      +────┬─────+
-           │
-           ▼
-      +────┬─────+
-      │ Engage   │
-      +──────────+
+      +----------+
+      | Capture  |
+      +-----+----+
+            |
+            v
+      +-----+----+
+      | Clarify  |
+      +-----+----+
+            |
+            v
+      +-----+----+
+      | Organize |
+      +-----+----+
+            |
+            v
+      +-----+----+
+      | Reflect  |
+      +-----+----+
+            |
+            v
+      +-----+----+
+      |  Engage  |
+      +----------+
 ```
 
 #### 1. Capture
@@ -87,58 +87,57 @@ These five steps form a continuous cycle: executing actions generates new tasks 
 Below is the classic GTD workflow diagram that illustrates the complete decision path from capture to engagement:
 
 ```
-                      +-------------------+
-                      │      Inbox        │
-                      +─────────+─────────+
-                                │
-                                ▼
-                      +─────────+─────────+
-                      │ Is it actionable? │
-                      +─────────+─────────+
-                                │
-                 ┌──────────────+──────────────┐
-                 │                             │
-                 ▼                             ▼
-          +──────+──────+               +──────+──────+
-          │      No      │               │     Yes     │
-          +──────+──────+               +──────+──────+
-                 │                             │
-                 ▼                             ▼
-        +────────+─────────+           +────────+────────+
-        │ Trash/Reference/ │           │ Can I do it in  │
-        │ Someday/Maybe    │           │   less than 2   │
-        │                  │           │     minutes?    │
-        +──────────────────+           +────────+────────+
-                 │                             │
-                 ▼                             ▼
-        +────────+────────+           +────────+────────+
-        │      Done       │           │  Yes   │   No   │
-        +─────────────────+           +───+────+────+───+
-                                          │         │
-                                          ▼         ▼
-                                +─────────+─+   +───+─────────+
-                                │  Do it now │   │ Delegate?  │
-                                +───────────+   +─────+───────+
-                                                      │
-                                              +───────+───────+
-                                              │  Yes  │  No   │
-                                              +───+───+───+───+
-                                                  │       │
-                                                  ▼       ▼
-                                       +──────────+──+ +──+──────────+
-                                       │ Waiting For │ │ Is it a     │
-                                       │             │ │ project?    │
-                                       +─────────────+ +─────+───────+
-                                                             │
-                                                     +───────+───────+
-                                                     │  Yes  │  No   │
-                                                     +───+───+───+───+
-                                                         │       │
-                                                         ▼       ▼
-                                               +─────────+──+ +──+────────────+
-                                               │  Projects  │ │ Next Actions │
-                                               │            │ │              │
-                                               +─────────────+ +──────────────+
+              +-------------------+
+              |       Inbox       |
+              +---------+---------+
+                        |
+                        v
+              +---------+---------+
+              | Is it actionable? |
+              +---------+---------+
+                        |
+          +-------------+------------+
+          |                          |
+          v                          v
+   +------+------+            +------+------+
+   |      No     |            |     Yes     |
+   +------+------+            +------+------+
+          |                          |
+          v                          v
+  +--------+------+          +-------+------+
+  | Trash/        |          | Can I do it  |
+  | Reference/    |          | in less than |
+  | Someday/Maybe |          |  2 minutes?  |
+  +-------+-------+          +-------+------+
+          |                          |
+          v                          v
+  +-------+-------+           +------+------+
+  |      Done     |           |  Yes |  No  |
+  +---------------+           +--+---+---+--+
+                                 |       |
+                                 v       v
+                        +--------+--+ +--+--------+
+                        | Do it now | | Delegate? |
+                        +-----------+ +-----+-----+
+                                            |
+                                     +------+------+
+                                     |  Yes |  No  |
+                                     +--+---+---+--+
+                                        |       |
+                                        v       v
+                             +----------+--+ +--+-------+
+                             | Waiting For | | Is it a  |
+                             |             | | project? |
+                             +-------------+ +----+-----+
+                                                  |
+                                           +------+------+
+                                           |  Yes |  No  |
+                                           +--+---+---+--+
+                                              |       |
+                                              v       v
+                                      +-------+--+ +--+-----------+
+                                      | Projects | | Next Actions |
+                                      +----------+ +--------------+
 ```
 
 This diagram clearly illustrates how to process each item in your inbox:
