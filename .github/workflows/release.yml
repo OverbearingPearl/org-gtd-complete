@@ -44,6 +44,47 @@ jobs:
           cd melpa
           make recipes/org-gtd-complete
 
+      - name: Verify version matches tag
+        run: |
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          # Remove 'v' prefix if present
+          VERSION="${TAG_NAME#v}"
+          # Check if the built package contains the version
+          if ls melpa/packages/org-gtd-complete-*.tar 2>/dev/null; then
+            BUILT_FILE=$(ls melpa/packages/org-gtd-complete-*.tar | head -1)
+            if [[ "$BUILT_FILE" == *"$VERSION"* ]]; then
+              echo "Version matches tag: $VERSION"
+            else
+              echo "Error: Built file $BUILT_FILE does not contain version $VERSION"
+              exit 1
+            fi
+          else
+            echo "Error: No package file found"
+            exit 1
+          fi
+
       - name: Check build output
         run: |
           ls -la melpa/packages/org-gtd-complete* || (echo "Build failed" && exit 1)
+          # Ensure the tar file is not empty
+          for f in melpa/packages/org-gtd-complete-*.tar; do
+            if [ -s "$f" ]; then
+              echo "Package $f is non-empty"
+            else
+              echo "Error: Package $f is empty"
+              exit 1
+            fi
+          done
+
+      - name: Quick load test
+        run: |
+          # Extract the package and try to load it in Emacs
+          for f in melpa/packages/org-gtd-complete-*.tar; do
+            tar -xf "$f" -C /tmp
+            PACKAGE_DIR=$(basename "$f" .tar)
+            emacs -Q --batch \
+                  -L /tmp/"$PACKAGE_DIR" \
+                  -l /tmp/"$PACKAGE_DIR"/org-gtd-complete.el \
+                  --eval "(message \"Package loaded successfully\")" \
+                  --eval "(condition-case err (progn (require 'org-gtd-complete) (message \"Require succeeded\")) (error (message \"Require failed: %s\" err)))"
+          done
