@@ -65,8 +65,8 @@ jobs:
                   -l flycheck \
                   --eval "(setq flycheck-emacs-lisp-load-path '(\".\"))" \
                   --eval "(require 'flycheck)" \
-                  --eval "(flycheck-mode)" \
                   --eval "(find-file \"$file\")" \
+                  --eval "(flycheck-mode 1)" \
                   --eval "(flycheck-buffer)" \
                   --eval "(when (flycheck-has-current-errors-p) (flycheck-list-errors) (kill-emacs 1))" \
                   --eval "(message \"Flycheck passed for $file\")" \
