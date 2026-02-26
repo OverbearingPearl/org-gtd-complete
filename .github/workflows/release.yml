@@ -30,9 +30,8 @@ jobs:
         run: |
           cat > melpa/recipes/org-gtd-complete << 'EOF'
           (org-gtd-complete
-           :fetcher github
-           :repo "${{ github.repository_owner }}/org-gtd-complete"
-           :local-repo "${{ github.workspace }}/org-gtd-complete")
+           :repo "${{ github.repository }}"
+           :fetcher github)
           EOF
       
       - name: Build package
