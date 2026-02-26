@@ -2,7 +2,9 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-This package provides a complete implementation of the "Getting Things Done" methodology within org-mode, encompassing not only the five core workflow steps but also the full six-level Horizon of Focus, Natural Planning Model, Weekly Review, Contexts, Two-Minute Rule, and all standard GTD lists (Projects, Next Actions, Waiting For, Someday/Maybe, Reference). It also includes inbox processing, project planning, review systems, reference material management, trigger lists, brainstorming tools, organizing principles, and both vertical and horizontal focus management. This enables comprehensive management from daily tasks to life goals, following the true essence of GTD.
+This package provides a complete implementation of David Allen's "Getting Things Done" methodology within Emacs org-mode. It covers all five core GTD workflow steps (Capture, Clarify, Organize, Reflect, Engage) and fully supports the six-level Horizon of Focus, Natural Planning Model, Weekly Review process, Contexts system, Two-Minute Rule, and all standard GTD lists (Projects, Next Actions, Waiting For, Someday/Maybe, Reference).
+
+The system also includes inbox processing, project planning, periodic review cycles, reference material management, trigger lists, brainstorming tools, and organizing principles, enabling comprehensive vertical and horizontal focus management from daily tasks to life goals.
 
 ## Installation
 
