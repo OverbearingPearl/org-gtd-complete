@@ -31,6 +31,58 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y imagemagick
 
+      - name: Install package-lint and flycheck
+        run: |
+          emacs -Q --batch \
+                --eval "(package-refresh-contents)" \
+                --eval "(package-install 'package-lint)" \
+                --eval "(package-install 'flycheck)" 2>&1 | grep -v "^Loading"
+
+      - name: Find all .el files
+        run: |
+          find . -name "*.el" -not -path "./melpa/*" > el-files.txt
+          echo "Found .el files:"
+          cat el-files.txt
+
+      - name: Run package-lint on all .el files
+        run: |
+          while IFS= read -r file; do
+            echo "Checking $file with package-lint..."
+            emacs -Q --batch \
+                  -l package-lint \
+                  --eval "(package-initialize)" \
+                  -f package-lint-batch-and-exit "$file" 2>&1 || exit 1
+          done < el-files.txt
+
+      - name: Run flycheck on all .el files
+        run: |
+          while IFS= read -r file; do
+            echo "Checking $file with flycheck..."
+            emacs -Q --batch \
+                  -l flycheck \
+                  --eval "(package-initialize)" \
+                  --eval "(setq flycheck-emacs-lisp-load-path '(\".\"))" \
+                  --eval "(require 'flycheck)" \
+                  --eval "(flycheck-mode)" \
+                  --eval "(find-file \"$file\")" \
+                  --eval "(flycheck-compile)" \
+                  --eval "(when (flycheck-has-current-errors-p) (flycheck-list-errors) (kill-emacs 1))" \
+                  --eval "(message \"Flycheck passed for $file\")" \
+                  --eval "(kill-emacs 0)" 2>&1 || exit 1
+          done < el-files.txt
+
+      - name: Run checkdoc on all .el files
+        run: |
+          while IFS= read -r file; do
+            echo "Checking $file with checkdoc..."
+            emacs -Q --batch \
+                  -l checkdoc \
+                  --eval "(find-file \"$file\")" \
+                  --eval "(checkdoc-current-buffer)" \
+                  --eval "(when (> (length (with-current-buffer \"*Warnings*\" (buffer-string))) 0) (princ (with-current-buffer \"*Warnings*\" (buffer-string))) (kill-emacs 1))" \
+                  --eval "(kill-emacs 0)" 2>&1 || exit 1
+          done < el-files.txt
+
       - name: Create recipe
         run: |
           cat > melpa/recipes/org-gtd-complete << 'EOF'
