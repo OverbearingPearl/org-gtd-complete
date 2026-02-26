@@ -31,36 +31,38 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y imagemagick
 
-      - name: Install package-lint and flycheck
-        run: |
-          emacs -Q --batch \
-                --eval "(package-refresh-contents)" \
-                --eval "(package-install 'package-lint)" \
-                --eval "(package-install 'flycheck)" 2>&1 | grep -v "^Loading"
-
       - name: Find all .el files
         run: |
           find . -name "*.el" -not -path "./melpa/*" > el-files.txt
           echo "Found .el files:"
           cat el-files.txt
 
-      - name: Run package-lint on all .el files
+      - name: Install packages and run all checks
         run: |
-          while IFS= read -r file; do
-            echo "Checking $file with package-lint..."
-            emacs -Q --batch \
-                  -l package-lint \
-                  --eval "(package-initialize)" \
-                  -f package-lint-batch-and-exit "$file" 2>&1 || exit 1
-          done < el-files.txt
+          # First, refresh package archives and install required packages
+          emacs -Q --batch \
+                --eval "(package-refresh-contents)" \
+                --eval "(package-install 'package-lint)" \
+                --eval "(package-install 'flycheck)" \
+                --eval "(package-install 'checkdoc)" 2>&1 | grep -v "^Loading"
 
-      - name: Run flycheck on all .el files
-        run: |
+          # Read each .el file and run checks
           while IFS= read -r file; do
-            echo "Checking $file with flycheck..."
+            echo "========================================="
+            echo "Checking $file..."
+
+            # Run package-lint
+            echo "--- package-lint ---"
             emacs -Q --batch \
-                  -l flycheck \
                   --eval "(package-initialize)" \
+                  -l package-lint \
+                  -f package-lint-batch-and-exit "$file" 2>&1 || exit 1
+
+            # Run flycheck
+            echo "--- flycheck ---"
+            emacs -Q --batch \
+                  --eval "(package-initialize)" \
+                  -l flycheck \
                   --eval "(setq flycheck-emacs-lisp-load-path '(\".\"))" \
                   --eval "(require 'flycheck)" \
                   --eval "(flycheck-mode)" \
@@ -69,18 +71,18 @@ jobs:
                   --eval "(when (flycheck-has-current-errors-p) (flycheck-list-errors) (kill-emacs 1))" \
                   --eval "(message \"Flycheck passed for $file\")" \
                   --eval "(kill-emacs 0)" 2>&1 || exit 1
-          done < el-files.txt
 
-      - name: Run checkdoc on all .el files
-        run: |
-          while IFS= read -r file; do
-            echo "Checking $file with checkdoc..."
+            # Run checkdoc
+            echo "--- checkdoc ---"
             emacs -Q --batch \
+                  --eval "(package-initialize)" \
                   -l checkdoc \
                   --eval "(find-file \"$file\")" \
                   --eval "(checkdoc-current-buffer)" \
                   --eval "(when (> (length (with-current-buffer \"*Warnings*\" (buffer-string))) 0) (princ (with-current-buffer \"*Warnings*\" (buffer-string))) (kill-emacs 1))" \
                   --eval "(kill-emacs 0)" 2>&1 || exit 1
+
+            echo "========================================="
           done < el-files.txt
 
       - name: Create recipe
