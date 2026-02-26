@@ -38,11 +38,7 @@ jobs:
       - name: Build package
         run: |
           cd melpa
-          emacs -batch -l package-build \
-                --eval "(setq package-build-working-dir \"${{ github.workspace }}/melpa/working\")" \
-                --eval "(setq package-build-archive-dir \"${{ github.workspace }}/melpa/packages\")" \
-                --eval "(package-build-archive \"org-gtd-complete\")" \
-                2>&1
+          make recipes/org-gtd-complete
       
       - name: Check build output
         run: |
