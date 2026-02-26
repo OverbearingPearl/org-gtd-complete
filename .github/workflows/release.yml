@@ -79,7 +79,10 @@ jobs:
                   -l checkdoc \
                   --eval "(find-file \"$file\")" \
                   --eval "(checkdoc-current-buffer)" \
-                  --eval "(when (> (length (with-current-buffer \"*Warnings*\" (buffer-string))) 0) (princ (with-current-buffer \"*Warnings*\" (buffer-string))) (kill-emacs 1))" \
+                  --eval "(let ((wbuf (get-buffer \"*Warnings*\"))) \
+                            (when (and wbuf (> (length (with-current-buffer wbuf (buffer-string))) 0)) \
+                              (princ (with-current-buffer wbuf (buffer-string))) \
+                              (kill-emacs 1)))" \
                   --eval "(kill-emacs 0)" 2>&1 || exit 1
 
             echo "========================================="
