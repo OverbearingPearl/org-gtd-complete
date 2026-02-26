@@ -8,24 +8,24 @@ on:
 jobs:
   melpa-build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout your package
         uses: actions/checkout@v4
         with:
           path: org-gtd-complete
-      
+
       - name: Checkout MELPA
         uses: actions/checkout@v4
         with:
           repository: melpa/melpa
           path: melpa
-      
+
       - name: Setup Emacs
         uses: jcs090218/setup-emacs@master
         with:
           version: 29.1
-      
+
       - name: Install imagemagick and other build dependencies
         run: |
           sudo apt-get update
@@ -38,12 +38,12 @@ jobs:
            :repo "${{ github.repository }}"
            :fetcher github)
           EOF
-      
+
       - name: Build package
         run: |
           cd melpa
           make recipes/org-gtd-complete
-      
+
       - name: Check build output
         run: |
           ls -la melpa/packages/org-gtd-complete* || (echo "Build failed" && exit 1)
