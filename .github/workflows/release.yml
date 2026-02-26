@@ -67,7 +67,7 @@ jobs:
                   --eval "(require 'flycheck)" \
                   --eval "(flycheck-mode)" \
                   --eval "(find-file \"$file\")" \
-                  --eval "(flycheck-compile)" \
+                  --eval "(flycheck-buffer)" \
                   --eval "(when (flycheck-has-current-errors-p) (flycheck-list-errors) (kill-emacs 1))" \
                   --eval "(message \"Flycheck passed for $file\")" \
                   --eval "(kill-emacs 0)" 2>&1 || exit 1
