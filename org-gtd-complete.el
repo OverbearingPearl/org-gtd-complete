@@ -7,7 +7,7 @@
 ;; URL: https://github.com/OverbearingPearl/org-gtd-complete
 ;; Version: 0.1.0
 ;; Package-Requires: ((emacs "27.1") (org "9.4"))
-;; Keywords: gtd, org-mode, productivity
+;; Keywords: outlines, tools, convenience, productivity, gtd, org
 ;; Homepage: https://github.com/OverbearingPearl/org-gtd-complete
 
 ;; This file is not part of GNU Emacs.
