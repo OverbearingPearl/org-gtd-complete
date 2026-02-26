@@ -1,0 +1,49 @@
+name: MELPA Build Test
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  melpa-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout your package
+        uses: actions/checkout@v4
+        with:
+          path: org-gtd-complete
+      
+      - name: Checkout MELPA
+        uses: actions/checkout@v4
+        with:
+          repository: melpa/melpa
+          path: melpa
+      
+      - name: Setup Emacs
+        uses: jcs090218/setup-emacs@master
+        with:
+          version: 29.1
+      
+      - name: Create recipe
+        run: |
+          cat > melpa/recipes/org-gtd-complete << 'EOF'
+          (org-gtd-complete
+           :fetcher github
+           :repo "${{ github.repository_owner }}/org-gtd-complete"
+           :local-repo "${{ github.workspace }}/org-gtd-complete")
+          EOF
+      
+      - name: Build package
+        run: |
+          cd melpa
+          emacs -batch -l package-build \
+                --eval "(setq package-build-working-dir \"${{ github.workspace }}/melpa/working\")" \
+                --eval "(setq package-build-archive-dir \"${{ github.workspace }}/melpa/packages\")" \
+                --eval "(package-build-archive \"org-gtd-complete\")" \
+                2>&1
+      
+      - name: Check build output
+        run: |
+          ls -la melpa/packages/org-gtd-complete* || (echo "Build failed" && exit 1)
