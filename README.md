@@ -370,5 +370,190 @@ Downward mapping follows the **transfer‑station principle**: when a step withi
 All lists should be maintained through **regular reviews** (especially the weekly review) to keep the system trustworthy and up‑to‑date.
 
 ### Review Process
+
+The review process is a critical component of the GTD system that ensures the entire system remains current, effective, and trustworthy. Without regular reviews, a GTD system gradually loses its value—new tasks get missed, projects lose momentum, and the system becomes unreliable.
+
+#### Core Purposes of Review
+
+The review process addresses several key questions:
+- **Brain dump**: Transfer new tasks, ideas, and commitments from your mind to the inbox
+- **Status update**: Ensure all task statuses reflect actual current situations
+- **Recalibration**: Adjust priorities and schedules based on the latest circumstances
+- **Catch oversights**: Identify projects or actions that might have been overlooked
+- **Maintain momentum**: Sustain execution motivation by seeing progress
+
+#### Daily Review
+
+The daily review is a process for planning and confirming the current day and next day, recommended at the start of each day, typically taking 10-20 minutes.
+
+**Daily Review Checklist**:
+
+1. **Review Calendar**
+   - Confirm today's appointments and fixed schedule
+   - Check if there are items requiring advance preparation
+
+2. **Review Next Actions List**
+   - Identify all actions executable in the current context
+   - Filter available actions based on context (location, tools, time)
+   - Decide on priority actions for the day
+
+3. **Process Inbox**
+   - Clear all new inputs since the last review
+   - Process each item: Is it actionable?
+   - Determine next actions and distribute to appropriate lists
+
+4. **Update Waiting For List**
+   - Review all waiting items
+   - Follow up on overdue items
+   - Confirm status of delegated tasks
+
+5. **Review Schedule**
+   - Confirm important appointments for tomorrow
+   - Prepare materials and actions needed for tomorrow in advance
+
+**Daily Review Best Practices**:
+- Perform daily review at a fixed time each day (e.g., each morning before work)
+- Keep reviews brief but efficient
+- Write new ideas directly to the inbox; don't process them during the review
+
+#### Weekly Review
+
+The weekly review is the most critical review in the GTD system, recommended at a fixed time each week, typically taking 1-2 hours. The purpose is to fully update all lists, review project progress, and recalibrate priorities.
+
+**Weekly Review Checklist**:
+
+**Phase 1: Preparation & Clearing (15 minutes)**
+
+1. **Clear Inbox**
+   - Process all unprocessed items accumulated during the week
+   - For each item: process, file, or discard
+
+2. **Clear Your Head**
+   - Transfer all thoughts, worries, and todos to the inbox
+   - Use the "trigger list" (see below) for brainstorming
+
+**Phase 2: Review & Update (45-60 minutes)**
+
+3. **Review Projects List**
+   - Check each project one by one
+   - Confirm project status: active, on hold, completed
+   - Identify stagnant projects and analyze blockers
+   - Determine the next concrete action for each project
+
+4. **Review Actions List**
+   - Clear completed or expired actions
+   - Reassess priorities and adjust order
+   - Confirm all actions have clear next steps
+
+5. **Review Waiting For List**
+   - Check each waiting item
+   - Take action on items needing follow-up
+   - Confirm status of delegated tasks
+
+6. **Review Someday/Maybe List**
+   - Review currently inactive projects
+   - Any projects that can be activated?
+   - Any projects that can be discarded?
+
+7. **Review Reference Material**
+   - Organize filed reference materials
+   - Ensure the reference system remains orderly and usable
+
+**Phase 3: Outlook & Planning (15-30 minutes)**
+
+8. **Review Areas of Responsibility**
+   - Confirm status of each area
+   - Identify areas needing attention but being neglected
+
+9. **Review Six Horizons**
+   - L3: Any new areas of responsibility to add?
+   - L4: Are current goals still relevant? Need adjustment?
+   - L5: Is vision still clear? Any new ideas?
+   - L6: Are core values being reflected?
+
+10. **Plan Next Week**
+    - Select projects requiring attention from the projects list
+    - Determine key goals for next week
+    - Mark key dates on calendar
+
+**Trigger List (For Clearing Your Head)**
+
+Here are trigger questions to help clear your head:
+- What concerns you?
+- What have you been procrastinating on?
+- What needs to be done before a specific time?
+- What have you promised others?
+- What would you like to accomplish?
+- What could make your life or work better?
+- What reference materials might you need?
+
+#### Monthly/Annual Review
+
+Monthly reviews focus on higher-level strategic thinking, while annual reviews address life direction and long-term goals.
+
+**Monthly Review Checklist**:
+
+1. **Review Monthly Goals**
+   - Evaluate completion of last month's goals
+   - Identify successes and areas for improvement
+
+2. **Review Project Health**
+   - Check overall status of all projects
+   - Identify projects needing reassessment or adjustment
+
+3. **Review Areas of Responsibility**
+   - Evaluate satisfaction with each area
+   - Identify areas needing more attention or resources
+
+4. **Look Ahead to Next Month**
+   - Set main goals for next month
+   - Confirm important deadlines and milestones
+
+**Annual Review Checklist**:
+
+1. **Evaluate Annual Goals**
+   - Review goals set for the past year
+   - Assess completion and lessons learned
+
+2. **审视愿景**
+   - Think about your 3-5 year life vision
+   - Any directions needing adjustment?
+
+3. **Review Core Values**
+   - Confirm if core values have changed
+   - Consider how to better embody core values
+
+4. **Set New Year Goals**
+   - Set new year goals based on vision and values
+   - Break goals down into projects and actions
+
+#### Review Rhythm and Habits
+
+Building effective review habits requires:
+
+1. **Fixed Time**
+   - Daily review: fixed time (e.g., each morning)
+   - Weekly review: fixed time (e.g., Friday afternoon or Sunday)
+   - Monthly review: first or last day of each month
+   - Annual review: January each year or your birthday month
+
+2. **Protect the Time**
+   - Treat review time as an important appointment
+   - Avoid handling other matters during this time
+
+3. **Build Checklists**
+   - Create personalized review checklists
+   - Gradually refine checklist content
+
+4. **Keep It Simple**
+   - Don't let reviews become overly complex
+   - Focus on the most critical checkpoints
+
+5. **Continuous Improvement**
+   - Record issues from reviews
+   - Constantly optimize the review process
+
+By坚持定期回顾，GTD 系统将保持活跃和有效，成为你生活和工作中真正可靠的助手。
+
 ### Context Management
 ### Two-Minute Rule
