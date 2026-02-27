@@ -291,12 +291,12 @@ When understanding the GTD list system, it's important to clarify the distinctio
 **Core lists** are where tasks are originally recorded and form the foundation of the GTD system:
 
 1. **Projects List**
-   Records all desired outcomes that require multiple steps. Each project contains its full plan (all steps), expected result, and associated higher‑level horizons (L4‑L6).
+   Records all desired outcomes that require multiple steps. Each project contains its full plan (all steps), expected result, and associated higher-level horizons (L4-L6).
 
 2. **Single Actions List**
-   Records standalone actionable items that do not belong to any project. These actions are linked directly to areas of responsibility (L3) and have no project‑level planning.
+   Records standalone actionable items that do not belong to any project. These actions are linked directly to areas of responsibility (L3) and have no project-level planning.
 
-#### Upward‑Mapping Virtual Lists
+#### Upward-Mapping Virtual Lists
 
 **Virtual lists** are dynamic views derived from core lists according to different perspectives; they do not duplicate task storage:
 
@@ -304,17 +304,17 @@ When understanding the GTD list system, it's important to clarify the distinctio
   Maps all actions from core lists to their life areas (e.g., Health, Career, Family).
 
 - **L4 Goals**
-  Maps projects created to achieve specific medium‑term goals.
+  Maps projects created to achieve specific medium-term goals.
 
 - **L5 Vision**
-  Maps projects aligned with long‑term vision.
+  Maps projects aligned with long-term vision.
 
 - **L6 Purpose & Core Values**
   Maps projects reflecting fundamental life meaning and principles.
 
-Upward mapping follows the six‑horizon rule: **L4‑L6 are inherited only through projects**; **single actions map at most to L3**.
+Upward mapping follows the six-horizon rule: **L4-L6 are inherited only through projects**; **single actions map at most to L3**.
 
-#### Downward‑Mapping Virtual Lists
+#### Downward-Mapping Virtual Lists
 
 Based on execution status, actions from core lists can be dynamically grouped into the following virtual lists:
 
@@ -324,9 +324,9 @@ Based on execution status, actions from core lists can be dynamically grouped in
    - **Currently actionable** items in the Single Actions list
 
 2. **Waiting For List**
-   Contains all **delegated or pending‑external‑event** actions, also originating from either the Projects or Single Actions list.
+   Contains all **delegated or pending-external-event** actions, also originating from either the Projects or Single Actions list.
 
-Downward mapping follows the **transfer‑station principle**: when a step within a project or a single action needs to be executed, it temporarily "moves out" from the core list into the appropriate virtual list (Next Actions or Waiting For), leaving a placeholder in the core list (e.g., "in‑progress", "waiting" status). Upon completion it returns to the core list and is marked as done.
+Downward mapping follows the **transfer-station principle**: when a step within a project or a single action needs to be executed, it temporarily "moves out" from the core list into the appropriate virtual list (Next Actions or Waiting For), leaving a placeholder in the core list (e.g., "in-progress", "waiting" status). Upon completion it returns to the core list and is marked as done.
 
 #### Auxiliary Lists
 
@@ -365,9 +365,9 @@ Downward mapping follows the **transfer‑station principle**: when a step withi
 
 1. **Completeness**: Core lists keep a complete record of every task (project steps, standalone actions), enabling holistic review.
 2. **Flexibility**: Virtual lists let users focus only on the relevant current view (e.g., "what can I do in the office today?", "all pending project tasks").
-3. **Consistency**: Task‑status changes (delegate, execute, complete) are recorded once in the core list; virtual lists automatically stay synchronized.
+3. **Consistency**: Task-status changes (delegate, execute, complete) are recorded once in the core list; virtual lists automatically stay synchronized.
 
-All lists should be maintained through **regular reviews** (especially the weekly review) to keep the system trustworthy and up‑to‑date.
+All lists should be maintained through **regular reviews** (especially the weekly review) to keep the system trustworthy and up-to-date.
 
 ### Review Process
 
@@ -515,7 +515,7 @@ Monthly reviews focus on higher-level strategic thinking, while annual reviews a
    - Review goals set for the past year
    - Assess completion and lessons learned
 
-2. **审视愿景**
+2. **Review Vision**
    - Think about your 3-5 year life vision
    - Any directions needing adjustment?
 
@@ -553,7 +553,139 @@ Building effective review habits requires:
    - Record issues from reviews
    - Constantly optimize the review process
 
-By坚持定期回顾，GTD 系统将保持活跃和有效，成为你生活和工作中真正可靠的助手。
+By sticking to regular reviews, the GTD system will remain active and effective, becoming a truly reliable assistant in your life and work.
 
 ### Context Management
+
+Context is a key dimension in the GTD system used for filtering and executing actions. Context defines the specific conditions required to perform an action, including location, tools, time, energy, and other factors. Through context management, users can quickly identify all executable actions in a given environment, enabling efficient time allocation decisions.
+
+#### Core Functions of Context
+
+Context management addresses several key questions:
+- **Environment matching**: Filter actions based on current location and available tools
+- **Efficiency optimization**: Avoid attempting actions that require different conditions in unsuitable contexts
+- **Decision simplification**: Reduce choice paralysis by quickly identifying executable actions in a given context
+
+#### Common Context Types
+
+**Location Contexts**
+
+Location contexts organize actions based on physical location:
+- **@Office**: Tasks that need to be completed in an office environment
+- **@Home**: Tasks that can be done at home
+- **@Errands**: Tasks to do while running outside
+- **@Phone**: Items that require a phone call
+- **@Email**: Tasks involving email communication
+
+**Tool Contexts**
+
+Tool contexts organize actions based on required tools or resources:
+- **@Computer**: Tasks requiring computer use (specific software)
+- **@Phone**: Tasks that can be completed on a mobile phone
+- **@Paper**: Tasks requiring pen and paper
+- **@Meeting**: Items to discuss in meetings
+
+**Time Contexts**
+
+Time contexts filter actions based on available time:
+- **2min**: Quick tasks that can be completed in 2 minutes
+- **15min**: Actions taking around 15 minutes
+- **1hr**: Longer actions requiring focused deep work
+- **Waiting**: Tasks for碎片 time while waiting for others
+
+**Energy Contexts**
+
+Energy contexts match actions with current energy levels:
+- **High Energy**: Complex tasks requiring high focus
+- **Medium Energy**: Routine tasks
+- **Low Energy**: Simple, mechanical tasks
+- **Creative**: Tasks requiring creative thinking
+
+**Social Contexts**
+
+Social contexts categorize actions based on whether interaction with others is needed:
+- **Alone**: Tasks that can be completed independently
+- **Conversation**: Tasks requiring face-to-face or online communication with others
+- **Team**: Items that need to be handled in a team environment
+
+#### Building a Personal Context System
+
+Establishing a context system requires considering your personal life and work characteristics:
+
+1. **Analyze Daily Activities**
+   - List locations you frequently visit
+   - Identify commonly used tools and devices
+   - Assess energy levels at different times
+
+2. **Select Core Contexts**
+   - Choose 5-10 most frequently used contexts
+   - Avoid too many contexts that complicate the system
+   - Regularly evaluate whether contexts remain applicable
+
+3. **Context Naming Conventions**
+   - Use clear, concise names
+   - Maintain consistent naming style
+   - Avoid ambiguity
+
+#### Practical Examples
+
+Suppose you have set up the following contexts:
+
+**@Office**:
+- "Write project report"
+- "Reply to work emails"
+- "Organize file archives"
+
+**@Phone**:
+- "Schedule doctor's appointment"
+- "Contact supplier to confirm delivery time"
+- "Return client call"
+
+**@Computer**:
+- "Update spreadsheet"
+- "Organize digital notes"
+
+**2min**:
+- "Acknowledge receipt of email"
+- "Record a phone number"
+- "Reply to simple message"
+
+When you're at the office, you can quickly view all actions in the "@Office" context; when you have only 2 minutes of碎片 time, you can choose a quick task from the "2min" context.
+
+#### Distinction Between Contexts and Projects
+
+Contexts and projects are two different organizational dimensions:
+
+- **Projects** focus on the **goal** of a task—the desired outcome
+- **Contexts** focus on the **execution conditions** of a task—how and where to execute it
+
+Different steps within the same project may belong to different contexts. For example, the project "Prepare Quarterly Report" might have the following context distribution:
+- **@Office**: Write report body
+- **@Computer**: Create data charts
+- **@Conversation**: Present draft to manager for feedback
+
+#### Best Practices for Context Management
+
+1. **Appropriate Number of Contexts**
+   - Keep 5-15 core contexts
+   - Too many contexts increase maintenance burden
+   - Too few contexts reduce filtering efficiency
+
+2. **Dynamic Context Updates**
+   - Adjust contexts based on life changes
+   - Periodically clean up unused contexts
+   - Keep contexts matching actual activities
+
+3. **Combine with Reviews**
+   - Check context settings during weekly reviews
+   - Ensure contexts cover all action types
+   - Optimize context structure for execution efficiency
+
+4. **Flexible Combination**
+   - Actions can be associated with multiple contexts
+   - Choose the most suitable context perspective based on actual situation
+   - Use contexts to quickly switch work modes
+
+Through effective context management, the GTD system helps users quickly do the right things in the right context, investing limited energy into the most suitable actions.
+
 ### Two-Minute Rule
