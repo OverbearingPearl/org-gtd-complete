@@ -260,6 +260,110 @@ Suppose your core value (L6) is "Maintain a healthy lifestyle", vision (L5) is "
 In org-gtd-complete, you only need to set L4-L6 tags at the project level. All actions belonging to that project will automatically inherit these higher horizons. Standalone actions only require area (L3) tagging, and the system ensures they won't incorrectly link to L4-L6. This ensures system simplicity and consistency.
 
 ### List System
+
+GTD's list architecture employs a **hierarchy of core lists and virtual lists**, ensuring tasks are stored completely according to their organizational structure while being accessed flexibly based on execution status.
+
+#### Key Concept Distinctions
+
+When understanding the GTD list system, it's important to clarify the distinctions between several key concepts:
+
+**Next Actions vs Single Actions**
+
+- **Next Actions**: Refers to **concrete actions that can be done immediately**. This is a **virtual list** whose items come from two sources:
+  1. The **next concrete step** of each active project in the Projects list
+  2. **Currently actionable** items in the Single Actions list
+
+- **Single Actions**: Refers to **standalone actionable items that don't belong to any project**. This is a **core list** that stores all independent tasks that don't require multiple steps.
+
+**In simple terms**:
+- The Single Actions list is where independent tasks are **stored**
+- The Next Actions list is a **dynamically generated** view containing all currently executable tasks (both the next steps of projects and executable single actions)
+
+**Waiting For List**: Refers to tasks that are **delegated to others or pending external events**. This is also a **virtual list**, whose items similarly originate from either the Projects list or Single Actions list.
+
+#### Core Lists (Physical Storage)
+
+**Core lists** are where tasks are originally recorded and form the foundation of the GTD system:
+
+1. **Projects List**
+   Records all desired outcomes that require multiple steps. Each project contains its full plan (all steps), expected result, and associated higher‑level horizons (L4‑L6).
+
+2. **Single Actions List**
+   Records standalone actionable items that do not belong to any project. These actions are linked directly to areas of responsibility (L3) and have no project‑level planning.
+
+#### Upward‑Mapping Virtual Lists
+
+**Virtual lists** are dynamic views derived from core lists according to different perspectives; they do not duplicate task storage:
+
+- **L3 Areas of Responsibility**
+  Maps all actions from core lists to their life areas (e.g., Health, Career, Family).
+
+- **L4 Goals**
+  Maps projects created to achieve specific medium‑term goals.
+
+- **L5 Vision**
+  Maps projects aligned with long‑term vision.
+
+- **L6 Purpose & Core Values**
+  Maps projects reflecting fundamental life meaning and principles.
+
+Upward mapping follows the six‑horizon rule: **L4‑L6 are inherited only through projects**; **single actions map at most to L3**.
+
+#### Downward‑Mapping Virtual Lists
+
+Based on execution status, actions from core lists can be dynamically grouped into the following virtual lists:
+
+1. **Next Actions List**
+   Contains all **immediately actionable** items, coming from:
+   - The **next concrete step** of each active project in the Projects list
+   - **Currently actionable** items in the Single Actions list
+
+2. **Waiting For List**
+   Contains all **delegated or pending‑external‑event** actions, also originating from either the Projects or Single Actions list.
+
+Downward mapping follows the **transfer‑station principle**: when a step within a project or a single action needs to be executed, it temporarily "moves out" from the core list into the appropriate virtual list (Next Actions or Waiting For), leaving a placeholder in the core list (e.g., "in‑progress", "waiting" status). Upon completion it returns to the core list and is marked as done.
+
+#### Auxiliary Lists
+
+- **Inbox**: Temporary collection of all unprocessed inputs.
+- **Someday/Maybe List**: Ideas or tasks not to be acted on now but possibly in the future.
+- **Reference Material**: Information that requires no action but should be kept.
+
+#### List Interaction Diagram
+
+```
+            +----------------------------------+
+            |       Core Lists (Storage)       |
+            |  +----------------------------+  |
+            |  |       Projects List        |  |
+            |  +----------------------------+  |
+            |  |    Single Actions List     |  |
+            |  +----------------------------+  |
+            +----------------+-----------------+
+                             |
+                +------------+--------------+
+                |                           |
+                v                           v
+    +-----------+----------+   +------------+-----------+
+    | Upward Virtual Lists |   | Downward Virtual Lists |
+    |       (Horizons)     |   |         (Status)       |
+    +-----------+----------+   +------------+-----------+
+                |                           |
+    +------+----+-+-------+          +------+------+
+    |      |      |       |          |             |
+    v      v      v       v          v             v
+   L3     L4     L5      L6     Next Actions   Waiting For
+(Areas)(Goals)(Vision)(Purpose)                (Delegated)
+```
+
+#### Practical Implications
+
+1. **Completeness**: Core lists keep a complete record of every task (project steps, standalone actions), enabling holistic review.
+2. **Flexibility**: Virtual lists let users focus only on the relevant current view (e.g., "what can I do in the office today?", "all pending project tasks").
+3. **Consistency**: Task‑status changes (delegate, execute, complete) are recorded once in the core list; virtual lists automatically stay synchronized.
+
+All lists should be maintained through **regular reviews** (especially the weekly review) to keep the system trustworthy and up‑to‑date.
+
 ### Review Process
 ### Context Management
 ### Two-Minute Rule
