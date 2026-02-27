@@ -155,6 +155,100 @@ This diagram clearly illustrates how to process each item in your inbox:
 With this flowchart, users can intuitively understand how to implement the GTD workflow using this package, ensuring every task is properly processed and categorized.
 
 ### Six Horizons of Focus
+
+GTD's "Six Horizons of Focus" provides a complete perspective framework from concrete actions to life goals. Each level represents a different layer of focus, helping users think and plan at appropriate levels of abstraction.
+
+Key Rules:
+- **L4-L6 are set only at the project or responsibility level**: Higher horizons (Goals, Vision, Purpose) should not be directly linked to individual actions, but rather reflected through projects or areas of responsibility.
+- **Individual actions can be linked up to L3 (Area) at most**: Specific actions can belong to a responsibility area, but cannot directly have higher-level horizon tags.
+- **Actions inherit L4-L6 through their associated projects**: When an action belongs to a project, it automatically inherits the higher horizons linked to that project, without needing duplicate settings.
+- **Standalone actions (not part of any project) should not have L4-L6 horizons**: These actions should only be linked to L3 areas, not reaching higher levels.
+
+Below is a basic ASCII diagram of the six horizons:
+
+```
+  +---------------------------+
+  | L6: Purpose & Core Values |
+  +-------------+-------------+
+                ^
+                |
+  +-------------+-------------+
+  |         L5: Vision        |
+  +-------------+-------------+
+                ^
+                |
+  +-------------+-------------+
+  |         L4: Goals         |
+  +-------------+-------------+
+                ^                    ◉ stops here
+                |                     |
+  +-------------+---------------------+-----+
+  |       L3: Areas of Responsibility       |
+  +-------------+---------------------+-----+
+                ^                     ^
+                |                     |
+  +-------------+-------------+       |
+  |        L2: Projects       |  not part of any project
+  +-------------+-------------+       |
+                ^                     |
+                |                     |
+  +-------------+---------------------+-----+
+  |            L1: Next Actions             |
+  +-----------------------------------------+
+```
+
+(Note: The diagram uses different line styles and annotations to visually distinguish between the two types of actions: project actions connect upward to L6 via solid arrows, while standalone actions connect only to L3 via dotted arrows and terminate at that level.)
+
+#### Detailed Explanation of Each Level
+
+**L1: Next Actions**
+- Concrete physical actions that can be done immediately.
+- Examples: "Email client to confirm meeting time", "Buy printer ink".
+- **Key Distinction**:
+  - Actions belonging to projects: Inherit L2-L6 horizons from the project
+  - Standalone actions: Can only link up to L3 (Area), no L4-L6 involvement
+
+**L2: Projects**
+- Desired outcomes that require multiple steps to complete.
+- Each project should be linked to at least one area of responsibility (L3).
+- Examples: "Complete quarterly report", "Organize team-building event".
+- Projects themselves can have L4-L6 tags.
+
+**L3: Areas of Responsibility**
+- Important areas of life that require ongoing attention and maintenance.
+- Examples: Health, Family, Career Development, Financial Management.
+- All actions (both project and standalone) can be linked to areas.
+
+**L4: Goals**
+- Medium-term objectives to be achieved within 1-2 years.
+- Examples: "Get promoted to technical lead", "Complete marathon training".
+- Goals are realized through projects, not directly linked to individual actions.
+
+**L5: Vision**
+- Long-term outlook and life picture for the next 3-5 years.
+- Examples: "Become a domain expert", "Establish stable passive income".
+- Vision is materialized through goals, which are then implemented via projects.
+
+**L6: Purpose & Core Values**
+- Fundamental life meaning and guiding principles.
+- Examples: "Help others grow", "Pursue technological innovation".
+- This is the highest horizon, guiding all lower-level decisions.
+
+#### Practical Example
+
+Suppose your core value (L6) is "Maintain a healthy lifestyle", vision (L5) is "Have abundant energy", and goal (L4) is "Complete a half marathon this year". To achieve this goal, you create a project (L2) "Half Marathon Training Plan", which belongs to the area of responsibility (L3) "Health".
+
+**Project Actions**:
+- Next actions within the project: "Run three times per week", "Buy professional running shoes"
+- These actions **automatically inherit** the project's L2-L6 horizons
+
+**Standalone Actions**:
+- Actions not part of any project: "Weigh myself today"
+- Can be linked to area (L3) "Health"
+- **But should NOT** be linked to L4 (Goal: "Complete half marathon"), L5 (Vision), or L6 (Core Values)
+
+In org-gtd-complete, you only need to set L4-L6 tags at the project level. All actions belonging to that project will automatically inherit these higher horizons. Standalone actions only require area (L3) tagging, and the system ensures they won't incorrectly link to L4-L6. This ensures system simplicity and consistency.
+
 ### List System
 ### Review Process
 ### Context Management
