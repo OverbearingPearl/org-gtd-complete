@@ -689,3 +689,50 @@ Different steps within the same project may belong to different contexts. For ex
 Through effective context management, the GTD system helps users quickly do the right things in the right context, investing limited energy into the most suitable actions.
 
 ### Two-Minute Rule
+
+The Two-Minute Rule is a simple yet effective time management technique in GTD for quickly handling tasks that can be completed in two minutes or less.
+
+#### Core Idea of the Two-Minute Rule
+
+If a task can be completed in two minutes or less, do it immediately rather than postponing it. The benefits are:
+- Avoid piling up small tasks and reduce the number of items in the inbox
+- Reduce decision burden because you don't need to schedule time for small tasks
+- Quickly completing small tasks can bring a sense of accomplishment and motivate you to continue processing other tasks
+
+#### How to Apply the Two-Minute Rule
+
+1. **When processing the inbox**
+   - When processing items in the inbox, if you determine that an item is actionable and can be completed in two minutes or less, execute it immediately.
+   - Example: Reply to a short email, confirm a meeting time, record a phone number, etc.
+
+2. **During execution**
+   - When you are executing an action and suddenly think of a small task that can be completed in two minutes, you can complete it first and then continue with the original action.
+   - Example: While writing a report, you suddenly remember you need to reply to a short email. You can spend two minutes replying to the email and then continue writing the report.
+
+3. **During review**
+   - During daily or weekly review, check for any missed small tasks. If they can be completed in two minutes, handle them immediately.
+
+#### Precautions
+
+- **Strictly adhere to the time limit**: Only apply this rule to tasks that can truly be completed in two minutes. If a task takes longer, schedule it in the Next Actions list.
+- **Avoid interruptions**: If a two-minute task would interrupt your deep work, record it and handle it later.
+- **Keep the inbox empty**: The Two-Minute Rule helps quickly empty the inbox, but don't sacrifice task quality for speed.
+
+#### Practical Example
+
+Suppose your inbox has the following items:
+- "Reply to colleague's email" (estimated 1 minute) -> Execute immediately
+- "Call client" (estimated 5 minutes) -> Add to Next Actions list
+- "Organize desk" (estimated 10 minutes) -> Add to Next Actions list
+- "Read an interesting article" (estimated 3 minutes) -> Add to Next Actions list
+
+By applying the Two-Minute Rule, you can quickly handle small tasks, thus reserving more energy for tasks that require deep work.
+
+#### Limitations of the Two-Minute Rule
+
+While the Two-Minute Rule is very practical, it has limitations:
+- For complex tasks, the Two-Minute Rule is not applicable and requires further decomposition and planning.
+- Frequent application of the Two-Minute Rule may lead to frequent task switching, affecting the efficiency of deep work.
+- In some cases, two-minute tasks may only be surface-level work, providing temporary relief.
+
+Therefore, the Two-Minute Rule should be used in conjunction with other GTD principles to form a complete task management system.
