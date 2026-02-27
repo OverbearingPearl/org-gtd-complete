@@ -124,20 +124,30 @@ Below is the classic GTD workflow diagram that illustrates the complete decision
                                      |  Yes |  No  |
                                      +--+---+---+--+
                                         |       |
-                                        v       v
-                             +----------+--+ +--+-------+
-                             | Waiting For | | Is it a  |
-                             |             | | project? |
-                             +-------------+ +----+-----+
-                                                  |
-                                           +------+------+
-                                           |  Yes |  No  |
-                                           +--+---+---+--+
-                                              |       |
-                                              v       v
-                                      +-------+--+ +--+-----------+
-                                      | Projects | | Next Actions |
-                                      +----------+ +--------------+
+                                        v       |
+                             +----------+--+    |
+                             | Waiting For |    |
+                             +------+------+    |
+                                    |           |
+                This is where GTD's description |
+                is somewhat vague, even when    |
+                delegated, it must still be     |
+                determined whether it belongs   |
+                to a project.                   |
+                                    |           |
+                                    v           v
+                                +---+-----------+--+
+                                | Is it a project? |
+                                +---------+--------+
+                                          |
+                                   +------+------+
+                                   |  Yes |  No  |
+                                   +--+---+---+--+
+                                      |       |
+                                      v       v
+                              +-------+--+ +--+-----------+
+                              | Projects | | Next Actions |
+                              +----------+ +--------------+
 ```
 
 This diagram clearly illustrates how to process each item in your inbox:
