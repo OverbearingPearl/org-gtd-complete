@@ -164,17 +164,44 @@ This diagram clearly illustrates how to process each item in your inbox:
 
 With this flowchart, users can intuitively understand how to implement the GTD workflow using this package, ensuring every task is properly processed and categorized.
 
-### Six Horizons of Focus
+### Six Horizons of Focus & Bidirectional Workflow
 
-GTD's "Six Horizons of Focus" provides a complete perspective framework from concrete actions to life goals. Each level represents a different layer of focus, helping users think and plan at appropriate levels of abstraction.
+GTD's "Six Horizons of Focus" is not just a static hierarchical framework; more importantly, it supports a **bidirectional workflow**, which is the core essence of the GTD methodology.
+
+#### Two Planning Paths
+
+**1. Top-Down Planning (Natural Planning Model)**
+Starting from higher horizons and gradually breaking down into concrete actions, this is a systematic approach for achieving strategic goals:
+```
+Purpose & Principles (L6) → Vision (L5) → Goals (L4) → Projects (L2) → Actions (L1)
+```
+Suitable for: New project planning, goal setting, strategic thinking.
+
+**2. Bottom-Up Processing**
+Beginning with daily concrete actions and gradually connecting upward to higher horizons, this is a pragmatic approach for handling real-world work:
+```
+Actions (L1) → Projects (L2) → Areas of Responsibility (L3) → Goals (L4) → Vision (L5) → Purpose & Core Values (L6)
+```
+Suitable for: Processing inbox, daily task execution, gradual goal discovery.
+
+#### Dynamic Horizon Evolution
 
 Key Rules:
-- **L4-L6 are set only at the project or responsibility level**: Higher horizons (Goals, Vision, Purpose) should not be directly linked to individual actions, but rather reflected through projects or areas of responsibility.
+- **L4-L6 are set only at the project or responsibility level**: Higher horizons should not be directly linked to individual actions, but rather reflected through projects or areas of responsibility.
 - **Individual actions can be linked up to L3 (Area) at most**: Specific actions can belong to a responsibility area, but cannot directly have higher-level horizon tags.
-- **Actions inherit L4-L6 through their associated projects**: When an action belongs to a project, it automatically inherits the higher horizons linked to that project, without needing duplicate settings.
-- **Standalone actions (not part of any project) should not have L4-L6 horizons**: These actions should only be linked to L3 areas, not reaching higher levels.
+- **Actions inherit L4-L6 through their associated projects**: When an action belongs to a project, it automatically inherits the higher horizons linked to that project.
+- **Gradual horizon refinement**: Allows setting only L1-L3 when creating an action, with gradual connection to L4-L6 during subsequent reviews, aligning with natural cognitive deepening.
 
-Below is a basic ASCII diagram of the six horizons:
+#### Integration with Natural Planning Model
+
+The five steps of the Natural Planning Model perfectly correspond to the six horizons:
+1. **Define Purpose & Principles** → L6 Purpose & Core Values
+2. **Envision the Outcome** → L4-L5 Goals & Vision
+3. **Brainstorm** → L2-L3 Projects & Areas of Responsibility
+4. **Organize** → L2 Project Planning
+5. **Identify Next Actions** → L1 Concrete Actions
+
+Below is a complete diagram of the six horizons with bidirectional workflow:
 
 ```
   +---------------------------+
@@ -249,20 +276,40 @@ Key Insight:
 - Examples: "Help others grow", "Pursue technological innovation".
 - This is the highest horizon, guiding all lower-level decisions.
 
-#### Practical Example
+#### Practical Example: Bidirectional Workflow Application
 
-Suppose your core value (L6) is "Maintain a healthy lifestyle", vision (L5) is "Have abundant energy", and goal (L4) is "Complete a half marathon this year". To achieve this goal, you create a project (L2) "Half Marathon Training Plan", which belongs to the area of responsibility (L3) "Health".
+**Example 1: Top-Down Planning (Starting a New Project)**
+Suppose your core value (L6) is "Maintain a healthy lifestyle", vision (L5) is "Have abundant energy", and goal (L4) is "Complete a half marathon this year". You use the Natural Planning Model:
+1. Start from L6 Core Value: "Maintain a healthy lifestyle"
+2. Define L5 Vision: "Have abundant energy"
+3. Set L4 Goal: "Complete a half marathon this year"
+4. Create L2 Project: "Half Marathon Training Plan", linked to L3 Area "Health"
+5. Plan L1 Actions: "Run three times per week", "Buy professional running shoes"
+
+**Example 2: Bottom-Up Processing (Elevating Daily Tasks)**
+You capture an idea in your inbox: "Weigh myself today". The processing flow:
+1. Identify as an actionable item (L1)
+2. Determine it doesn't belong to an existing project, create as a standalone action
+3. Link to Area of Responsibility (L3) "Health"
+4. During weekly review, the system prompts: "This action may support higher goals"
+5. You connect it to an existing goal (L4) "Maintain healthy weight", or create a new goal
+6. The action gains higher-level meaning connections
 
 **Project Actions**:
 - Next actions within the project: "Run three times per week", "Buy professional running shoes"
 - These actions **automatically inherit** the project's L2-L6 horizons
 
 **Standalone Actions**:
-- Actions not part of any project: "Weigh myself today"
-- Can be linked to area (L3) "Health"
-- **But should NOT** be linked to L4 (Goal: "Complete half marathon"), L5 (Vision), or L6 (Core Values)
+- Initial state: Only linked to Area of Responsibility (L3), e.g., "Weigh myself today"
+- Elevation potential: Through the review process, can be connected upward to L4-L6, but needs intermediate projects
+- Transformation path: Elevate standalone action to become a project starting point, or connect to horizons of existing projects
 
-In org-gtd-complete, you only need to set L4-L6 tags at the project level. All actions belonging to that project will automatically inherit these higher horizons. Standalone actions only require area (L3) tagging, and the system ensures they won't incorrectly link to L4-L6. This ensures system simplicity and consistency.
+In org-gtd-complete, the system supports both workflows:
+1. **Complete Planning**: Set L4-L6 tags at project level, actions automatically inherit
+2. **Gradual Elevation**: Allow actions to initially set only L1-L3, gradually refine horizon connections through review cycles
+3. **Intelligent Prompts**: Detect unconnected potential projects during weekly reviews, guide horizon elevation
+
+This design ensures both system rigor (L4-L6 inherited only through projects) and flexibility (allowing gradual horizon refinement), truly embodying the essence of GTD's bidirectional workflow.
 
 ### List System
 
