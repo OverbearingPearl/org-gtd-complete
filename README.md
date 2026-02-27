@@ -145,9 +145,9 @@ Below is the classic GTD workflow diagram that illustrates the complete decision
                                    +--+---+---+--+
                                       |       |
                                       v       v
-                              +-------+--+ +--+-----------+
-                              | Projects | | Next Actions |
-                              +----------+ +--------------+
+                              +-------+--+ +--+-------------+
+                              | Projects | | Single Actions |
+                              +----------+ +----------------+
 ```
 
 This diagram clearly illustrates how to process each item in your inbox:
@@ -159,7 +159,7 @@ This diagram clearly illustrates how to process each item in your inbox:
    - Can be done in 2 minutes: Do it now
    - Needs delegation: Add to Waiting For list
    - Is a project: Add to Projects list
-   - Not a project: Add to Next Actions list
+   - Not a project: Add to Single Actions list
 4. **Engage**: Choose actions based on context
 
 With this flowchart, users can intuitively understand how to implement the GTD workflow using this package, ensuring every task is properly processed and categorized.
