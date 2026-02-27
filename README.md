@@ -211,7 +211,6 @@ Key Insight:
 - L4-L6 can only be inherited through L2 Projects
 - L1 actions without a project can at most be linked to L3 (Areas of Responsibility)
 - L1 is always L1, the difference lies in the connection point
-```
 
 (Note: The diagram uses two different paths and annotations to visually distinguish between the two types of actions: project actions connect upward to L6 via solid arrows, while standalone actions connect only to L3 via dotted arrows and terminate at that level.)
 
