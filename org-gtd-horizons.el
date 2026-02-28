@@ -56,9 +56,9 @@ PROJECT: Project name string."
   (error "Not implemented: org-gtd-horizons-connect-action-to-project"))
 
 ;;;###autoload
-(defun org-gtd-horizons-connect-project-to-area (project area)
+(defun org-gtd-horizons-connect-project-to-area (proj area)
   "Connect project to area of responsibility.
-PROJECT: Project name string.
+PROJ: Project name string.
 AREA: Area of responsibility name string."
   (error "Not implemented: org-gtd-horizons-connect-project-to-area"))
 

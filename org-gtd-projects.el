@@ -31,9 +31,9 @@
 ;;; Code:
 
 ;;;###autoload
-(defun org-gtd-projects-plan (project-name mode)
+(defun org-gtd-projects-plan (name mode)
   "Unified project planning function.
-PROJECT-NAME: Project name string.
+NAME: Project name string.
 MODE: Mode, can be 'create, 'enhance, or 'review'."
   (error "Not implemented: org-gtd-projects-plan"))
 
@@ -44,9 +44,9 @@ TOPIC: Brainstorming topic string."
   (error "Not implemented: org-gtd-projects-brainstorm"))
 
 ;;;###autoload
-(defun org-gtd-projects-archive (project)
+(defun org-gtd-projects-archive (proj)
   "Archive completed project.
-PROJECT: Project name string."
+PROJ: Project name string."
   (error "Not implemented: org-gtd-projects-archive"))
 
 (provide 'org-gtd-projects)

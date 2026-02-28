@@ -98,16 +98,16 @@ Consider four criteria: context, available time, available energy, priority."
   (org-gtd-core-engage))
 
 ;;;###autoload
-(defun org-gtd-plan-project (project-name &optional mode)
+(defun org-gtd-plan-project (name &optional mode)
   "Unified project planning function supporting creation and enhancement.
-PROJECT-NAME: Project name string.
+NAME: Project name string.
 MODE: Mode, can be 'create (new project), 'enhance (enhance existing)
       or 'review (enhance during review). Default is 'create.
 
 For new projects: Start complete natural planning five steps.
 For existing projects: Intelligently continue unfinished planning steps."
   (interactive "sProject name: ")
-  (org-gtd-projects-plan project-name mode))
+  (org-gtd-projects-plan name mode))
 
 ;; ============================================================
 ;; Layer 2: Lists viewing API (as needed)
@@ -183,12 +183,12 @@ PROJECT: Project name string."
   (org-gtd-horizons-connect-action-to-project action project))
 
 ;;;###autoload
-(defun org-gtd-connect-project-to-area (project area)
+(defun org-gtd-connect-project-to-area (proj area)
   "Connect project to area of responsibility.
-PROJECT: Project name string.
+PROJ: Project name string.
 AREA: Area of responsibility name string."
   (interactive)
-  (org-gtd-horizons-connect-project-to-area project area))
+  (org-gtd-horizons-connect-project-to-area proj area))
 
 ;;;###autoload
 (defun org-gtd-add-reference (content &optional tags)
@@ -214,11 +214,11 @@ PERSON: Responsible person string."
   (org-gtd-core-delegate task person))
 
 ;;;###autoload
-(defun org-gtd-archive (project)
+(defun org-gtd-archive (proj)
   "Archive completed project.
-PROJECT: Project name string."
+PROJ: Project name string."
   (interactive)
-  (org-gtd-projects-archive project))
+  (org-gtd-projects-archive proj))
 
 ;; ============================================================
 ;; Layer 4: System management API (setup use)
