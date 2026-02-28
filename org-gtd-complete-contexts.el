@@ -1,4 +1,4 @@
-;;; org-gtd-projects.el --- Project planning implementation  -*- lexical-binding: t; -*-
+;;; org-gtd-complete-contexts.el --- Context management implementation  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026 OverbearingPearl
 
@@ -26,29 +26,22 @@
 
 ;;; Commentary:
 
-;; Project planning implementation
+;; Context management implementation
 
 ;;; Code:
 
 ;;;###autoload
-(defun org-gtd-projects-plan (name mode)
-  "Unified project planning function.
-NAME: Project name string.
-MODE: Mode, can be 'create, 'enhance, or 'review'."
-  (error "Not implemented: org-gtd-projects-plan"))
+(defun org-gtd-complete-contexts-set (context)
+  "Set current context.
+CONTEXT: Context string, e.g. \"@office\", \"@phone\"."
+  (error "Not implemented: org-gtd-complete-contexts-set"))
 
 ;;;###autoload
-(defun org-gtd-projects-brainstorm (topic)
-  "Brainstorm on specific topic.
-TOPIC: Brainstorming topic string."
-  (error "Not implemented: org-gtd-projects-brainstorm"))
+(defun org-gtd-complete-contexts-engage (context)
+  "Select and execute actions in specific context.
+CONTEXT: Context string."
+  (error "Not implemented: org-gtd-complete-contexts-engage"))
 
-;;;###autoload
-(defun org-gtd-projects-archive (proj)
-  "Archive completed project.
-PROJ: Project name string."
-  (error "Not implemented: org-gtd-projects-archive"))
+(provide 'org-gtd-complete-contexts)
 
-(provide 'org-gtd-projects)
-
-;;; org-gtd-projects.el ends here
+;;; org-gtd-complete-contexts.el ends here

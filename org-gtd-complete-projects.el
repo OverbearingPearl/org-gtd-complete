@@ -1,4 +1,4 @@
-;;; org-gtd-lists.el --- Lists management implementation  -*- lexical-binding: t; -*-
+;;; org-gtd-complete-projects.el --- Project planning implementation  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026 OverbearingPearl
 
@@ -26,26 +26,29 @@
 
 ;;; Commentary:
 
-;; Lists management implementation
+;; Project planning implementation
 
 ;;; Code:
 
 ;;;###autoload
-(defun org-gtd-lists-show (what &optional filter)
-  "View lists in GTD system.
-WHAT: What to view, can be:
-      :inbox       - Inbox (unprocessed items)
-      :projects    - All projects with their plans
-      :actions     - All actionable items (next actions)
-      :waiting     - All waiting/delegated items
-      :someday     - Someday/Maybe items
-      :context     - Items filtered by context
-      :area        - Items filtered by area of responsibility
-      :goal        - Items filtered by goal
-      :vision      - Items filtered by vision
-FILTER: Optional filter criteria."
-  (error "Not implemented: org-gtd-lists-show"))
+(defun org-gtd-complete-projects-plan (name mode)
+  "Unified project planning function.
+NAME: Project name string.
+MODE: Mode, can be 'create, 'enhance, or 'review'."
+  (error "Not implemented: org-gtd-complete-projects-plan"))
 
-(provide 'org-gtd-lists)
+;;;###autoload
+(defun org-gtd-complete-projects-brainstorm (topic)
+  "Brainstorm on specific topic.
+TOPIC: Brainstorming topic string."
+  (error "Not implemented: org-gtd-complete-projects-brainstorm"))
 
-;;; org-gtd-lists.el ends here
+;;;###autoload
+(defun org-gtd-complete-projects-archive (proj)
+  "Archive completed project.
+PROJ: Project name string."
+  (error "Not implemented: org-gtd-complete-projects-archive"))
+
+(provide 'org-gtd-complete-projects)
+
+;;; org-gtd-complete-projects.el ends here

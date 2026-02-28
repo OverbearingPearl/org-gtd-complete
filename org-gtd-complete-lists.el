@@ -1,4 +1,4 @@
-;;; org-gtd-review.el --- Review workflow implementation  -*- lexical-binding: t; -*-
+;;; org-gtd-complete-lists.el --- Lists management implementation  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026 OverbearingPearl
 
@@ -26,22 +26,26 @@
 
 ;;; Commentary:
 
-;; Review workflow implementation
+;; Lists management implementation
 
 ;;; Code:
 
 ;;;###autoload
-(defun org-gtd-review-execute (level)
-  "Review the GTD system.
-LEVEL: Review level, can be 'daily, 'weekly, 'monthly, or 'yearly.
-Default is daily review."
-  (error "Not implemented: org-gtd-review-execute"))
+(defun org-gtd-complete-lists-show (what &optional filter)
+  "View lists in GTD system.
+WHAT: What to view, can be:
+      :inbox       - Inbox (unprocessed items)
+      :projects    - All projects with their plans
+      :actions     - All actionable items (next actions)
+      :waiting     - All waiting/delegated items
+      :someday     - Someday/Maybe items
+      :context     - Items filtered by context
+      :area        - Items filtered by area of responsibility
+      :goal        - Items filtered by goal
+      :vision      - Items filtered by vision
+FILTER: Optional filter criteria."
+  (error "Not implemented: org-gtd-complete-lists-show"))
 
-;;;###autoload
-(defun org-gtd-review-trigger-list ()
-  "Display trigger list questions."
-  (error "Not implemented: org-gtd-review-trigger-list"))
+(provide 'org-gtd-complete-lists)
 
-(provide 'org-gtd-review)
-
-;;; org-gtd-review.el ends here
+;;; org-gtd-complete-lists.el ends here

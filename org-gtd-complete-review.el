@@ -1,4 +1,4 @@
-;;; org-gtd-core.el --- Core GTD workflow implementation  -*- lexical-binding: t; -*-
+;;; org-gtd-complete-review.el --- Review workflow implementation  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026 OverbearingPearl
 
@@ -26,38 +26,22 @@
 
 ;;; Commentary:
 
-;; Core GTD workflow implementation
+;; Review workflow implementation
 
 ;;; Code:
 
 ;;;###autoload
-(defun org-gtd-core-capture (input)
-  "Capture any thought, task or commitment to inbox.
-INPUT: Content string to capture."
-  (error "Not implemented: org-gtd-core-capture"))
+(defun org-gtd-complete-review-execute (level)
+  "Review the GTD system.
+LEVEL: Review level, can be 'daily, 'weekly, 'monthly, or 'yearly.
+Default is daily review."
+  (error "Not implemented: org-gtd-complete-review-execute"))
 
 ;;;###autoload
-(defun org-gtd-core-process-inbox ()
-  "Process all items in inbox."
-  (error "Not implemented: org-gtd-core-process-inbox"))
+(defun org-gtd-complete-review-trigger-list ()
+  "Display trigger list questions."
+  (error "Not implemented: org-gtd-complete-review-trigger-list"))
 
-;;;###autoload
-(defun org-gtd-core-engage ()
-  "Select and execute actions based on current context."
-  (error "Not implemented: org-gtd-core-engage"))
+(provide 'org-gtd-complete-review)
 
-;;;###autoload
-(defun org-gtd-core-do-two-minute-tasks ()
-  "Execute all tasks that can be done in 2 minutes."
-  (error "Not implemented: org-gtd-core-do-two-minute-tasks"))
-
-;;;###autoload
-(defun org-gtd-core-delegate (task person)
-  "Delegate task to someone.
-TASK: Task description string.
-PERSON: Responsible person string."
-  (error "Not implemented: org-gtd-core-delegate"))
-
-(provide 'org-gtd-core)
-
-;;; org-gtd-core.el ends here
+;;; org-gtd-complete-review.el ends here

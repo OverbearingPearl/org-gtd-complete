@@ -1,4 +1,4 @@
-;;; org-gtd-horizons.el --- Six horizons implementation  -*- lexical-binding: t; -*-
+;;; org-gtd-complete-horizons.el --- Six horizons implementation  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026 OverbearingPearl
 
@@ -31,37 +31,37 @@
 ;;; Code:
 
 ;;;###autoload
-(defun org-gtd-horizons-view-by-area (area)
+(defun org-gtd-complete-horizons-view-by-area (area)
   "View all related content for specific area of responsibility.
 AREA: Area of responsibility name string."
-  (error "Not implemented: org-gtd-horizons-view-by-area"))
+  (error "Not implemented: org-gtd-complete-horizons-view-by-area"))
 
 ;;;###autoload
-(defun org-gtd-horizons-view-by-goal (goal)
+(defun org-gtd-complete-horizons-view-by-goal (goal)
   "View all related content for specific goal.
 GOAL: Goal name string."
-  (error "Not implemented: org-gtd-horizons-view-by-goal"))
+  (error "Not implemented: org-gtd-complete-horizons-view-by-goal"))
 
 ;;;###autoload
-(defun org-gtd-horizons-view-by-vision (vision)
+(defun org-gtd-complete-horizons-view-by-vision (vision)
   "View all related content for specific vision.
 VISION: Vision name string."
-  (error "Not implemented: org-gtd-horizons-view-by-vision"))
+  (error "Not implemented: org-gtd-complete-horizons-view-by-vision"))
 
 ;;;###autoload
-(defun org-gtd-horizons-connect-action-to-project (action project)
+(defun org-gtd-complete-horizons-connect-action-to-project (action project)
   "Connect action to project.
 ACTION: Action identifier.
 PROJECT: Project name string."
-  (error "Not implemented: org-gtd-horizons-connect-action-to-project"))
+  (error "Not implemented: org-gtd-complete-horizons-connect-action-to-project"))
 
 ;;;###autoload
-(defun org-gtd-horizons-connect-project-to-area (proj area)
+(defun org-gtd-complete-horizons-connect-project-to-area (proj area)
   "Connect project to area of responsibility.
 PROJ: Project name string.
 AREA: Area of responsibility name string."
-  (error "Not implemented: org-gtd-horizons-connect-project-to-area"))
+  (error "Not implemented: org-gtd-complete-horizons-connect-project-to-area"))
 
-(provide 'org-gtd-horizons)
+(provide 'org-gtd-complete-horizons)
 
-;;; org-gtd-horizons.el ends here
+;;; org-gtd-complete-horizons.el ends here

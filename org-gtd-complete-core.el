@@ -1,4 +1,4 @@
-;;; org-gtd-system.el --- System management implementation  -*- lexical-binding: t; -*-
+;;; org-gtd-complete-core.el --- Core GTD workflow implementation  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026 OverbearingPearl
 
@@ -26,45 +26,38 @@
 
 ;;; Commentary:
 
-;; System management implementation
+;; Core GTD workflow implementation
 
 ;;; Code:
 
 ;;;###autoload
-(defun org-gtd-system-setup ()
-  "Initialize GTD system setup."
-  (error "Not implemented: org-gtd-system-setup"))
+(defun org-gtd-complete-core-capture (input)
+  "Capture any thought, task or commitment to inbox.
+INPUT: Content string to capture."
+  (error "Not implemented: org-gtd-complete-core-capture"))
 
 ;;;###autoload
-(defun org-gtd-system-status ()
-  "View GTD system status overview."
-  (error "Not implemented: org-gtd-system-status"))
+(defun org-gtd-complete-core-process-inbox ()
+  "Process all items in inbox."
+  (error "Not implemented: org-gtd-complete-core-process-inbox"))
 
 ;;;###autoload
-(defun org-gtd-system-export ()
-  "Export GTD system data."
-  (error "Not implemented: org-gtd-system-export"))
+(defun org-gtd-complete-core-engage ()
+  "Select and execute actions based on current context."
+  (error "Not implemented: org-gtd-complete-core-engage"))
 
 ;;;###autoload
-(defun org-gtd-system-config (key value)
-  "Configure GTD system.
-KEY: Configuration key.
-VALUE: Configuration value (when setting)."
-  (error "Not implemented: org-gtd-system-config"))
+(defun org-gtd-complete-core-do-two-minute-tasks ()
+  "Execute all tasks that can be done in 2 minutes."
+  (error "Not implemented: org-gtd-complete-core-do-two-minute-tasks"))
 
 ;;;###autoload
-(defun org-gtd-system-add-reference (content tags)
-  "Add reference material.
-CONTENT: Reference content string.
-TAGS: Optional tags list."
-  (error "Not implemented: org-gtd-system-add-reference"))
+(defun org-gtd-complete-core-delegate (task person)
+  "Delegate task to someone.
+TASK: Task description string.
+PERSON: Responsible person string."
+  (error "Not implemented: org-gtd-complete-core-delegate"))
 
-;;;###autoload
-(defun org-gtd-system-search-reference (keyword)
-  "Search reference material.
-KEYWORD: Search keyword string."
-  (error "Not implemented: org-gtd-system-search-reference"))
+(provide 'org-gtd-complete-core)
 
-(provide 'org-gtd-system)
-
-;;; org-gtd-system.el ends here
+;;; org-gtd-complete-core.el ends here
