@@ -32,12 +32,14 @@
 
 ;;;###autoload
 (defun org-gtd-contexts-set (context)
-  "Set current context."
+  "Set current context.
+CONTEXT: Context string, e.g. \"@office\", \"@phone\"."
   (error "Not implemented: org-gtd-contexts-set"))
 
 ;;;###autoload
 (defun org-gtd-contexts-engage (context)
-  "Select and execute actions in specific context."
+  "Select and execute actions in specific context.
+CONTEXT: Context string."
   (error "Not implemented: org-gtd-contexts-engage"))
 
 (provide 'org-gtd-contexts)

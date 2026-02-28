@@ -54,12 +54,15 @@ VALUE: Configuration value (when setting)."
 
 ;;;###autoload
 (defun org-gtd-system-add-reference (content tags)
-  "Add reference material."
+  "Add reference material.
+CONTENT: Reference content string.
+TAGS: Optional tags list."
   (error "Not implemented: org-gtd-system-add-reference"))
 
 ;;;###autoload
 (defun org-gtd-system-search-reference (keyword)
-  "Search reference material."
+  "Search reference material.
+KEYWORD: Search keyword string."
   (error "Not implemented: org-gtd-system-search-reference"))
 
 (provide 'org-gtd-system)

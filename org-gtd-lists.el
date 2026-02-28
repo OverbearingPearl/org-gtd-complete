@@ -32,7 +32,18 @@
 
 ;;;###autoload
 (defun org-gtd-lists-show (what &optional filter)
-  "View lists in GTD system."
+  "View lists in GTD system.
+WHAT: What to view, can be:
+      :inbox       - Inbox (unprocessed items)
+      :projects    - All projects with their plans
+      :actions     - All actionable items (next actions)
+      :waiting     - All waiting/delegated items
+      :someday     - Someday/Maybe items
+      :context     - Items filtered by context
+      :area        - Items filtered by area of responsibility
+      :goal        - Items filtered by goal
+      :vision      - Items filtered by vision
+FILTER: Optional filter criteria."
   (error "Not implemented: org-gtd-lists-show"))
 
 (provide 'org-gtd-lists)

@@ -32,7 +32,8 @@
 
 ;;;###autoload
 (defun org-gtd-core-capture (input)
-  "Capture any thought, task or commitment to inbox."
+  "Capture any thought, task or commitment to inbox.
+INPUT: Content string to capture."
   (error "Not implemented: org-gtd-core-capture"))
 
 ;;;###autoload
@@ -52,7 +53,9 @@
 
 ;;;###autoload
 (defun org-gtd-core-delegate (task person)
-  "Delegate task to someone."
+  "Delegate task to someone.
+TASK: Task description string.
+PERSON: Responsible person string."
   (error "Not implemented: org-gtd-core-delegate"))
 
 (provide 'org-gtd-core)

@@ -32,7 +32,9 @@
 
 ;;;###autoload
 (defun org-gtd-review-execute (level)
-  "Review the GTD system."
+  "Review the GTD system.
+LEVEL: Review level, can be 'daily, 'weekly, 'monthly, or 'yearly.
+Default is daily review."
   (error "Not implemented: org-gtd-review-execute"))
 
 ;;;###autoload

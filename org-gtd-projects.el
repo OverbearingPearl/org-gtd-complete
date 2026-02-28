@@ -39,12 +39,14 @@ MODE: Mode, can be 'create, 'enhance, or 'review'."
 
 ;;;###autoload
 (defun org-gtd-projects-brainstorm (topic)
-  "Brainstorm on specific topic."
+  "Brainstorm on specific topic.
+TOPIC: Brainstorming topic string."
   (error "Not implemented: org-gtd-projects-brainstorm"))
 
 ;;;###autoload
 (defun org-gtd-projects-archive (project)
-  "Archive completed project."
+  "Archive completed project.
+PROJECT: Project name string."
   (error "Not implemented: org-gtd-projects-archive"))
 
 (provide 'org-gtd-projects)

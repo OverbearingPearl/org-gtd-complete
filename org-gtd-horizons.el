@@ -32,17 +32,20 @@
 
 ;;;###autoload
 (defun org-gtd-horizons-view-by-area (area)
-  "View all related content for specific area of responsibility."
+  "View all related content for specific area of responsibility.
+AREA: Area of responsibility name string."
   (error "Not implemented: org-gtd-horizons-view-by-area"))
 
 ;;;###autoload
 (defun org-gtd-horizons-view-by-goal (goal)
-  "View all related content for specific goal."
+  "View all related content for specific goal.
+GOAL: Goal name string."
   (error "Not implemented: org-gtd-horizons-view-by-goal"))
 
 ;;;###autoload
 (defun org-gtd-horizons-view-by-vision (vision)
-  "View all related content for specific vision."
+  "View all related content for specific vision.
+VISION: Vision name string."
   (error "Not implemented: org-gtd-horizons-view-by-vision"))
 
 ;;;###autoload
