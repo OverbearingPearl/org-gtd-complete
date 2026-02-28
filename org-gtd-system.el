@@ -47,7 +47,9 @@
 
 ;;;###autoload
 (defun org-gtd-system-config (key value)
-  "Configure GTD system."
+  "Configure GTD system.
+KEY: Configuration key.
+VALUE: Configuration value (when setting)."
   (error "Not implemented: org-gtd-system-config"))
 
 ;;;###autoload

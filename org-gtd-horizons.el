@@ -47,12 +47,16 @@
 
 ;;;###autoload
 (defun org-gtd-horizons-connect-action-to-project (action project)
-  "Connect action to project."
+  "Connect action to project.
+ACTION: Action identifier.
+PROJECT: Project name string."
   (error "Not implemented: org-gtd-horizons-connect-action-to-project"))
 
 ;;;###autoload
 (defun org-gtd-horizons-connect-project-to-area (project area)
-  "Connect project to area of responsibility."
+  "Connect project to area of responsibility.
+PROJECT: Project name string.
+AREA: Area of responsibility name string."
   (error "Not implemented: org-gtd-horizons-connect-project-to-area"))
 
 (provide 'org-gtd-horizons)

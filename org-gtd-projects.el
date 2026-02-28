@@ -32,7 +32,9 @@
 
 ;;;###autoload
 (defun org-gtd-projects-plan (project-name mode)
-  "Unified project planning function."
+  "Unified project planning function.
+PROJECT-NAME: Project name string.
+MODE: Mode, can be 'create, 'enhance, or 'review'."
   (error "Not implemented: org-gtd-projects-plan"))
 
 ;;;###autoload
