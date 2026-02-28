@@ -50,27 +50,27 @@
 ;; Submodule dependencies
 ;; ============================================================
 
-(require 'org-gtd-core)
-(require 'org-gtd-projects)
-(require 'org-gtd-lists)
-(require 'org-gtd-contexts)
-(require 'org-gtd-horizons)
-(require 'org-gtd-review)
-(require 'org-gtd-system)
+(require 'org-gtd-complete-core)
+(require 'org-gtd-complete-projects)
+(require 'org-gtd-complete-lists)
+(require 'org-gtd-complete-contexts)
+(require 'org-gtd-complete-horizons)
+(require 'org-gtd-complete-review)
+(require 'org-gtd-complete-system)
 
 ;; ============================================================
 ;; Layer 1: Core workflow API (user facing)
 ;; ============================================================
 
 ;;;###autoload
-(defun org-gtd-capture (input)
+(defun org-gtd-complete-capture (input)
   "Capture any thought, task or commitment to inbox.
 INPUT: Content string to capture."
   (interactive "sInput to capture: ")
-  (org-gtd-core-capture input))
+  (org-gtd-complete-core-capture input))
 
 ;;;###autoload
-(defun org-gtd-process-inbox ()
+(defun org-gtd-complete-process-inbox ()
   "Process all items in inbox.
 Ask five questions for each item and execute decisions immediately:
 1. What is it?
@@ -80,25 +80,25 @@ Ask five questions for each item and execute decisions immediately:
 5. Is it a project?
 Organize items into appropriate lists based on decisions."
   (interactive)
-  (org-gtd-core-process-inbox))
+  (org-gtd-complete-core-process-inbox))
 
 ;;;###autoload
-(defun org-gtd-review (&optional level)
+(defun org-gtd-complete-review (&optional level)
   "Review the GTD system.
 LEVEL: Review level, can be 'daily, 'weekly, 'monthly, or 'yearly.
 Default is daily review."
   (interactive)
-  (org-gtd-review-execute level))
+  (org-gtd-complete-review-execute level))
 
 ;;;###autoload
-(defun org-gtd-do ()
+(defun org-gtd-complete-do ()
   "Select and execute actions based on current context.
 Consider four criteria: context, available time, available energy, priority."
   (interactive)
-  (org-gtd-core-engage))
+  (org-gtd-complete-core-engage))
 
 ;;;###autoload
-(defun org-gtd-plan-project (name &optional mode)
+(defun org-gtd-complete-plan-project (name &optional mode)
   "Unified project planning function supporting creation and enhancement.
 NAME: Project name string.
 MODE: Mode, can be 'create (new project), 'enhance (enhance existing)
@@ -107,14 +107,14 @@ MODE: Mode, can be 'create (new project), 'enhance (enhance existing)
 For new projects: Start complete natural planning five steps.
 For existing projects: Intelligently continue unfinished planning steps."
   (interactive "sProject name: ")
-  (org-gtd-projects-plan name mode))
+  (org-gtd-complete-projects-plan name mode))
 
 ;; ============================================================
 ;; Layer 2: Lists viewing API (as needed)
 ;; ============================================================
 
 ;;;###autoload
-(defun org-gtd-show (what &optional filter)
+(defun org-gtd-complete-show (what &optional filter)
   "View lists in GTD system.
 WHAT: What to view, can be:
       :inbox       - Inbox (unprocessed items)
@@ -129,81 +129,81 @@ WHAT: What to view, can be:
 FILTER: Optional filter criteria.
 
 Examples:
-  (org-gtd-show :actions)          ; View all actionable items
-  (org-gtd-show :actions \"@office\") ; View actions for office context
-  (org-gtd-show :projects \"health\") ; View projects in health area"
+  (org-gtd-complete-show :actions)          ; View all actionable items
+  (org-gtd-complete-show :actions \"@office\") ; View actions for office context
+  (org-gtd-complete-show :projects \"health\") ; View projects in health area"
   (interactive)
-  (org-gtd-lists-show what filter))
+  (org-gtd-complete-lists-show what filter))
 
 ;; ============================================================
 ;; Layer 3: Advanced operations API (occasional use)
 ;; ============================================================
 
 ;;;###autoload
-(defun org-gtd-set-context (context)
+(defun org-gtd-complete-set-context (context)
   "Set current context.
 CONTEXT: Context string, e.g. \"@office\", \"@phone\"."
   (interactive "sSet current context: ")
-  (org-gtd-contexts-set context))
+  (org-gtd-complete-contexts-set context))
 
 
 ;;;###autoload
-(defun org-gtd-do-in-context (context)
+(defun org-gtd-complete-do-in-context (context)
   "Select and execute actions in specific context.
 CONTEXT: Context string."
   (interactive "sExecute in context: ")
-  (org-gtd-contexts-engage context))
+  (org-gtd-complete-contexts-engage context))
 
 ;;;###autoload
-(defun org-gtd-do-two-minute-tasks ()
+(defun org-gtd-complete-do-two-minute-tasks ()
   "Execute all tasks that can be done in 2 minutes."
   (interactive)
-  (org-gtd-core-do-two-minute-tasks))
+  (org-gtd-complete-core-do-two-minute-tasks))
 
 ;;;###autoload
-(defun org-gtd-brainstorm (topic)
+(defun org-gtd-complete-brainstorm (topic)
   "Brainstorm on specific topic.
 TOPIC: Brainstorming topic string."
   (interactive "sBrainstorming topic: ")
-  (org-gtd-projects-brainstorm topic))
+  (org-gtd-complete-projects-brainstorm topic))
 
 ;;;###autoload
-(defun org-gtd-trigger-list ()
+(defun org-gtd-complete-trigger-list ()
   "Display trigger list questions to help empty the mind."
   (interactive)
-  (org-gtd-review-trigger-list))
+  (org-gtd-complete-review-trigger-list))
 
 
 ;;;###autoload
-(defun org-gtd-connect-action-to-project (action project)
+(defun org-gtd-complete-connect-action-to-project (action project)
   "Connect action to project.
 ACTION: Action identifier.
 PROJECT: Project name string."
   (interactive)
-  (org-gtd-horizons-connect-action-to-project action project))
+  (org-gtd-complete-horizons-connect-action-to-project action project))
 
 ;;;###autoload
-(defun org-gtd-connect-project-to-area (proj area)
+(defun org-gtd-complete-connect-project-to-area (proj area)
   "Connect project to area of responsibility.
 PROJ: Project name string.
 AREA: Area of responsibility name string."
   (interactive)
-  (org-gtd-horizons-connect-project-to-area proj area))
+  (org-gtd-complete-horizons-connect-project-to-area proj area))
 
 ;;;###autoload
-(defun org-gtd-add-reference (content &optional tags)
+(defun org-gtd-complete-add-reference (content &optional tags)
   "Add reference material.
 CONTENT: Reference content string.
 TAGS: Optional tags list."
   (interactive "sReference content: ")
-  (org-gtd-system-add-reference content tags))
+  (org-gtd-complete-system-add-reference content tags))
 
 ;;;###autoload
-(defun org-gtd-search-reference (keyword)
+(defun org-gtd-complete-search-reference (keyword)
   "Search reference material.
 KEYWORD: Search keyword string."
   (interactive "sSearch keyword: ")
-  (org-gtd-system-search-reference keyword))
+  (org-gtd-complete-system-search-reference keyword))
 
 ;;;###autoload
 (defun org-gtd-complete-delegate (task person)
@@ -211,14 +211,14 @@ KEYWORD: Search keyword string."
 TASK: Task description string.
 PERSON: Responsible person string."
   (interactive "sTask: \nsPerson: ")
-  (org-gtd-core-delegate task person))
+  (org-gtd-complete-core-delegate task person))
 
 ;;;###autoload
 (defun org-gtd-complete-archive (proj)
   "Archive completed project.
 PROJ: Project name string."
   (interactive)
-  (org-gtd-projects-archive proj))
+  (org-gtd-complete-projects-archive proj))
 
 ;; ============================================================
 ;; Layer 4: System management API (setup use)
@@ -228,19 +228,19 @@ PROJ: Project name string."
 (defun org-gtd-complete-setup ()
   "Initialize GTD system setup."
   (interactive)
-  (org-gtd-system-setup))
+  (org-gtd-complete-system-setup))
 
 ;;;###autoload
 (defun org-gtd-complete-status ()
   "View GTD system status overview."
   (interactive)
-  (org-gtd-system-status))
+  (org-gtd-complete-system-status))
 
 ;;;###autoload
 (defun org-gtd-complete-export ()
   "Export GTD system data."
   (interactive)
-  (org-gtd-system-export))
+  (org-gtd-complete-system-export))
 
 ;;;###autoload
 (defun org-gtd-complete-config (key &optional value)
@@ -248,7 +248,7 @@ PROJ: Project name string."
 KEY: Configuration key.
 VALUE: Configuration value (when setting)."
   (interactive)
-  (org-gtd-system-config key value))
+  (org-gtd-complete-system-config key value))
 
 ;; ============================================================
 ;; Minor Mode
