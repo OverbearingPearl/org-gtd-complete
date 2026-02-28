@@ -206,7 +206,7 @@ KEYWORD: Search keyword string."
   (org-gtd-system-search-reference keyword))
 
 ;;;###autoload
-(defun org-gtd-delegate (task person)
+(defun org-gtd-complete-delegate (task person)
   "Delegate task to someone.
 TASK: Task description string.
 PERSON: Responsible person string."
@@ -214,7 +214,7 @@ PERSON: Responsible person string."
   (org-gtd-core-delegate task person))
 
 ;;;###autoload
-(defun org-gtd-archive (proj)
+(defun org-gtd-complete-archive (proj)
   "Archive completed project.
 PROJ: Project name string."
   (interactive)
@@ -225,25 +225,25 @@ PROJ: Project name string."
 ;; ============================================================
 
 ;;;###autoload
-(defun org-gtd-setup ()
+(defun org-gtd-complete-setup ()
   "Initialize GTD system setup."
   (interactive)
   (org-gtd-system-setup))
 
 ;;;###autoload
-(defun org-gtd-status ()
+(defun org-gtd-complete-status ()
   "View GTD system status overview."
   (interactive)
   (org-gtd-system-status))
 
 ;;;###autoload
-(defun org-gtd-export ()
+(defun org-gtd-complete-export ()
   "Export GTD system data."
   (interactive)
   (org-gtd-system-export))
 
 ;;;###autoload
-(defun org-gtd-config (key &optional value)
+(defun org-gtd-complete-config (key &optional value)
   "Configure GTD system.
 KEY: Configuration key.
 VALUE: Configuration value (when setting)."
@@ -261,7 +261,7 @@ VALUE: Configuration value (when setting)."
   :lighter " GTD"
   :group 'org-gtd-complete
   (if org-gtd-complete-mode
-      (org-gtd-setup)
+      (org-gtd-complete-setup)
     (message "Org-GTD-Complete mode disabled.")))
 
 (provide 'org-gtd-complete)
