@@ -110,42 +110,36 @@ For existing projects: Intelligently continue unfinished planning steps."
   (org-gtd-complete-projects-plan name mode))
 
 ;; ============================================================
-;; Layer 2: Lists viewing API (as needed)
+;; Layer 2: Lists viewing API (unified multi-dimensional query)
 ;; ============================================================
 
 ;;;###autoload
-(defun org-gtd-complete-show (what &optional filter)
-  "View lists in GTD system.
+(defun org-gtd-complete-show (what &rest filters)
+  "View lists in GTD system with multi-dimensional filtering.
+This is the unified query entry point for all list viewing.
 WHAT: What to view, can be:
       :inbox       - Inbox (unprocessed items)
       :projects    - All projects with their plans
       :actions     - All actionable items (next actions)
       :waiting     - All waiting/delegated items
       :someday     - Someday/Maybe items
-      :context     - Items filtered by context
-      :area        - Items filtered by area of responsibility
-      :goal        - Items filtered by goal
-      :vision      - Items filtered by vision
-FILTER: Optional filter criteria.
+FILTERS: Optional filter criteria as plist:
+      :context     - Filter by context (e.g., \"@office\", \"@phone\")
+      :project     - Filter by project name
+      :status      - Filter by status (:waiting :delegated :pending :completed)
+      :area        - Filter by area of responsibility
+      :goal        - Filter by goal
+      :vision      - Filter by vision
 
 Examples:
-  (org-gtd-complete-show :actions)          ; View all actionable items
-  (org-gtd-complete-show :actions \"@office\") ; View actions for office context
-  (org-gtd-complete-show :projects \"health\") ; View projects in health area"
-  (interactive)
-  (org-gtd-complete-lists-show what filter))
+  (org-gtd-complete-show :actions)
+  (org-gtd-complete-show :actions :context \"@office\")
+  (org-gtd-complete-show :actions :context \"@phone\" :project \"购买汽车\" :status :waiting)"
+  (apply #'org-gtd-complete-lists-show what filters))
 
 ;; ============================================================
 ;; Layer 3: Advanced operations API (occasional use)
 ;; ============================================================
-
-;;;###autoload
-(defun org-gtd-complete-set-context (context)
-  "Set current context.
-CONTEXT: Context string, e.g. \"@office\", \"@phone\"."
-  (interactive "sSet current context: ")
-  (org-gtd-complete-contexts-set context))
-
 
 ;;;###autoload
 (defun org-gtd-complete-do-in-context (context)

@@ -27,20 +27,40 @@
 ;;; Commentary:
 
 ;; Context management implementation
+;; This module is responsible for:
+;; - Defining and managing contexts (@office, @phone, etc.)
+;; - Setting current active context
+;; - Executing actions within a specific context
+;; Note: Complex multi-dimensional queries should use org-gtd-complete-lists-show
 
 ;;; Code:
 
-;;;###autoload
-(defun org-gtd-complete-contexts-set (context)
-  "Set current context.
-CONTEXT: Context string, e.g. \"@office\", \"@phone\"."
-  (error "Not implemented: org-gtd-complete-contexts-set"))
+(defvar org-gtd-complete-contexts--defined
+  '("@office" "@home" "@phone" "@computer" "@meeting" "@errands")
+  "Predefined contexts list.")
 
 ;;;###autoload
 (defun org-gtd-complete-contexts-engage (context)
   "Select and execute actions in specific context.
-CONTEXT: Context string."
-  (error "Not implemented: org-gtd-complete-contexts-engage"))
+CONTEXT: Context string.
+This function executes actions in a specific context.
+For complex queries with multiple filters, use `org-gtd-complete-lists-show'."
+  (interactive "sExecute in context: ")
+  (org-gtd-complete-lists-show :actions :context context))
+
+;;;###autoload
+(defun org-gtd-complete-contexts-add (context)
+  "Add a new context to the system.
+CONTEXT: Context string to add."
+  (interactive "sAdd context: ")
+  (push context org-gtd-complete-contexts--defined)
+  (message "Added context: %s" context))
+
+;;;###autoload
+(defun org-gtd-complete-contexts-list ()
+  "List all defined contexts."
+  (interactive)
+  (message "Defined contexts: %s" org-gtd-complete-contexts--defined))
 
 (provide 'org-gtd-complete-contexts)
 
