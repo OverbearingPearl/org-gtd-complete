@@ -38,14 +38,8 @@
 (defvar org-gtd-complete-lists--projects-file "gtd-projects.org"
   "Projects file name.")
 
-(defvar org-gtd-complete-lists--actions-file "gtd-actions.org"
-  "Actions file name.")
-
-(defvar org-gtd-complete-lists--waiting-file "gtd-waiting.org"
-  "Waiting for list file name.")
-
-(defvar org-gtd-complete-lists--someday-file "gtd-someday.org"
-  "Someday/Maybe list file name.")
+(defvar org-gtd-complete-lists--single-actions-file "gtd-single-actions.org"
+  "Single actions file name.")
 
 (defun org-gtd-complete-lists--get-inbox ()
   "Get all items from inbox."
@@ -55,17 +49,9 @@
   "Get all projects."
   (org-gtd-complete-lists--query-file org-gtd-complete-lists--projects-file))
 
-(defun org-gtd-complete-lists--get-actions ()
-  "Get all actionable items (next actions)."
-  (org-gtd-complete-lists--query-file org-gtd-complete-lists--actions-file))
-
-(defun org-gtd-complete-lists--get-waiting ()
-  "Get all waiting/delegated items."
-  (org-gtd-complete-lists--query-file org-gtd-complete-lists--waiting-file))
-
-(defun org-gtd-complete-lists--get-someday ()
-  "Get all Someday/Maybe items."
-  (org-gtd-complete-lists--query-file org-gtd-complete-lists--someday-file))
+(defun org-gtd-complete-lists--get-single-actions ()
+  "Get all single actions (independent tasks)."
+  (org-gtd-complete-lists--query-file org-gtd-complete-lists--single-actions-file))
 
 (defun org-gtd-complete-lists--query-file (file)
   "Query items from FILE.
@@ -175,15 +161,22 @@ Examples:
     (:projects
      (org-gtd-complete-lists--apply-filters
        (org-gtd-complete-lists--get-projects) filters))
+    (:single-actions
+     (org-gtd-complete-lists--apply-filters
+       (org-gtd-complete-lists--get-single-actions) filters))
     (:actions
-     (org-gtd-complete-lists--apply-filters
-       (org-gtd-complete-lists--get-actions) filters))
+     (let ((projects-actions (org-gtd-complete-lists--get-projects))
+           (single-actions (org-gtd-complete-lists--get-single-actions)))
+       (org-gtd-complete-lists--apply-filters
+        (append projects-actions single-actions) filters)))
     (:waiting
-     (org-gtd-complete-lists--apply-filters
-       (org-gtd-complete-lists--get-waiting) filters))
+     (let ((projects-actions (org-gtd-complete-lists--get-projects))
+           (single-actions (org-gtd-complete-lists--get-single-actions)))
+       (org-gtd-complete-lists--apply-filters
+        (append projects-actions single-actions) (plist-put filters :status :waiting))))
     (:someday
      (org-gtd-complete-lists--apply-filters
-       (org-gtd-complete-lists--get-someday) filters))
+       (org-gtd-complete-lists--get-inbox) (plist-put filters :status :someday)))
     (_
      (error "Invalid what: %s" what))))
 

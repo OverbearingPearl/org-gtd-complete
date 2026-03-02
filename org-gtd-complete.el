@@ -148,11 +148,6 @@ CONTEXT: Context string."
   (interactive "sExecute in context: ")
   (org-gtd-complete-contexts-engage context))
 
-;;;###autoload
-(defun org-gtd-complete-do-two-minute-tasks ()
-  "Execute all tasks that can be done in 2 minutes."
-  (interactive)
-  (org-gtd-complete-core-do-two-minute-tasks))
 
 ;;;###autoload
 (defun org-gtd-complete-brainstorm (topic)

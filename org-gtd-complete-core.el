@@ -46,10 +46,6 @@ INPUT: Content string to capture."
   "Select and execute actions based on current context."
   (error "Not implemented: org-gtd-complete-core-engage"))
 
-;;;###autoload
-(defun org-gtd-complete-core-do-two-minute-tasks ()
-  "Execute all tasks that can be done in 2 minutes."
-  (error "Not implemented: org-gtd-complete-core-do-two-minute-tasks"))
 
 ;;;###autoload
 (defun org-gtd-complete-core-delegate (task person)
