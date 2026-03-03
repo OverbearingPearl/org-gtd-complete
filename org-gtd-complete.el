@@ -57,6 +57,7 @@
 (require 'org-gtd-complete-horizons)
 (require 'org-gtd-complete-review)
 (require 'org-gtd-complete-system)
+(require 'org-gtd-complete-reference)
 
 ;; ============================================================
 ;; Layer 1: Core workflow API (user facing)
@@ -185,14 +186,14 @@ AREA: Area of responsibility name string."
 CONTENT: Reference content string.
 TAGS: Optional tags list."
   (interactive "sReference content: ")
-  (org-gtd-complete-system-add-reference content tags))
+  (org-gtd-complete-reference-add content tags))
 
 ;;;###autoload
 (defun org-gtd-complete-search-reference (keyword)
   "Search reference material.
 KEYWORD: Search keyword string."
   (interactive "sSearch keyword: ")
-  (org-gtd-complete-system-search-reference keyword))
+  (org-gtd-complete-reference-search keyword))
 
 ;;;###autoload
 (defun org-gtd-complete-delegate (task person)

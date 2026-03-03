@@ -1,4 +1,4 @@
-;;; org-gtd-complete-system.el --- System management implementation  -*- lexical-binding: t; -*-
+;;; org-gtd-complete-reference.el --- Reference material management  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026 OverbearingPearl
 
@@ -26,33 +26,27 @@
 
 ;;; Commentary:
 
-;; System management implementation
+;; Reference material management
+;; This module handles storage and retrieval of reference materials,
+;; which are non-actionable but valuable information for future use.
 
 ;;; Code:
 
 ;;;###autoload
-(defun org-gtd-complete-system-setup ()
-  "Initialize GTD system setup."
-  (error "Not implemented: org-gtd-complete-system-setup"))
+(defun org-gtd-complete-reference-add (content &optional tags)
+  "Add reference material.
+CONTENT: Reference content string.
+TAGS: Optional tags list."
+  (interactive "sReference content: ")
+  (error "Not implemented: org-gtd-complete-reference-add"))
 
 ;;;###autoload
-(defun org-gtd-complete-system-status ()
-  "View GTD system status overview."
-  (error "Not implemented: org-gtd-complete-system-status"))
+(defun org-gtd-complete-reference-search (keyword)
+  "Search reference material.
+KEYWORD: Search keyword string."
+  (interactive "sSearch keyword: ")
+  (error "Not implemented: org-gtd-complete-reference-search"))
 
-;;;###autoload
-(defun org-gtd-complete-system-export ()
-  "Export GTD system data."
-  (error "Not implemented: org-gtd-complete-system-export"))
+(provide 'org-gtd-complete-reference)
 
-;;;###autoload
-(defun org-gtd-complete-system-config (key value)
-  "Configure GTD system.
-KEY: Configuration key.
-VALUE: Configuration value (when setting)."
-  (error "Not implemented: org-gtd-complete-system-config"))
-
-
-(provide 'org-gtd-complete-system)
-
-;;; org-gtd-complete-system.el ends here
+;;; org-gtd-complete-reference.el ends here
