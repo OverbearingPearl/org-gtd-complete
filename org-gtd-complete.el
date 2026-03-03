@@ -58,6 +58,7 @@
 (require 'org-gtd-complete-review)
 (require 'org-gtd-complete-system)
 (require 'org-gtd-complete-reference)
+(require 'org-gtd-complete-calendar)
 
 ;; ============================================================
 ;; Layer 1: Core workflow API (user facing)
@@ -209,6 +210,26 @@ PERSON: Responsible person string."
 PROJ: Project name string."
   (interactive)
   (org-gtd-complete-projects-archive proj))
+
+;;;###autoload
+(defun org-gtd-complete-schedule (action &optional when)
+  "Schedule an ACTION for a specific time.
+ACTION: Action description string.
+WHEN: When to schedule (timestamp string)."
+  (interactive "sAction to schedule: \nsWhen (YYYY-MM-DD): ")
+  (org-gtd-complete-calendar-schedule action when))
+
+;;;###autoload
+(defun org-gtd-complete-today ()
+  "View all scheduled actions for today."
+  (interactive)
+  (org-gtd-complete-calendar-view-today))
+
+;;;###autoload
+(defun org-gtd-complete-week ()
+  "View all scheduled actions for the week."
+  (interactive)
+  (org-gtd-complete-calendar-view-week))
 
 ;; ============================================================
 ;; Layer 4: System management API (setup use)

@@ -46,7 +46,6 @@ INPUT: Content string to capture."
   "Select and execute actions based on current context."
   (error "Not implemented: org-gtd-complete-core-engage"))
 
-
 ;;;###autoload
 (defun org-gtd-complete-core-delegate (task person)
   "Delegate task to someone.

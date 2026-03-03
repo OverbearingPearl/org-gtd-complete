@@ -108,6 +108,43 @@ VISION: Vision name string."
                 (member vision (plist-get item :visions)))
               items))
 
+(defun org-gtd-complete-lists--filter-by-scheduled (items period)
+  "Filter ITEMS by scheduled time period.
+ITEMS: List of items to filter.
+PERIOD: Time period (:today :week :month :year)."
+  (seq-filter (lambda (item)
+                (let ((scheduled (plist-get item :scheduled)))
+                  (and scheduled
+                       (pcase period
+                         ('today (org-gtd-complete-calendar--same-day-p scheduled (current-time)))
+                         ('week (org-gtd-complete-calendar--same-week-p scheduled (current-time)))
+                         ('month (org-gtd-complete-calendar--same-month-p scheduled (current-time)))
+                         ('year (org-gtd-complete-calendar--same-year-p scheduled (current-time)))))))
+              items))
+
+(defun org-gtd-complete-calendar--same-day-p (time1 time2)
+  "Check if TIME1 and TIME2 are on the same day."
+  (equal (calendar-gregorian-from-absolute (time-to-days time1))
+         (calendar-gregorian-from-absolute (time-to-days time2))))
+
+(defun org-gtd-complete-calendar--same-week-p (time1 time2)
+  "Check if TIME1 and TIME2 are in the same week."
+  (let* ((day1 (time-to-days time1))
+         (day2 (time-to-days time2))
+         (diff (- day2 day1)))
+    (and (>= diff 0) (< diff 7))))
+
+(defun org-gtd-complete-calendar--same-month-p (time1 time2)
+  "Check if TIME1 and TIME2 are in the same month."
+  (let ((date1 (calendar-gregorian-from-absolute (time-to-days time1)))
+        (date2 (calendar-gregorian-from-absolute (time-to-days time2))))
+    (and (= (cadr date1) (cadr date2)) (= (caddr date1) (caddr date2)))))
+
+(defun org-gtd-complete-calendar--same-year-p (time1 time2)
+  "Check if TIME1 and TIME2 are in the same year."
+  (= (car (calendar-gregorian-from-absolute (time-to-days time1)))
+     (car (calendar-gregorian-from-absolute (time-to-days time2)))))
+
 (defun org-gtd-complete-lists--apply-filters (items filters)
   "Apply multiple FILTERS to ITEMS.
 ITEMS: List of items to filter.
@@ -131,6 +168,9 @@ FILTERS: Plist of filter criteria like (:context \"@office\" :project \"购买�
     (when (plist-member filters :vision)
       (setq result (org-gtd-complete-lists--filter-by-vision
                     result (plist-get filters :vision))))
+    (when (plist-member filters :scheduled)
+      (setq result (org-gtd-complete-lists--filter-by-scheduled
+                    result (plist-get filters :scheduled))))
     result))
 
 ;;;###autoload
