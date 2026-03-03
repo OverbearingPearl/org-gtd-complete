@@ -116,31 +116,31 @@ PERIOD: Time period (:today :week :month :year)."
                 (let ((scheduled (plist-get item :scheduled)))
                   (and scheduled
                        (pcase period
-                         ('today (org-gtd-complete-calendar--same-day-p scheduled (current-time)))
-                         ('week (org-gtd-complete-calendar--same-week-p scheduled (current-time)))
-                         ('month (org-gtd-complete-calendar--same-month-p scheduled (current-time)))
-                         ('year (org-gtd-complete-calendar--same-year-p scheduled (current-time)))))))
+                         ('today (org-gtd-complete-lists--same-day-p scheduled (current-time)))
+                         ('week (org-gtd-complete-lists--same-week-p scheduled (current-time)))
+                         ('month (org-gtd-complete-lists--same-month-p scheduled (current-time)))
+                         ('year (org-gtd-complete-lists--same-year-p scheduled (current-time)))))))
               items))
 
-(defun org-gtd-complete-calendar--same-day-p (time1 time2)
+(defun org-gtd-complete-lists--same-day-p (time1 time2)
   "Check if TIME1 and TIME2 are on the same day."
   (equal (calendar-gregorian-from-absolute (time-to-days time1))
          (calendar-gregorian-from-absolute (time-to-days time2))))
 
-(defun org-gtd-complete-calendar--same-week-p (time1 time2)
+(defun org-gtd-complete-lists--same-week-p (time1 time2)
   "Check if TIME1 and TIME2 are in the same week."
   (let* ((day1 (time-to-days time1))
          (day2 (time-to-days time2))
          (diff (- day2 day1)))
     (and (>= diff 0) (< diff 7))))
 
-(defun org-gtd-complete-calendar--same-month-p (time1 time2)
+(defun org-gtd-complete-lists--same-month-p (time1 time2)
   "Check if TIME1 and TIME2 are in the same month."
   (let ((date1 (calendar-gregorian-from-absolute (time-to-days time1)))
         (date2 (calendar-gregorian-from-absolute (time-to-days time2))))
     (and (= (cadr date1) (cadr date2)) (= (caddr date1) (caddr date2)))))
 
-(defun org-gtd-complete-calendar--same-year-p (time1 time2)
+(defun org-gtd-complete-lists--same-year-p (time1 time2)
   "Check if TIME1 and TIME2 are in the same year."
   (= (car (calendar-gregorian-from-absolute (time-to-days time1)))
      (car (calendar-gregorian-from-absolute (time-to-days time2)))))
