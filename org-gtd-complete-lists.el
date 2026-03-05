@@ -62,7 +62,7 @@
 (defun org-gtd-complete-lists--query-file (file)
   "Query items from FILE.
 FILE: File name string."
-  (let ((full-path (expand-file-name file)))
+  (let ((full-path (expand-file-name file org-gtd-complete-base-directory)))  ; Use base directory
     (if (file-exists-p full-path)
         (with-temp-buffer
           (insert-file-contents full-path)
@@ -164,7 +164,7 @@ PERIOD: Time period (:today :week :month :year)."
 (defun org-gtd-complete-lists--apply-filters (items filters)
   "Apply multiple FILTERS to ITEMS.
 ITEMS: List of items to filter.
-FILTERS: Plist of filter criteria like (:context \"@office\" :project \"购买汽车\")."
+FILTERS: Plist of filter criteria like (:context \"@office\" :project \"purchasing-car\")."
   (let ((result items))
     (when (plist-member filters :context)
       (setq result (org-gtd-complete-lists--filter-by-context
