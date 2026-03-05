@@ -339,7 +339,6 @@ VALUE: Configuration value (when setting)."
 ;;;###autoload
 (define-minor-mode org-gtd-complete-mode
   "Toggle Org-GTD-Complete mode."
-  :global t
   :lighter " GTD"
   :group 'org-gtd-complete
   (if org-gtd-complete-mode

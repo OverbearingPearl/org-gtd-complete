@@ -8,8 +8,25 @@ The system also includes inbox processing, project planning, periodic review cyc
 
 ## Installation
 
+For MELPA:
+
 ```elisp
 M-x package-install org-gtd-complete
+```
+
+For use-package:
+
+```elisp
+(use-package org-gtd-complete
+  :ensure t)
+```
+
+To enable the mode manually in a buffer, use `M-x org-gtd-complete-mode`, or run `M-x org-gtd-complete-setup` to initialize the system.
+
+For straight.el:
+
+```elisp
+(straight-use-package '(org-gtd-complete :host github :repo "OverbearingPearl/org-gtd-complete"))
 ```
 
 ## GTD Philosophy
@@ -21,7 +38,7 @@ GTD methodology is built on several fundamental philosophical concepts that form
 1. **Mind Like Water**: By externalizing tasks into a trusted system, free the mind from the burden of remembering, allowing it to focus on creative thinking rather than information storage.
 2. **Outcome Orientation**: Every task must have a clear desired outcome; vague goals cannot drive effective action, and precise definition is a prerequisite for execution.
 3. **System Trust**: Build a complete, reliable external system that users can fully trust, thereby reducing psychological anxiety and decision fatigue.
-4. **Context-Driven**: Action selection should be based on current context, available time, energy, and tools, not solely on task importance or urgency.
+4. **Context-Driven**: Action selection should be based on current context, available time, available energy, and tools, not solely on task importance or urgency.
 5. **Continuous Evolution**: Through regular review and adjustment, the system must continually adapt to changing environments and goals, maintaining its relevance and effectiveness.
 
 ### The Five Steps
