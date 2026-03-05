@@ -59,7 +59,7 @@
 (require 'org-gtd-complete-reference)
 (require 'org-gtd-complete-calendar)
 
-(defcustom org-gtd-complete-base-directory (expand-file-name "gtd" user-emacs-directory)
+(defcustom org-gtd-complete-base-directory (expand-file-name ".org-gtd-complete" "~")
   "Base directory for all GTD Org files."
   :type 'directory
   :group 'org-gtd-complete)
