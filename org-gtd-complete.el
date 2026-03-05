@@ -59,6 +59,11 @@
 (require 'org-gtd-complete-reference)
 (require 'org-gtd-complete-calendar)
 
+(defcustom org-gtd-complete-base-directory (expand-file-name "gtd" user-emacs-directory)
+  "Base directory for all GTD Org files."
+  :type 'directory
+  :group 'org-gtd-complete)
+
 ;; ============================================================
 ;; Capture
 ;; ============================================================
@@ -69,7 +74,7 @@
 INPUT: Content string to capture."
   (interactive "sInput to capture: ")
   (require 'org-gtd-complete-lists)
-  (with-current-buffer (find-file-noselect org-gtd-complete-lists--inbox-file)
+  (with-current-buffer (find-file-noselect (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
     (goto-char (point-max))
     (insert (format "* %s\n" input))
     (save-buffer)
@@ -195,7 +200,7 @@ KEYWORD: Search keyword string."
 TASK: Task description string.
 PERSON: Responsible person string."
   (interactive "sTask: \nsPerson: ")
-  (with-current-buffer (find-file-noselect org-gtd-complete-lists--inbox-file)
+  (with-current-buffer (find-file-noselect (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
     (goto-char (point-min))
     (if (re-search-forward (regexp-quote task) nil t)
         (progn

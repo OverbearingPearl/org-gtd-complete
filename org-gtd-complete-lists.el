@@ -32,18 +32,24 @@
 
 ;;; Code:
 
-(defvar org-gtd-complete-lists--inbox-file "gtd-inbox.org"
-  "Inbox file name.")
+(defcustom org-gtd-complete-lists--inbox-file "gtd-inbox.org"
+  "Inbox file name."
+  :type 'string
+  :group 'org-gtd-complete)
 
 (defun org-gtd-complete-lists--get-inbox ()
   "Get all items from inbox."
   (org-gtd-complete-lists--query-file org-gtd-complete-lists--inbox-file))
 
-(defvar org-gtd-complete-lists--projects-file "gtd-projects.org"
-  "Projects file name.")
+(defcustom org-gtd-complete-lists--projects-file "gtd-projects.org"
+  "Projects file name."
+  :type 'string
+  :group 'org-gtd-complete)
 
-(defvar org-gtd-complete-lists--single-actions-file "gtd-single-actions.org"
-  "Single actions file name.")
+(defcustom org-gtd-complete-lists--single-actions-file "gtd-single-actions.org"
+  "Single actions file name."
+  :type 'string
+  :group 'org-gtd-complete)
 
 (defun org-gtd-complete-lists--get-projects ()
   "Get all projects."

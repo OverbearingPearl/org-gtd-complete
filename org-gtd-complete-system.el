@@ -33,7 +33,19 @@
 ;;;###autoload
 (defun org-gtd-complete-system-setup ()
   "Initialize GTD system setup."
-  (error "Not implemented: org-gtd-complete-system-setup"))
+  (require 'org-gtd-complete)
+  (let ((base-dir org-gtd-complete-base-directory)
+        (files (list "gtd-inbox.org"
+                     "gtd-projects.org"
+                     "gtd-single-actions.org"
+                     "gtd-scheduled.org")))
+    (dolist (file files)
+      (let ((full-path (expand-file-name file base-dir)))
+        (unless (file-exists-p full-path)
+          (with-current-buffer (find-file-noselect full-path)
+            (insert "* Initial content for " file "\n")
+            (save-buffer)))))
+  (message "GTD system setup complete."))
 
 ;;;###autoload
 (defun org-gtd-complete-system-status ()

@@ -34,8 +34,10 @@
 
 ;;; Code:
 
-(defvar org-gtd-complete-calendar--scheduled-file "gtd-scheduled.org"
-  "File for storing scheduled actions.")
+(defcustom org-gtd-complete-calendar--scheduled-file "gtd-scheduled.org"
+  "File for storing scheduled actions."
+  :type 'string
+  :group 'org-gtd-complete)
 
 ;;;###autoload
 (defun org-gtd-complete-calendar-schedule (action &optional when)
