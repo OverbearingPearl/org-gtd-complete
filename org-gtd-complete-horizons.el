@@ -36,8 +36,13 @@
 
 ;;; Code:
 
+(require 'org-gtd-complete-lists)  ; Ensure we can access project lists
+
 (defvar org-gtd-complete-horizons--action-project-alist nil
   "Alist mapping action IDs to project names.")
+
+(defvar org-gtd-complete-horizons--action-area-alist nil
+  "Alist mapping action IDs to area names.")
 
 (defvar org-gtd-complete-horizons--project-area-alist nil
   "Alist mapping project names to area names.")
@@ -48,14 +53,30 @@
 (defvar org-gtd-complete-horizons--project-vision-alist nil
   "Alist mapping project names to vision names.")
 
+(defvar org-gtd-complete-horizons--project-purpose-alist nil
+  "Alist mapping project names to purpose names.")
+
 ;;;###autoload
 (defun org-gtd-complete-horizons-connect-action-to-project (action project)
   "Connect action to project.
 ACTION: Action identifier (heading or ID).
 PROJECT: Project name string."
   (interactive "sAction: \nsProject: ")
-  (push (cons action project) org-gtd-complete-horizons--action-project-alist)
-  (message "Connected action '%s' to project '%s'" action project))
+  ;; Check if project exists
+  (if (org-gtd-complete-horizons--project-exists-p project)
+      (progn
+        (push (cons action project) org-gtd-complete-horizons--action-project-alist)
+        (message "Connected action '%s' to project '%s'" action project))
+    (error "Project '%s' does not exist" project)))
+
+;;;###autoload
+(defun org-gtd-complete-horizons-connect-action-to-area (action area)
+  "Connect action to area of responsibility.
+ACTION: Action identifier.
+AREA: Area of responsibility name string."
+  (interactive "sAction: \nsArea: ")
+  (push (cons action area) org-gtd-complete-horizons--action-area-alist)
+  (message "Connected action '%s' to area '%s'" action area))
 
 ;;;###autoload
 (defun org-gtd-complete-horizons-connect-project-to-area (proj area)
@@ -63,8 +84,11 @@ PROJECT: Project name string."
 PROJ: Project name string.
 AREA: Area of responsibility name string."
   (interactive "sProject: \nsArea: ")
-  (push (cons proj area) org-gtd-complete-horizons--project-area-alist)
-  (message "Connected project '%s' to area '%s'" proj area))
+  (if (org-gtd-complete-horizons--project-exists-p proj)
+      (progn
+        (push (cons proj area) org-gtd-complete-horizons--project-area-alist)
+        (message "Connected project '%s' to area '%s'" proj area))
+    (error "Project '%s' does not exist" proj)))
 
 ;;;###autoload
 (defun org-gtd-complete-horizons-connect-project-to-goal (proj goal)
@@ -72,8 +96,11 @@ AREA: Area of responsibility name string."
 PROJ: Project name string.
 GOAL: Goal name string."
   (interactive "sProject: \nsGoal: ")
-  (push (cons proj goal) org-gtd-complete-horizons--project-goal-alist)
-  (message "Connected project '%s' to goal '%s'" proj goal))
+  (if (org-gtd-complete-horizons--project-exists-p proj)
+      (progn
+        (push (cons proj goal) org-gtd-complete-horizons--project-goal-alist)
+        (message "Connected project '%s' to goal '%s'" proj goal))
+    (error "Project '%s' does not exist" proj)))
 
 ;;;###autoload
 (defun org-gtd-complete-horizons-connect-project-to-vision (proj vision)
@@ -81,8 +108,29 @@ GOAL: Goal name string."
 PROJ: Project name string.
 VISION: Vision name string."
   (interactive "sProject: \nsVision: ")
-  (push (cons proj vision) org-gtd-complete-horizons--project-vision-alist)
-  (message "Connected project '%s' to vision '%s'" proj vision))
+  (if (org-gtd-complete-horizons--project-exists-p proj)
+      (progn
+        (push (cons proj vision) org-gtd-complete-horizons--project-vision-alist)
+        (message "Connected project '%s' to vision '%s'" proj vision))
+    (error "Project '%s' does not exist" proj)))
+
+;;;###autoload
+(defun org-gtd-complete-horizons-connect-project-to-purpose (proj purpose)
+  "Connect project to purpose.
+PROJ: Project name string.
+PURPOSE: Purpose name string."
+  (interactive "sProject: \nsPurpose: ")
+  (if (org-gtd-complete-horizons--project-exists-p proj)
+      (progn
+        (push (cons proj purpose) org-gtd-complete-horizons--project-purpose-alist)
+        (message "Connected project '%s' to purpose '%s'" proj purpose))
+    (error "Project '%s' does not exist" proj)))
+
+(defun org-gtd-complete-horizons--project-exists-p (proj)
+  "Check if project PROJ exists.
+PROJ: Project name string."
+  (let ((projects (mapcar (lambda (item) (plist-get item :title)) (org-gtd-complete-lists--get-projects))))
+    (member proj projects)))
 
 ;;;###autoload
 (defun org-gtd-complete-horizons-show-area (area)
@@ -107,6 +155,14 @@ VISION: Vision name string.
 Uses lists module for actual query."
   (interactive "sVision: ")
   (org-gtd-complete-lists-show :projects :vision vision))
+
+;;;###autoload
+(defun org-gtd-complete-horizons-show-purpose (purpose)
+  "Show all related content for specific purpose.
+PURPOSE: Purpose name string.
+Uses lists module for actual query."
+  (interactive "sPurpose: ")
+  (org-gtd-complete-lists-show :projects :purpose purpose))
 
 (provide 'org-gtd-complete-horizons)
 

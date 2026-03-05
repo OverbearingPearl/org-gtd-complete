@@ -60,7 +60,7 @@
 (require 'org-gtd-complete-calendar)
 
 ;; ============================================================
-;; Layer 1: Core workflow API (user facing)
+;; Capture
 ;; ============================================================
 
 ;;;###autoload
@@ -74,6 +74,16 @@ INPUT: Content string to capture."
     (insert (format "* %s\n" input))
     (save-buffer)
     (message "Captured: %s" input)))
+
+;;;###autoload
+(defun org-gtd-complete-trigger-list ()
+  "Display trigger list questions to help empty the mind."
+  (interactive)
+  (org-gtd-complete-review-trigger-list))
+
+;; ============================================================
+;; Clarify
+;; ============================================================
 
 ;;;###autoload
 (defun org-gtd-complete-process-inbox ()
@@ -117,21 +127,9 @@ Organize items into appropriate lists based on decisions."
                   (message "Trashed: %s" title)))))))
       (message "Inbox is empty"))))
 
-;;;###autoload
-(defun org-gtd-complete-review (&optional level)
-  "Review the GTD system.
-LEVEL: Review level, can be 'daily, 'weekly, 'monthly, or 'yearly.
-Default is daily review."
-  (interactive)
-  (org-gtd-complete-review-execute level))
-
-;;;###autoload
-(defun org-gtd-complete-do ()
-  "Select and execute actions based on current context.
-Consider four criteria: context, available time, available energy, priority."
-  (interactive)
-  (let ((context (completing-read "Context: " org-gtd-complete-contexts--defined)))
-    (org-gtd-complete-lists-show :actions :context context)))
+;; ============================================================
+;; Organize
+;; ============================================================
 
 ;;;###autoload
 (defun org-gtd-complete-plan-project (name &optional mode)
@@ -145,26 +143,6 @@ For existing projects: Intelligently continue unfinished planning steps."
   (interactive "sProject name: ")
   (org-gtd-complete-projects-plan name mode))
 
-;; ============================================================
-;; Layer 2: Lists viewing API (unified multi-dimensional query)
-;; ============================================================
-
-;;;###autoload
-(defalias 'org-gtd-complete-show 'org-gtd-complete-lists-show)
-
-;; ============================================================
-;; Layer 3: Advanced operations API (occasional use)
-;; ============================================================
-
-;;;###autoload
-(defun org-gtd-complete-do-in-context (context)
-  "Select and execute actions in specific context.
-CONTEXT: Context string."
-  (interactive "sExecute in context: ")
-  (org-gtd-complete-contexts-do context))
-
-
-
 ;;;###autoload
 (defun org-gtd-complete-brainstorm (topic)
   "Brainstorm on specific topic.
@@ -173,19 +151,20 @@ TOPIC: Brainstorming topic string."
   (org-gtd-complete-projects-brainstorm topic))
 
 ;;;###autoload
-(defun org-gtd-complete-trigger-list ()
-  "Display trigger list questions to help empty the mind."
-  (interactive)
-  (org-gtd-complete-review-trigger-list))
-
-
-;;;###autoload
 (defun org-gtd-complete-connect-action-to-project (action project)
   "Connect action to project.
 ACTION: Action identifier.
 PROJECT: Project name string."
   (interactive)
   (org-gtd-complete-horizons-connect-action-to-project action project))
+
+;;;###autoload
+(defun org-gtd-complete-connect-action-to-area (action area)
+  "Connect action to area of responsibility.
+ACTION: Action identifier.
+AREA: Area of responsibility name string."
+  (interactive)
+  (org-gtd-complete-horizons-connect-action-to-area action area))
 
 ;;;###autoload
 (defun org-gtd-complete-connect-project-to-area (proj area)
@@ -244,6 +223,67 @@ WHEN: When to schedule (timestamp string)."
   (interactive "sAction to schedule: \nsWhen (YYYY-MM-DD): ")
   (org-gtd-complete-calendar-schedule action when))
 
+;; ============================================================
+;; Reflect
+;; ============================================================
+
+;;;###autoload
+(defun org-gtd-complete-review (&optional level)
+  "Review the GTD system.
+LEVEL: Review level, can be 'daily, 'weekly, 'monthly, or 'yearly.
+Default is daily review."
+  (interactive)
+  (org-gtd-complete-review-execute level))
+
+;;;###autoload
+(defun org-gtd-complete-status ()
+  "View GTD system status overview."
+  (interactive)
+  (org-gtd-complete-system-status))
+
+;;;###autoload
+(defun org-gtd-complete-connect-project-to-goal (proj goal)
+  "Connect project to goal.
+PROJ: Project name string.
+GOAL: Goal name string."
+  (interactive)
+  (org-gtd-complete-horizons-connect-project-to-goal proj goal))
+
+;;;###autoload
+(defun org-gtd-complete-connect-project-to-vision (proj vision)
+  "Connect project to vision.
+PROJ: Project name string.
+VISION: Vision name string."
+  (interactive)
+  (org-gtd-complete-horizons-connect-project-to-vision proj vision))
+
+;;;###autoload
+(defun org-gtd-complete-connect-project-to-purpose (proj purpose)
+  "Connect project to purpose.
+PROJ: Project name string.
+PURPOSE: Purpose name string."
+  (interactive)
+  (org-gtd-complete-horizons-connect-project-to-purpose proj purpose))
+
+;; ============================================================
+;; Engage
+;; ============================================================
+
+;;;###autoload
+(defun org-gtd-complete-do ()
+  "Select and execute actions based on current context.
+Consider four criteria: context, available time, available energy, priority."
+  (interactive)
+  (let ((context (completing-read "Context: " org-gtd-complete-contexts--defined)))
+    (org-gtd-complete-lists-show :actions :context context)))
+
+;;;###autoload
+(defun org-gtd-complete-do-in-context (context)
+  "Select and execute actions in specific context.
+CONTEXT: Context string."
+  (interactive "sExecute in context: ")
+  (org-gtd-complete-contexts-do context))
+
 ;;;###autoload
 (defun org-gtd-complete-today ()
   "Show all scheduled actions for today."
@@ -257,7 +297,7 @@ WHEN: When to schedule (timestamp string)."
   (org-gtd-complete-calendar-show-week))
 
 ;; ============================================================
-;; Layer 4: System management API (setup use)
+;; System Management
 ;; ============================================================
 
 ;;;###autoload
@@ -265,12 +305,6 @@ WHEN: When to schedule (timestamp string)."
   "Initialize GTD system setup."
   (interactive)
   (org-gtd-complete-system-setup))
-
-;;;###autoload
-(defun org-gtd-complete-status ()
-  "View GTD system status overview."
-  (interactive)
-  (org-gtd-complete-system-status))
 
 ;;;###autoload
 (defun org-gtd-complete-export ()
@@ -285,6 +319,13 @@ KEY: Configuration key.
 VALUE: Configuration value (when setting)."
   (interactive)
   (org-gtd-complete-system-configure key value))
+
+;; ============================================================
+;; Utility
+;; ============================================================
+
+;;;###autoload
+(defalias 'org-gtd-complete-show 'org-gtd-complete-lists-show)
 
 ;; ============================================================
 ;; Minor Mode
