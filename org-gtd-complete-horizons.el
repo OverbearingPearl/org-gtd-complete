@@ -85,24 +85,24 @@ VISION: Vision name string."
   (message "Connected project '%s' to vision '%s'" proj vision))
 
 ;;;###autoload
-(defun org-gtd-complete-horizons-view-by-area (area)
-  "View all related content for specific area of responsibility.
+(defun org-gtd-complete-horizons-show-area (area)
+  "Show all related content for specific area of responsibility.
 AREA: Area of responsibility name string.
 Uses lists module for actual query."
   (interactive "sArea: ")
   (org-gtd-complete-lists-show :projects :area area))
 
 ;;;###autoload
-(defun org-gtd-complete-horizons-view-by-goal (goal)
-  "View all related content for specific goal.
+(defun org-gtd-complete-horizons-show-goal (goal)
+  "Show all related content for specific goal.
 GOAL: Goal name string.
 Uses lists module for actual query."
   (interactive "sGoal: ")
   (org-gtd-complete-lists-show :projects :goal goal))
 
 ;;;###autoload
-(defun org-gtd-complete-horizons-view-by-vision (vision)
-  "View all related content for specific vision.
+(defun org-gtd-complete-horizons-show-vision (vision)
+  "Show all related content for specific vision.
 VISION: Vision name string.
 Uses lists module for actual query."
   (interactive "sVision: ")

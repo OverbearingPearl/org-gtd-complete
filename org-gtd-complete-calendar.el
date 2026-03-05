@@ -51,14 +51,14 @@ WHEN: When to schedule (timestamp string). If nil, prompt user."
       (message "Scheduled: %s for %s" action timestamp))))
 
 ;;;###autoload
-(defun org-gtd-complete-calendar-view-today ()
-  "View all scheduled actions for today."
+(defun org-gtd-complete-calendar-show-today ()
+  "Show all scheduled actions for today."
   (interactive)
   (org-gtd-complete-lists-show :actions :scheduled 'today))
 
 ;;;###autoload
-(defun org-gtd-complete-calendar-view-week ()
-  "View all scheduled actions for the week."
+(defun org-gtd-complete-calendar-show-week ()
+  "Show all scheduled actions for the week."
   (interactive)
   (org-gtd-complete-lists-show :actions :scheduled 'week))
 

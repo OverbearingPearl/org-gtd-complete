@@ -40,7 +40,7 @@
   "Predefined contexts list.")
 
 ;;;###autoload
-(defun org-gtd-complete-contexts-engage (context)
+(defun org-gtd-complete-contexts-do (context)
   "Select and execute actions in specific context.
 CONTEXT: Context string.
 This function executes actions in a specific context.

@@ -35,15 +35,15 @@
 (defvar org-gtd-complete-lists--inbox-file "gtd-inbox.org"
   "Inbox file name.")
 
+(defun org-gtd-complete-lists--get-inbox ()
+  "Get all items from inbox."
+  (org-gtd-complete-lists--query-file org-gtd-complete-lists--inbox-file))
+
 (defvar org-gtd-complete-lists--projects-file "gtd-projects.org"
   "Projects file name.")
 
 (defvar org-gtd-complete-lists--single-actions-file "gtd-single-actions.org"
   "Single actions file name.")
-
-(defun org-gtd-complete-lists--get-inbox ()
-  "Get all items from inbox."
-  (org-gtd-complete-lists--query-file org-gtd-complete-lists--inbox-file))
 
 (defun org-gtd-complete-lists--get-projects ()
   "Get all projects."
@@ -56,9 +56,19 @@
 (defun org-gtd-complete-lists--query-file (file)
   "Query items from FILE.
 FILE: File name string."
-  ;; TODO: Implement actual file reading and parsing
-  (message "Querying file: %s" file)
-  nil)
+  (let ((full-path (expand-file-name file)))
+    (if (file-exists-p full-path)
+        (with-temp-buffer
+          (insert-file-contents full-path)
+          (goto-char (point-min))
+          (let (items)
+            (while (re-search-forward "^\\(\\*+\\) \\(.*\\)$" nil t)
+              (let ((level (length (match-string 1)))
+                    (title (match-string 2)))
+                (push (list :title title :level level) items)))
+            (nreverse items)))
+      (message "File %s does not exist" full-path)
+      nil)))
 
 (defun org-gtd-complete-lists--filter-by-context (items context)
   "Filter ITEMS by CONTEXT.
@@ -193,7 +203,7 @@ FILTERS: Optional filter criteria as plist:
 Examples:
   (org-gtd-complete-lists-show :actions)
   (org-gtd-complete-lists-show :actions :context \"@office\")
-  (org-gtd-complete-lists-show :actions :context \"@phone\" :project \"购买汽车\" :status :waiting)"
+  (org-gtd-complete-lists-show :actions :context \"@phone\" :project \"purchasing-car\" :status :waiting)"
   (pcase what
     (:inbox
      (org-gtd-complete-lists--apply-filters
@@ -201,19 +211,16 @@ Examples:
     (:projects
      (org-gtd-complete-lists--apply-filters
        (org-gtd-complete-lists--get-projects) filters))
-    (:single-actions
-     (org-gtd-complete-lists--apply-filters
-       (org-gtd-complete-lists--get-single-actions) filters))
     (:actions
      (let ((projects-actions (org-gtd-complete-lists--get-projects))
            (single-actions (org-gtd-complete-lists--get-single-actions)))
        (org-gtd-complete-lists--apply-filters
         (append projects-actions single-actions) filters)))
     (:waiting
-     (let ((projects-actions (org-gtd-complete-lists--get-projects))
-           (single-actions (org-gtd-complete-lists--get-single-actions)))
+     (let ((all-actions (append (org-gtd-complete-lists--get-projects)
+                                (org-gtd-complete-lists--get-single-actions))))
        (org-gtd-complete-lists--apply-filters
-        (append projects-actions single-actions) (plist-put filters :status :waiting))))
+        all-actions (plist-put filters :status :waiting))))
     (:someday
      (org-gtd-complete-lists--apply-filters
        (org-gtd-complete-lists--get-inbox) (plist-put filters :status :someday)))

@@ -37,7 +37,7 @@
 
 ;;;###autoload
 (defun org-gtd-complete-system-status ()
-  "View GTD system status overview."
+  "Show GTD system status overview."
   (error "Not implemented: org-gtd-complete-system-status"))
 
 ;;;###autoload
@@ -46,11 +46,11 @@
   (error "Not implemented: org-gtd-complete-system-export"))
 
 ;;;###autoload
-(defun org-gtd-complete-system-config (key value)
-  "Configure GTD system.
+(defun org-gtd-complete-system-configure (key value)
+  "Configure GTD system at runtime.
 KEY: Configuration key.
 VALUE: Configuration value (when setting)."
-  (error "Not implemented: org-gtd-complete-system-config"))
+  (error "Not implemented: org-gtd-complete-system-configure"))
 
 
 (provide 'org-gtd-complete-system)

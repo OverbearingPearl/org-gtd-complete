@@ -33,19 +33,19 @@
 ;;; Code:
 
 ;;;###autoload
-(defun org-gtd-complete-reference-add (content &optional tags)
-  "Add reference material.
+(defun org-gtd-complete-reference-store (content &optional tags)
+  "Store reference material.
 CONTENT: Reference content string.
 TAGS: Optional tags list."
   (interactive "sReference content: ")
-  (error "Not implemented: org-gtd-complete-reference-add"))
+  (error "Not implemented: org-gtd-complete-reference-store"))
 
 ;;;###autoload
-(defun org-gtd-complete-reference-search (keyword)
-  "Search reference material.
+(defun org-gtd-complete-reference-find (keyword)
+  "Find reference material by keyword.
 KEYWORD: Search keyword string."
   (interactive "sSearch keyword: ")
-  (error "Not implemented: org-gtd-complete-reference-search"))
+  (error "Not implemented: org-gtd-complete-reference-find"))
 
 (provide 'org-gtd-complete-reference)
 

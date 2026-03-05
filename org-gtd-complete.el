@@ -50,7 +50,6 @@
 ;; Submodule dependencies
 ;; ============================================================
 
-(require 'org-gtd-complete-core)
 (require 'org-gtd-complete-projects)
 (require 'org-gtd-complete-lists)
 (require 'org-gtd-complete-contexts)
@@ -69,7 +68,12 @@
   "Capture any thought, task or commitment to inbox.
 INPUT: Content string to capture."
   (interactive "sInput to capture: ")
-  (org-gtd-complete-core-capture input))
+  (require 'org-gtd-complete-lists)
+  (with-current-buffer (find-file-noselect org-gtd-complete-lists--inbox-file)
+    (goto-char (point-max))
+    (insert (format "* %s\n" input))
+    (save-buffer)
+    (message "Captured: %s" input)))
 
 ;;;###autoload
 (defun org-gtd-complete-process-inbox ()
@@ -82,7 +86,36 @@ Ask five questions for each item and execute decisions immediately:
 5. Is it a project?
 Organize items into appropriate lists based on decisions."
   (interactive)
-  (org-gtd-complete-core-process-inbox))
+  (let ((inbox-items (org-gtd-complete-lists--get-inbox)))
+    (if inbox-items
+        (dolist (item inbox-items)
+          (let* ((title (plist-get item :title))
+                 (actionable (y-or-n-p (format "Is '%s' actionable? " title))))
+            (if actionable
+                (let ((two-minutes (y-or-n-p "Can it be done in 2 minutes? "))
+                      (delegatable (y-or-n-p "Can it be delegated? "))
+                      (project (y-or-n-p "Is it a project? ")))
+                  (cond
+                   (two-minutes
+                    (message "Do it now: %s" title))
+                   (delegatable
+                    (let ((person (read-string "Delegate to whom? ")))
+                      (org-gtd-complete-delegate title person)))
+                   (project
+                    (org-gtd-complete-plan-project title 'create))
+                   (t
+                    (org-gtd-complete-lists-show :actions))))
+              ;; Not actionable
+              (let ((reference (y-or-n-p "Is it reference material? "))
+                    (someday (y-or-n-p "Should it go to Someday/Maybe? ")))
+                (cond
+                 (reference
+                  (org-gtd-complete-add-reference title))
+                 (someday
+                  (message "Moved to Someday/Maybe: %s" title))
+                 (t
+                  (message "Trashed: %s" title)))))))
+      (message "Inbox is empty"))))
 
 ;;;###autoload
 (defun org-gtd-complete-review (&optional level)
@@ -97,7 +130,8 @@ Default is daily review."
   "Select and execute actions based on current context.
 Consider four criteria: context, available time, available energy, priority."
   (interactive)
-  (org-gtd-complete-core-engage))
+  (let ((context (completing-read "Context: " org-gtd-complete-contexts--defined)))
+    (org-gtd-complete-lists-show :actions :context context)))
 
 ;;;###autoload
 (defun org-gtd-complete-plan-project (name &optional mode)
@@ -116,28 +150,7 @@ For existing projects: Intelligently continue unfinished planning steps."
 ;; ============================================================
 
 ;;;###autoload
-(defun org-gtd-complete-show (what &rest filters)
-  "View lists in GTD system with multi-dimensional filtering.
-This is the unified query entry point for all list viewing.
-WHAT: What to view, can be:
-      :inbox       - Inbox (unprocessed items)
-      :projects    - All projects with their plans
-      :actions     - All actionable items (next actions)
-      :waiting     - All waiting/delegated items
-      :someday     - Someday/Maybe items
-FILTERS: Optional filter criteria as plist:
-      :context     - Filter by context (e.g., \"@office\", \"@phone\")
-      :project     - Filter by project name
-      :status      - Filter by status (:waiting :delegated :pending :completed)
-      :area        - Filter by area of responsibility
-      :goal        - Filter by goal
-      :vision      - Filter by vision
-
-Examples:
-  (org-gtd-complete-show :actions)
-  (org-gtd-complete-show :actions :context \"@office\")
-  (org-gtd-complete-show :actions :context \"@phone\" :project \"购买汽车\" :status :waiting)"
-  (apply #'org-gtd-complete-lists-show what filters))
+(defalias 'org-gtd-complete-show 'org-gtd-complete-lists-show)
 
 ;; ============================================================
 ;; Layer 3: Advanced operations API (occasional use)
@@ -148,7 +161,8 @@ Examples:
   "Select and execute actions in specific context.
 CONTEXT: Context string."
   (interactive "sExecute in context: ")
-  (org-gtd-complete-contexts-engage context))
+  (org-gtd-complete-contexts-do context))
+
 
 
 ;;;###autoload
@@ -187,14 +201,14 @@ AREA: Area of responsibility name string."
 CONTENT: Reference content string.
 TAGS: Optional tags list."
   (interactive "sReference content: ")
-  (org-gtd-complete-reference-add content tags))
+  (org-gtd-complete-reference-store content tags))
 
 ;;;###autoload
 (defun org-gtd-complete-search-reference (keyword)
   "Search reference material.
 KEYWORD: Search keyword string."
   (interactive "sSearch keyword: ")
-  (org-gtd-complete-reference-search keyword))
+  (org-gtd-complete-reference-find keyword))
 
 ;;;###autoload
 (defun org-gtd-complete-delegate (task person)
@@ -202,7 +216,18 @@ KEYWORD: Search keyword string."
 TASK: Task description string.
 PERSON: Responsible person string."
   (interactive "sTask: \nsPerson: ")
-  (org-gtd-complete-core-delegate task person))
+  (with-current-buffer (find-file-noselect org-gtd-complete-lists--inbox-file)
+    (goto-char (point-min))
+    (if (re-search-forward (regexp-quote task) nil t)
+        (progn
+          (beginning-of-line)
+          (when (looking-at "\\*+ \\(TODO\\|NEXT\\|DONE\\) ")
+            (replace-match "* WAITING ")
+            (end-of-line)
+            (insert (format " :DELEGATED_TO:%s:" person)))
+          (save-buffer)
+          (message "Delegated '%s' to %s" task person))
+      (message "Task not found in inbox"))))
 
 ;;;###autoload
 (defun org-gtd-complete-archive (proj)
@@ -221,15 +246,15 @@ WHEN: When to schedule (timestamp string)."
 
 ;;;###autoload
 (defun org-gtd-complete-today ()
-  "View all scheduled actions for today."
+  "Show all scheduled actions for today."
   (interactive)
-  (org-gtd-complete-calendar-view-today))
+  (org-gtd-complete-calendar-show-today))
 
 ;;;###autoload
 (defun org-gtd-complete-week ()
-  "View all scheduled actions for the week."
+  "Show all scheduled actions for the week."
   (interactive)
-  (org-gtd-complete-calendar-view-week))
+  (org-gtd-complete-calendar-show-week))
 
 ;; ============================================================
 ;; Layer 4: System management API (setup use)
@@ -255,11 +280,11 @@ WHEN: When to schedule (timestamp string)."
 
 ;;;###autoload
 (defun org-gtd-complete-config (key &optional value)
-  "Configure GTD system.
+  "Configure GTD system at runtime.
 KEY: Configuration key.
 VALUE: Configuration value (when setting)."
   (interactive)
-  (org-gtd-complete-system-config key value))
+  (org-gtd-complete-system-configure key value))
 
 ;; ============================================================
 ;; Minor Mode
