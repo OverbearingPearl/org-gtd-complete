@@ -45,7 +45,7 @@
           (with-current-buffer (find-file-noselect full-path)
             (insert "* Initial content for " file "\n")
             (save-buffer)))))
-  (message "GTD system setup complete."))
+  (message "GTD system setup complete.")))
 
 ;;;###autoload
 (defun org-gtd-complete-system-status ()
