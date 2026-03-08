@@ -119,19 +119,21 @@ Organize items into appropriate lists based on decisions."
     (if (file-exists-p inbox-file)
         (if inbox-items
             (progn
-              ;; Create and display read-only buffer
-              (with-current-buffer (get-buffer-create "*GTD Inbox View*")
-                (erase-buffer)
-                (insert "GTD Inbox Items:\n\n")
-                (dolist (item inbox-items)
-                  (let* ((title (plist-get item :title))
-                         (timestamp-str (and (string-match "\\[Captured at: \\([^\]]+\\)\\]" title) (match-string 1 title)))
-                         (captured-time (and timestamp-str (date-to-time timestamp-str)))
-                         (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
-                         (age-string (and age (format-seconds "%h hours, %m minutes, %s seconds" age))))
-                    (insert (format "- %s (Residency time: %s)\n" title age-string))))
-                (read-only-mode 1)  ; Make buffer read-only
-                (display-buffer (current-buffer)))
+              ;; Create and display read-only buffer if it doesn't exist
+              (let ((view-buffer (get-buffer "*GTD Inbox View*")))
+                (with-current-buffer (or view-buffer (get-buffer-create "*GTD Inbox View*"))
+                  (unless view-buffer  ; Only insert content if buffer is newly created
+                    (erase-buffer)
+                    (insert "GTD Inbox Items:\n\n")
+                    (dolist (item inbox-items)
+                      (let* ((title (plist-get item :title))
+                             (timestamp-str (and (string-match "\\[Captured at: \\([^\]]+\\)\\]" title) (match-string 1 title)))
+                             (captured-time (and timestamp-str (date-to-time timestamp-str)))
+                             (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
+                             (age-string (and age (format-seconds "%h hours, %m minutes, %s seconds" age))))
+                        (insert (format "- %s (Residency time: %s)\n" title age-string)))))
+                  (read-only-mode 1)  ; Make buffer read-only
+                  (pop-to-buffer (current-buffer))))  ; Switch to buffer
               ;; Now process each item interactively
               (dolist (item inbox-items)
                 (let* ((title (plist-get item :title))
