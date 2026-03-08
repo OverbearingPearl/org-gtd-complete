@@ -16,7 +16,7 @@
 (require 'org-gtd-complete-lists)  ; Ensure dependency
 
 ;;;###autoload
-(defun org-gtd-complete-process-inbox ()
+(defun org-gtd-complete-inbox-process-inbox ()
   "Process all items in inbox.
 Ask five questions for each item and execute decisions immediately:
 1. What is it?
