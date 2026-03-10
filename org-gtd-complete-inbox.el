@@ -89,19 +89,23 @@ Organize items into appropriate lists based on decisions."
                                   (overlay-put org-gtd-complete-inbox-overlay 'face 'highlight))))))))
                   (let* ((actionable (y-or-n-p (format "Is '%s' actionable? " title))))
                     (if actionable
-                        (let ((two-minutes (y-or-n-p "Can it be done in 2 minutes? "))
-                              (delegatable (y-or-n-p "Can it be delegated? "))
-                              (project (y-or-n-p "Is it a project? ")))
-                          (cond
-                           (two-minutes
-                            (message "Do it now: %s" title))
-                           (delegatable
-                            (let ((person (read-string "Delegate to whom? ")))
-                              (org-gtd-complete-delegate title person)))
-                           (project
-                            (org-gtd-complete-plan-project title 'create))
-                           (t
-                            (org-gtd-complete-lists-show :actions))))
+                        ;; Sequential questioning
+                        (let ((two-minutes (y-or-n-p "Can it be done in 2 minutes? ")))
+                          (if two-minutes
+                              (message "Do it now: %s" title)  ; Stop here if yes
+                            (let ((delegatable (y-or-n-p "Can it be delegated? ")))
+                              (if delegatable
+                                  (let ((person (read-string "Delegate to whom? ")))
+                                    (org-gtd-complete-lists-delegate title person)  ; Corrected function name
+                                    ;; Add check for project after delegation
+                                    (let ((is-project (y-or-n-p "Is this delegated task part of a project? ")))
+                                      (if is-project
+                                          (org-gtd-complete-plan-project title 'create)
+                                        (org-gtd-complete-lists-show :actions))))  ; If not, show actions or handle accordingly
+                                (let ((project (y-or-n-p "Is it a project? ")))
+                                  (if project
+                                      (org-gtd-complete-plan-project title 'create)
+                                    (org-gtd-complete-lists-show :actions)))))))
                       ;; Not actionable
                       (let ((reference (y-or-n-p "Is it reference material? "))
                             (someday (y-or-n-p "Should it go to Someday/Maybe? ")))
