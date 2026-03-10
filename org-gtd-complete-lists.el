@@ -189,6 +189,23 @@ FILTERS: Plist of filter criteria like (:context \"@office\" :project \"purchasi
                     result (plist-get filters :scheduled))))
     result))
 
+(defun org-gtd-complete-lists-delegate (task person)
+  "Internal implementation to delegate task to someone.
+  TASK: Task description string.
+  PERSON: Responsible person string."
+  (with-current-buffer (find-file-noselect (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
+    (goto-char (point-min))
+    (if (re-search-forward (regexp-quote task) nil t)
+        (progn
+          (beginning-of-line)
+          (when (looking-at "\\*+ \\(TODO\\|NEXT\\|DONE\\) ")
+            (replace-match "* WAITING ")
+            (end-of-line)
+            (insert (format " :DELEGATED_TO:%s:" person)))
+          (save-buffer)
+          (message "Delegated '%s' to %s" task person))
+      (message "Task not found in inbox"))))
+
 ;;;###autoload
 (defun org-gtd-complete-lists-show (what &rest filters)
   "View lists in GTD system with multi-dimensional filtering.

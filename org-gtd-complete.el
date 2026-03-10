@@ -155,18 +155,7 @@ KEYWORD: Search keyword string."
 TASK: Task description string.
 PERSON: Responsible person string."
   (interactive "sTask: \nsPerson: ")
-  (with-current-buffer (find-file-noselect (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
-    (goto-char (point-min))
-    (if (re-search-forward (regexp-quote task) nil t)
-        (progn
-          (beginning-of-line)
-          (when (looking-at "\\*+ \\(TODO\\|NEXT\\|DONE\\) ")
-            (replace-match "* WAITING ")
-            (end-of-line)
-            (insert (format " :DELEGATED_TO:%s:" person)))
-          (save-buffer)
-          (message "Delegated '%s' to %s" task person))
-      (message "Task not found in inbox"))))
+  (org-gtd-complete-lists-delegate task person))
 
 ;;;###autoload
 (defun org-gtd-complete-archive (proj)
