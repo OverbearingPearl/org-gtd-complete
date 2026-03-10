@@ -87,6 +87,11 @@ INPUT: Content string to capture."
 ;; ============================================================
 
 ;;;###autoload
+(defun org-gtd-complete-process-inbox ()
+  "Process inbox items using the inbox module."
+  (org-gtd-complete-inbox-process-inbox))
+
+;;;###autoload
 (defun org-gtd-complete-plan-project (name &optional mode)
   "Unified project planning function supporting creation and enhancement.
 NAME: Project name string.
@@ -294,11 +299,6 @@ VALUE: Configuration value (when setting)."
   (if org-gtd-complete-mode
       (org-gtd-complete-setup)
     (message "Org-GTD-Complete mode disabled.")))
-
-;;;###autoload
-(defun org-gtd-complete-process-inbox ()
-  "Process inbox items using the inbox module."
-  (org-gtd-complete-inbox-process-inbox))
 
 (provide 'org-gtd-complete)
 
