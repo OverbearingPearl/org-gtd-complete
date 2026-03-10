@@ -118,7 +118,11 @@ Organize items into appropriate lists based on decisions."
     (when org-gtd-complete-inbox-overlay
       (delete-overlay org-gtd-complete-inbox-overlay)
       (message "Overlay cleaned up in view buffer"))
-    (message "Inbox is empty")))
+    ;; Re-check inbox after processing
+    (setq inbox-items (org-gtd-complete-lists--get-inbox))
+    (if inbox-items
+        (message "Inbox processing complete, but some items remain.")
+      (message "Inbox is empty."))))
 
 (defun org-gtd-complete-inbox-capture (input)
   "Internal implementation to capture input to inbox.
