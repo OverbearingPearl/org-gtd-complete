@@ -58,6 +58,7 @@
 (require 'org-gtd-complete-reference)
 (require 'org-gtd-complete-calendar)
 (require 'org-gtd-complete-inbox)
+(require 'org-gtd-complete-lists)
 
 (defcustom org-gtd-complete-base-directory (expand-file-name ".org-gtd-complete" "~")
   "Base directory for all GTD Org files."
@@ -73,7 +74,6 @@
   "Capture any thought, task or commitment to inbox.
 INPUT: Content string to capture."
   (interactive "sInput to capture: ")
-  (require 'org-gtd-complete-lists)
   (with-current-buffer (find-file-noselect (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
     (goto-char (point-max))
     (insert (format "* %s [Captured at: %s]\n" input (format-time-string "%Y-%m-%d %H:%M:%S")))
@@ -298,6 +298,11 @@ VALUE: Configuration value (when setting)."
   (if org-gtd-complete-mode
       (org-gtd-complete-setup)
     (message "Org-GTD-Complete mode disabled.")))
+
+;;;###autoload
+(defun org-gtd-complete-process-inbox ()
+  "Process inbox items using the inbox module."
+  (org-gtd-complete-inbox-process-inbox))
 
 (provide 'org-gtd-complete)
 

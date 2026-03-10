@@ -13,7 +13,7 @@
 
 ;;; Code:
 
-(require 'org-gtd-complete-lists)  ; Ensure dependency
+(require 'org-gtd-complete-lists)
 
 ;;;###autoload
 (defun org-gtd-complete-inbox-process-inbox ()
@@ -26,7 +26,6 @@ Ask five questions for each item and execute decisions immediately:
 5. Is it a project?
 Organize items into appropriate lists based on decisions."
   (interactive)
-  (require 'org-gtd-complete-lists)  ; Ensure it's loaded
   (let* ((base-dir org-gtd-complete-base-directory)
          (inbox-file (expand-file-name org-gtd-complete-lists--inbox-file base-dir))
          (inbox-items (org-gtd-complete-lists--get-inbox)))
