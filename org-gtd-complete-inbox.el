@@ -15,6 +15,8 @@
 
 (require 'org-gtd-complete-lists)
 
+(defvar org-gtd-complete-inbox-overlay nil "Overlay for highlighting current item.")
+
 ;;;###autoload
 (defun org-gtd-complete-inbox-process-inbox ()
   "Process all items in inbox.
@@ -67,10 +69,24 @@ Organize items into appropriate lists based on decisions."
               (dolist (item inbox-items)
                 (let* ((title (plist-get item :title))
                        (timestamp-str (and (string-match "\\[Captured at: \\([^\]]+\\)\\]" title) (match-string 1 title)))
+                       (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" title) title))  ; Add clean-title here
                        (captured-time (and timestamp-str (date-to-time timestamp-str)))
                        (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
                        (age-string (and age (format-seconds "%h hours, %m minutes, %s seconds" age))))
                   (message "Processing item: %s (Residency time: %s)" title age-string)
+                  ;; Add highlighting code here
+                  (let ((view-buffer (get-buffer "*GTD Inbox View*")))
+                    (when view-buffer
+                      (with-current-buffer view-buffer
+                        (when org-gtd-complete-inbox-overlay (delete-overlay org-gtd-complete-inbox-overlay))
+                        (save-excursion
+                          (goto-char (point-min))
+                          (if (search-forward clean-title nil t)
+                              (progn
+                                (let ((start (line-beginning-position))
+                                      (end (line-end-position)))
+                                  (setq org-gtd-complete-inbox-overlay (make-overlay start end view-buffer))
+                                  (overlay-put org-gtd-complete-inbox-overlay 'face 'highlight))))))))
                   (let* ((actionable (y-or-n-p (format "Is '%s' actionable? " title))))
                     (if actionable
                         (let ((two-minutes (y-or-n-p "Can it be done in 2 minutes? "))
@@ -98,6 +114,10 @@ Organize items into appropriate lists based on decisions."
                           (message "Trashed: %s" title)))))))))
           (message "Inbox items retrieved: %s" inbox-items))  ; Debug: Check retrieved items
       (message "Inbox file does not exist or is empty"))
+    ;; Add cleanup code before the last message
+    (when org-gtd-complete-inbox-overlay
+      (delete-overlay org-gtd-complete-inbox-overlay)
+      (message "Overlay cleaned up in view buffer"))
     (message "Inbox is empty")))
 
 (defun org-gtd-complete-inbox-capture (input)
@@ -108,6 +128,15 @@ INPUT: Content string to capture."
     (insert (format "* %s [Captured at: %s]\n" input (format-time-string "%Y-%m-%d %H:%M:%S")))
     (save-buffer)
     (message "Captured: %s" input)))
+
+(defun org-gtd-get-item-marker (item)
+  "Return marker for the given item."
+  (save-excursion
+    (with-current-buffer (find-file-noselect (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
+      (goto-char (point-min))
+      (if (re-search-forward (concat "^\\*+ " (regexp-quote (plist-get item :title))) nil t)
+          (point-marker)
+        nil))))
 
 (provide 'org-gtd-complete-inbox)
 
