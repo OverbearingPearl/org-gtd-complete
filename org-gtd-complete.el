@@ -74,11 +74,7 @@
   "Capture any thought, task or commitment to inbox.
 INPUT: Content string to capture."
   (interactive "sInput to capture: ")
-  (with-current-buffer (find-file-noselect (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
-    (goto-char (point-max))
-    (insert (format "* %s [Captured at: %s]\n" input (format-time-string "%Y-%m-%d %H:%M:%S")))
-    (save-buffer)
-    (message "Captured: %s" input)))
+  (org-gtd-complete-inbox-capture input))
 
 ;;;###autoload
 (defun org-gtd-complete-trigger-list ()
