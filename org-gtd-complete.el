@@ -37,11 +37,11 @@
 ;;
 ;; Core workflow functions:
 ;;
-;; `org-gtd-capture' - Capture any thought, task or commitment
-;; `org-gtd-process-inbox' - Process inbox items
-;; `org-gtd-review' - Review the GTD system
-;; `org-gtd-do' - Engage with actions based on context
-;; `org-gtd-plan-project' - Plan project using natural planning
+;; `org-gtd-complete-capture' - Capture any thought, task or commitment
+;; `org-gtd-complete-process-inbox' - Process inbox items
+;; `org-gtd-complete-review' - Review the GTD system
+;; `org-gtd-complete-do' - Engage with actions based on context
+;; `org-gtd-complete-plan-project' - Unified project planning function supporting creation and enhancement
 ;;
 
 ;;; Code:
