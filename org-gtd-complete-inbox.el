@@ -101,7 +101,8 @@ Organize items into appropriate lists based on decisions."
     (message "Inbox is empty")))
 
 (defun org-gtd-complete-inbox-capture (input)
-  "Internal implementation to capture input to inbox."
+  "Internal implementation to capture input to inbox.
+INPUT: Content string to capture."
   (with-current-buffer (find-file-noselect (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
     (goto-char (point-max))
     (insert (format "* %s [Captured at: %s]\n" input (format-time-string "%Y-%m-%d %H:%M:%S")))
