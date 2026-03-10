@@ -129,15 +129,6 @@ INPUT: Content string to capture."
     (save-buffer)
     (message "Captured: %s" input)))
 
-(defun org-gtd-get-item-marker (item)
-  "Return marker for the given item."
-  (save-excursion
-    (with-current-buffer (find-file-noselect (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
-      (goto-char (point-min))
-      (if (re-search-forward (concat "^\\*+ " (regexp-quote (plist-get item :title))) nil t)
-          (point-marker)
-        nil))))
-
 (provide 'org-gtd-complete-inbox)
 
 ;;; org-gtd-complete-inbox.el ends here
