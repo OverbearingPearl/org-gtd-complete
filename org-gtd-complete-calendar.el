@@ -44,7 +44,6 @@
   "Schedule an ACTION for a specific time.
 ACTION: Action description string.
 WHEN: When to schedule (timestamp string). If nil, prompt user."
-  (interactive "sAction to schedule: \nsWhen (e.g., 2024-03-15): ")
   (let ((timestamp (or when (read-string "Date (YYYY-MM-DD): "))))
     (with-current-buffer (find-file-noselect org-gtd-complete-calendar--scheduled-file)
       (goto-char (point-max))
@@ -55,13 +54,11 @@ WHEN: When to schedule (timestamp string). If nil, prompt user."
 ;;;###autoload
 (defun org-gtd-complete-calendar-show-today ()
   "Show all scheduled actions for today."
-  (interactive)
   (org-gtd-complete-lists-show :actions :scheduled 'today))
 
 ;;;###autoload
 (defun org-gtd-complete-calendar-show-week ()
   "Show all scheduled actions for the week."
-  (interactive)
   (org-gtd-complete-lists-show :actions :scheduled 'week))
 
 (provide 'org-gtd-complete-calendar)

@@ -89,6 +89,7 @@ INPUT: Content string to capture."
 ;;;###autoload
 (defun org-gtd-complete-process-inbox ()
   "Process inbox items using the inbox module."
+  (interactive)
   (org-gtd-complete-inbox-process-inbox))
 
 ;;;###autoload

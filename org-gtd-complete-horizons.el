@@ -61,8 +61,6 @@
   "Connect action to project.
 ACTION: Action identifier (heading or ID).
 PROJECT: Project name string."
-  (interactive "sAction: \nsProject: ")
-  ;; Check if project exists
   (if (org-gtd-complete-horizons--project-exists-p project)
       (progn
         (push (cons action project) org-gtd-complete-horizons--action-project-alist)
@@ -74,7 +72,6 @@ PROJECT: Project name string."
   "Connect action to area of responsibility.
 ACTION: Action identifier.
 AREA: Area of responsibility name string."
-  (interactive "sAction: \nsArea: ")
   (push (cons action area) org-gtd-complete-horizons--action-area-alist)
   (message "Connected action '%s' to area '%s'" action area))
 
@@ -83,7 +80,6 @@ AREA: Area of responsibility name string."
   "Connect project to area of responsibility.
 PROJ: Project name string.
 AREA: Area of responsibility name string."
-  (interactive "sProject: \nsArea: ")
   (if (org-gtd-complete-horizons--project-exists-p proj)
       (progn
         (push (cons proj area) org-gtd-complete-horizons--project-area-alist)
@@ -95,7 +91,6 @@ AREA: Area of responsibility name string."
   "Connect project to goal.
 PROJ: Project name string.
 GOAL: Goal name string."
-  (interactive "sProject: \nsGoal: ")
   (if (org-gtd-complete-horizons--project-exists-p proj)
       (progn
         (push (cons proj goal) org-gtd-complete-horizons--project-goal-alist)
@@ -107,7 +102,6 @@ GOAL: Goal name string."
   "Connect project to vision.
 PROJ: Project name string.
 VISION: Vision name string."
-  (interactive "sProject: \nsVision: ")
   (if (org-gtd-complete-horizons--project-exists-p proj)
       (progn
         (push (cons proj vision) org-gtd-complete-horizons--project-vision-alist)
@@ -119,7 +113,6 @@ VISION: Vision name string."
   "Connect project to purpose.
 PROJ: Project name string.
 PURPOSE: Purpose name string."
-  (interactive "sProject: \nsPurpose: ")
   (if (org-gtd-complete-horizons--project-exists-p proj)
       (progn
         (push (cons proj purpose) org-gtd-complete-horizons--project-purpose-alist)
@@ -137,7 +130,6 @@ PROJ: Project name string."
   "Show all related content for specific area of responsibility.
 AREA: Area of responsibility name string.
 Uses lists module for actual query."
-  (interactive "sArea: ")
   (org-gtd-complete-lists-show :projects :area area))
 
 ;;;###autoload
@@ -145,7 +137,6 @@ Uses lists module for actual query."
   "Show all related content for specific goal.
 GOAL: Goal name string.
 Uses lists module for actual query."
-  (interactive "sGoal: ")
   (org-gtd-complete-lists-show :projects :goal goal))
 
 ;;;###autoload
@@ -153,7 +144,6 @@ Uses lists module for actual query."
   "Show all related content for specific vision.
 VISION: Vision name string.
 Uses lists module for actual query."
-  (interactive "sVision: ")
   (org-gtd-complete-lists-show :projects :vision vision))
 
 ;;;###autoload
@@ -161,7 +151,6 @@ Uses lists module for actual query."
   "Show all related content for specific purpose.
 PURPOSE: Purpose name string.
 Uses lists module for actual query."
-  (interactive "sPurpose: ")
   (org-gtd-complete-lists-show :projects :purpose purpose))
 
 (provide 'org-gtd-complete-horizons)

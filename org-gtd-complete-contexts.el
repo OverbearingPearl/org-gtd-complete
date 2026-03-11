@@ -45,21 +45,18 @@
 CONTEXT: Context string.
 This function executes actions in a specific context.
 For complex queries with multiple filters, use `org-gtd-complete-lists-show'."
-  (interactive "sExecute in context: ")
   (org-gtd-complete-lists-show :actions :context context))
 
 ;;;###autoload
 (defun org-gtd-complete-contexts-add (context)
   "Add a new context to the system.
 CONTEXT: Context string to add."
-  (interactive "sAdd context: ")
   (push context org-gtd-complete-contexts--defined)
   (message "Added context: %s" context))
 
 ;;;###autoload
 (defun org-gtd-complete-contexts-list ()
   "List all defined contexts."
-  (interactive)
   (message "Defined contexts: %s" org-gtd-complete-contexts--defined))
 
 (provide 'org-gtd-complete-contexts)

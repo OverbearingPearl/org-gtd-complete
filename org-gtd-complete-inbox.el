@@ -42,7 +42,6 @@ Ask five questions for each item and execute decisions immediately:
 4. Can it be delegated?
 5. Is it a project?
 Organize items into appropriate lists based on decisions."
-  (interactive)
   (let* ((base-dir org-gtd-complete-base-directory)
          (inbox-file (expand-file-name org-gtd-complete-lists--inbox-file base-dir))
          (inbox-items (org-gtd-complete-lists--get-inbox)))
