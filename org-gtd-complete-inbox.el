@@ -17,7 +17,7 @@
 
 (defvar org-gtd-complete-inbox-overlay nil "Overlay for highlighting current item.")
 
-(defun format-age-compact (seconds)
+(defun org-gtd-complete-inbox-format-age-compact (seconds)
   "Format SECONDS into a compact string, e.g., '2d 1h 30m'."
   (let ((days (floor seconds 86400))
         (hours (floor (mod seconds 86400) 3600))
@@ -74,7 +74,7 @@ Organize items into appropriate lists based on decisions."
                              (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" full-title) full-title))  ; Clean title
                              (captured-time (and timestamp-str (date-to-time timestamp-str)))
                              (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
-                             (age-string (and age (format-age-compact age))))
+                             (age-string (and age (org-gtd-complete-inbox-format-age-compact age))))
                         (insert (format "| %s | %s | %s |\n" clean-title timestamp-str age-string))))
                     (org-table-align))  ; Align the table
                   (read-only-mode 1)  ; Make buffer read-only
@@ -86,7 +86,7 @@ Organize items into appropriate lists based on decisions."
                        (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" title) title))  ; Add clean-title here
                        (captured-time (and timestamp-str (date-to-time timestamp-str)))
                        (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
-                       (age-string (and age (format-age-compact age))))
+                       (age-string (and age (org-gtd-complete-inbox-format-age-compact age))))
                   (message "Processing item: %s (Residency time: %s)" title age-string)
                   ;; Add highlighting code here
                   (let ((view-buffer (get-buffer "*GTD Inbox View*")))
