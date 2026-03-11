@@ -275,7 +275,12 @@ VALUE: Configuration value (when setting)."
 ;; ============================================================
 
 ;;;###autoload
-(defalias 'org-gtd-complete-show 'org-gtd-complete-lists-show)
+(defun org-gtd-complete-show (what &rest filters)
+  "Show lists based on what and filters.
+WHAT: What to show.
+FILTERS: Additional filters."
+  (interactive "sWhat to show: ")  ; Adjust interactive based on expected input
+  (apply 'org-gtd-complete-lists-show what filters))
 
 ;; ============================================================
 ;; Minor Mode
