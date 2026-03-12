@@ -34,7 +34,9 @@
 
 ;;;###autoload
 (defun org-gtd-complete-reference-store (content &optional tags)
-  "Store reference material in gtd-reference.org."
+  "Store reference material in gtd-reference.org.
+CONTENT is the content string to store.
+TAGS is an optional list of tags."
   (with-current-buffer (find-file-noselect (expand-file-name "gtd-reference.org" org-gtd-complete-base-directory))
     (goto-char (point-max))
     (insert (format "* %s\n" content))
