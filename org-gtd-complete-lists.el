@@ -51,6 +51,11 @@
   :type 'string
   :group 'org-gtd-complete)
 
+(defcustom org-gtd-complete-lists--someday-file "gtd-someday.org"
+  "Someday/Maybe file name."
+  :type 'string
+  :group 'org-gtd-complete)
+
 (defun org-gtd-complete-lists--get-projects ()
   "Get all projects."
   (org-gtd-complete-lists--query-file org-gtd-complete-lists--projects-file))
@@ -124,14 +129,14 @@ VISION: Vision name string."
                 (member vision (plist-get item :visions)))
               items))
 
-(defun org-gtd-complete-lists--filter-by-scheduled (items period)
+(defun org-gtd-complete-lists--filter-by-scheduled (items scheduled)
   "Filter ITEMS by scheduled time period.
 ITEMS: List of items to filter.
-PERIOD: Time period (:today :week :month :year)."
+SCHEDULED: Time period (:today :week :month :year)."
   (seq-filter (lambda (item)
                 (let ((scheduled (plist-get item :scheduled)))
                   (and scheduled
-                       (pcase period
+                       (pcase scheduled
                          ('today (org-gtd-complete-lists--same-day-p scheduled (current-time)))
                          ('week (org-gtd-complete-lists--same-week-p scheduled (current-time)))
                          ('month (org-gtd-complete-lists--same-month-p scheduled (current-time)))
@@ -246,7 +251,7 @@ Examples:
         all-actions (plist-put filters :status :waiting))))
     (:someday
      (org-gtd-complete-lists--apply-filters
-       (org-gtd-complete-lists--get-inbox) (plist-put filters :status :someday)))
+       (org-gtd-complete-lists--query-file org-gtd-complete-lists--someday-file) filters))
     (_
      (error "Invalid what: %s" what))))
 

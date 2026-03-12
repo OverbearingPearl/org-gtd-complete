@@ -38,7 +38,8 @@
         (files (list "gtd-inbox.org"
                      "gtd-projects.org"
                      "gtd-single-actions.org"
-                     "gtd-scheduled.org")))
+                     "gtd-reference.org"
+                     "gtd-someday.org")))
     (dolist (file files)
       (let ((full-path (expand-file-name file base-dir)))
         (unless (file-exists-p full-path)

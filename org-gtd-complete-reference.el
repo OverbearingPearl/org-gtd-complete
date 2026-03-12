@@ -34,10 +34,13 @@
 
 ;;;###autoload
 (defun org-gtd-complete-reference-store (content &optional tags)
-  "Store reference material.
-CONTENT: Reference content string.
-TAGS: Optional tags list."
-  (error "Not implemented: org-gtd-complete-reference-store"))
+  "Store reference material in gtd-reference.org."
+  (with-current-buffer (find-file-noselect (expand-file-name "gtd-reference.org" org-gtd-complete-base-directory))
+    (goto-char (point-max))
+    (insert (format "* %s\n" content))
+    (when tags (insert (format " :%s:" (string-join tags ":"))))
+    (save-buffer)
+    (message "Stored reference: %s" content)))
 
 ;;;###autoload
 (defun org-gtd-complete-reference-find (keyword)

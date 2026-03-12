@@ -34,8 +34,8 @@
 
 ;;; Code:
 
-(defcustom org-gtd-complete-calendar--scheduled-file "gtd-scheduled.org"
-  "File for storing scheduled actions."
+(defcustom org-gtd-complete-calendar--scheduled-file "gtd-single-actions.org"
+  "File for storing scheduled actions (integrated)."
   :type 'string
   :group 'org-gtd-complete)
 
