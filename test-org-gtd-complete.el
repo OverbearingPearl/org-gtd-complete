@@ -49,4 +49,6 @@
     (org-gtd-complete-capture input)
     (should (file-exists-p (expand-file-name "gtd-inbox.org" org-gtd-complete-base-directory)))))
 
+(provide 'test-org-gtd-complete)
+
 ;;; test-org-gtd-complete.el ends here
