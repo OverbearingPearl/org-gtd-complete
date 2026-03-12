@@ -97,7 +97,7 @@ INPUT: Content string to capture."
   "Unified project planning function supporting creation and enhancement.
 NAME: Project name string.
 MODE: Mode, can be 'create (new project), 'enhance (enhance existing)
-      or 'review (enhance during review). Default is 'create.
+      or 'review (enhance during review).  Default is 'create.
 
 For new projects: Start complete natural planning five steps.
 For existing projects: Intelligently continue unfinished planning steps."

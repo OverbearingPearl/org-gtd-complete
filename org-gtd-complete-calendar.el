@@ -44,7 +44,7 @@
 (defun org-gtd-complete-calendar-schedule (action &optional when file)
   "Schedule an ACTION for a specific time in its original file.
 ACTION: Action description string.
-WHEN: When to schedule (timestamp string). If nil, prompt user.
+WHEN: When to schedule (timestamp string).  If nil, prompt user.
 FILE: Original file where the action is located."
   (let ((timestamp (or when (read-string "Date (YYYY-MM-DD): "))))
     (with-current-buffer (find-file-noselect file)

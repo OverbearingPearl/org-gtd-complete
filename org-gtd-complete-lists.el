@@ -197,8 +197,8 @@ FILTERS: Plist of filter criteria like (:context \"@office\" :project \"purchasi
 
 (defun org-gtd-complete-lists-delegate (task person)
   "Internal implementation to delegate task to someone.
-  TASK: Task description string.
-  PERSON: Responsible person string."
+TASK: Task description string.
+PERSON: Responsible person string."
   (with-current-buffer (find-file-noselect (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
     (goto-char (point-min))
     (if (re-search-forward (regexp-quote task) nil t)
