@@ -306,6 +306,7 @@ FILTERS: Additional filters."
   (defun org-gtd-complete-run-tests ()
     "Run all ERT tests for org-gtd-complete."
     (interactive)
+    (load "test-org-gtd-complete")
     (ert-run-tests-interactively "org-gtd-complete-")))
 
 (provide 'org-gtd-complete)

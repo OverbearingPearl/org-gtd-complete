@@ -34,20 +34,28 @@
 (require 'ert)
 (require 'org-gtd-complete)
 
-(ert-deftest test-org-gtd-complete-inbox-test ()
-  "Test org-gtd-complete-inbox-process-inbox function."
-  (let ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-        (expected-output "Inbox processing complete, but some items remain."))
-    ;; Set up test environment, e.g., simulate inbox file
-    (with-temp-file (expand-file-name "gtd-inbox.org" org-gtd-complete-base-directory)
-      (insert test-item))
-    (should (string= (org-gtd-complete-inbox-process-inbox) expected-output))))  ; Replace with actual expected output
+(ert-deftest test-org-gtd-complete-capture-item-to-inbox ()
+  "Should capture an item to the inbox successfully."
+  (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))  ; Create a temporary directory
+         (input "New test item")
+         (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+    ;; Override org-gtd-complete-base-directory for this test
+    (let ((org-gtd-complete-base-directory temp-dir))
+      (org-gtd-complete-capture input)
+      (should (file-exists-p inbox-file)))))
 
-(ert-deftest test-org-gtd-complete-capture-test ()
-  "Test org-gtd-complete-capture function."
-  (let ((input "New test item"))
-    (org-gtd-complete-capture input)
-    (should (file-exists-p (expand-file-name "gtd-inbox.org" org-gtd-complete-base-directory)))))
+(ert-deftest test-org-gtd-complete-process-inbox-items-correctly ()
+  "Should process inbox items correctly."
+  (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))  ; Create a temporary directory
+         (test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
+         (expected-output "Inbox processing complete, but some items remain.")
+         (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))  ; Use temporary directory for inbox file
+    ;; Set up test environment using temporary file
+    (with-temp-file inbox-file
+      (insert test-item))
+    ;; Override org-gtd-complete-base-directory for this test
+    (let ((org-gtd-complete-base-directory temp-dir))
+      (should (string= (org-gtd-complete-inbox-process-inbox) expected-output)))))  ; Replace with actual expected output
 
 (provide 'test-org-gtd-complete)
 
