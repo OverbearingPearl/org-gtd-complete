@@ -37,34 +37,34 @@
 
 (ert-deftest test-org-gtd-complete-capture-item-to-inbox ()
   "Should capture an item to the inbox successfully."
-  (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-         (input "New test item")
-         (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-    (unwind-protect
-        (save-excursion
-          (save-window-excursion
+  (save-window-excursion
+    (save-excursion
+      (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
+             (input "New test item")
+             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+        (unwind-protect
             (let ((org-gtd-complete-base-directory temp-dir))
               (org-gtd-complete-capture input)
-              (should (file-exists-p inbox-file)))))
-      (when (file-directory-p temp-dir)
-        (delete-directory temp-dir t 'trash)))))
+              (should (file-exists-p inbox-file)))
+          (when (file-directory-p temp-dir)
+            (delete-directory temp-dir t 'trash)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-items-correctly ()
   "Should process inbox items correctly."
-  (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-         (test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-         (expected-output "Inbox processing complete, but some items remain.")
-         (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-    (with-temp-file inbox-file
-      (insert test-item))
-    (unwind-protect
-        (save-excursion
-          (save-window-excursion
+  (save-window-excursion
+    (save-excursion
+      (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
+             (test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
+             (expected-output "Inbox processing complete, but some items remain.")
+             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+        (with-temp-file inbox-file
+          (insert test-item))
+        (unwind-protect
             (let ((org-gtd-complete-base-directory temp-dir))
               (cl-letf (((symbol-function 'y-or-n-p) (lambda (&rest args) t)))  ; Always return t for simulation
-                (should (string= (org-gtd-complete-inbox-process-inbox) expected-output))))))
-      (when (file-directory-p temp-dir)
-        (delete-directory temp-dir t 'trash)))))
+                (should (string= (org-gtd-complete-inbox-process-inbox) expected-output))))
+          (when (file-directory-p temp-dir)
+            (delete-directory temp-dir t 'trash)))))))
 
 (provide 'test-org-gtd-complete)
 
