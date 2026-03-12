@@ -7,8 +7,11 @@
 ;; URL: https://github.com/OverbearingPearl/org-gtd-complete
 ;; Version: 0.1.0
 ;; Package-Requires: ((emacs "27.1") (org "9.4"))
+;; Keywords: outlines, tools, convenience, productivity, gtd, org
+;; Homepage: https://github.com/OverbearingPearl/org-gtd-complete
 
 ;;; Commentary:
+
 ;; Inbox processing functions.
 
 ;;; Code:
