@@ -255,7 +255,8 @@ CONTEXT: Context string."
 (defun org-gtd-complete-setup ()
   "Initialize GTD system setup."
   (interactive)
-  (org-gtd-complete-system-setup))
+  (org-gtd-complete-system-setup)
+  (message "GTD system setup complete."))
 
 ;;;###autoload
 (defun org-gtd-complete-export ()
@@ -295,6 +296,17 @@ FILTERS: Additional filters."
   (if org-gtd-complete-mode
       (org-gtd-complete-setup)
     (message "Org-GTD-Complete mode disabled.")))
+
+;; ============================================================
+;; Testing
+;; ============================================================
+
+(when (require 'ert nil t)
+  (add-hook 'ert-batch-backtrace-mode-hook #'org-gtd-complete-mode)
+  (defun org-gtd-complete-run-tests ()
+    "Run all ERT tests for org-gtd-complete."
+    (interactive)
+    (ert-run-tests-interactively "org-gtd-complete-")))
 
 (provide 'org-gtd-complete)
 
