@@ -34,7 +34,7 @@
 (require 'ert)
 (require 'org-gtd-complete)
 
-(ert-deftest org-gtd-complete-inbox-test ()
+(ert-deftest test-org-gtd-complete-inbox-test ()
   "Test org-gtd-complete-inbox-process-inbox function."
   (let ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
         (expected-output "Inbox processing complete, but some items remain."))
@@ -43,7 +43,7 @@
       (insert test-item))
     (should (string= (org-gtd-complete-inbox-process-inbox) expected-output))))  ; Replace with actual expected output
 
-(ert-deftest org-gtd-complete-capture-test ()
+(ert-deftest test-org-gtd-complete-capture-test ()
   "Test org-gtd-complete-capture function."
   (let ((input "New test item"))
     (org-gtd-complete-capture input)
