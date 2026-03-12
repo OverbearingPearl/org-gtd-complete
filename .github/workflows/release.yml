@@ -11,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout your package
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: org-gtd-complete
 
       - name: Checkout MELPA
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: melpa/melpa
           path: melpa
