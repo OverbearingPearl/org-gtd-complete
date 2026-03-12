@@ -33,6 +33,7 @@
 
 (require 'ert)
 (require 'org-gtd-complete)
+(require 'cl-lib)
 
 (ert-deftest test-org-gtd-complete-capture-item-to-inbox ()
   "Should capture an item to the inbox successfully."
@@ -40,9 +41,11 @@
          (input "New test item")
          (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
     (unwind-protect
-        (let ((org-gtd-complete-base-directory temp-dir))
-          (org-gtd-complete-capture input)
-          (should (file-exists-p inbox-file)))
+        (save-excursion
+          (save-window-excursion
+            (let ((org-gtd-complete-base-directory temp-dir))
+              (org-gtd-complete-capture input)
+              (should (file-exists-p inbox-file)))))
       (when (file-directory-p temp-dir)
         (delete-directory temp-dir t 'trash)))))
 
@@ -55,8 +58,11 @@
     (with-temp-file inbox-file
       (insert test-item))
     (unwind-protect
-        (let ((org-gtd-complete-base-directory temp-dir))
-          (should (string= (org-gtd-complete-inbox-process-inbox) expected-output)))
+        (save-excursion
+          (save-window-excursion
+            (let ((org-gtd-complete-base-directory temp-dir))
+              (cl-letf (((symbol-function 'y-or-n-p) (lambda (&rest args) t)))  ; Always return t for simulation
+                (should (string= (org-gtd-complete-inbox-process-inbox) expected-output))))))
       (when (file-directory-p temp-dir)
         (delete-directory temp-dir t 'trash)))))
 
