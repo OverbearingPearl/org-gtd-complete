@@ -6,6 +6,7 @@
 ;; Maintainer: OverbearingPearl <OverbearingPearl@outlook.com>
 ;; URL: https://github.com/OverbearingPearl/org-gtd-complete
 ;; Version: 0.1.0
+;; Package-Requires: ((emacs "24.1"))
 ;; Keywords: outlines, tools, convenience, productivity, gtd, org
 ;; Homepage: https://github.com/OverbearingPearl/org-gtd-complete
 
