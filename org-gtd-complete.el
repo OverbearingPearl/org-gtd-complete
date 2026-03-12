@@ -166,12 +166,13 @@ PROJ: Project name string."
   (org-gtd-complete-projects-archive proj))
 
 ;;;###autoload
-(defun org-gtd-complete-schedule (action &optional when)
-  "Schedule an ACTION for a specific time.
+(defun org-gtd-complete-schedule (action &optional when file)
+  "Schedule an ACTION for a specific time in its original file.
 ACTION: Action description string.
-WHEN: When to schedule (timestamp string)."
-  (interactive "sAction to schedule: \nsWhen (YYYY-MM-DD): ")
-  (org-gtd-complete-calendar-schedule action when))
+WHEN: When to schedule (timestamp string).
+FILE: Original file where the action is located."
+  (interactive "sAction to schedule: \nsWhen (YYYY-MM-DD): \nsOriginal file: ")
+  (org-gtd-complete-calendar-schedule action when file))
 
 ;; ============================================================
 ;; Reflect

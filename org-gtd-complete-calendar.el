@@ -40,16 +40,21 @@
   :group 'org-gtd-complete)
 
 ;;;###autoload
-(defun org-gtd-complete-calendar-schedule (action &optional when)
-  "Schedule an ACTION for a specific time.
+(defun org-gtd-complete-calendar-schedule (action &optional when file)
+  "Schedule an ACTION for a specific time in its original file.
 ACTION: Action description string.
-WHEN: When to schedule (timestamp string). If nil, prompt user."
+WHEN: When to schedule (timestamp string). If nil, prompt user.
+FILE: Original file where the action is located."
   (let ((timestamp (or when (read-string "Date (YYYY-MM-DD): "))))
-    (with-current-buffer (find-file-noselect org-gtd-complete-calendar--scheduled-file)
-      (goto-char (point-max))
-      (insert (format "* TODO %s\n  SCHEDULED: <%s>\n" action timestamp))
-      (save-buffer)
-      (message "Scheduled: %s for %s" action timestamp))))
+    (with-current-buffer (find-file-noselect file)
+      (goto-char (point-min))  ; Search from the beginning
+      (if (search-forward (concat "* " action) nil t)
+          (progn
+            (forward-line 1)  ; Move to the next line to add SCHEDULED
+            (insert (format "  SCHEDULED: <%s>\n" timestamp))
+            (save-buffer)
+            (message "Scheduled: %s in file %s" action file))
+        (error "Action '%s' not found in file %s" action file)))))
 
 ;;;###autoload
 (defun org-gtd-complete-calendar-show-today ()
