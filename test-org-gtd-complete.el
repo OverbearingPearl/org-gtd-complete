@@ -131,8 +131,8 @@
             (insert test-item))
           (unwind-protect
               (progn
-                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) nil))  ; 始终返回 nil 以模拟丢弃
-                          ((symbol-function 'read-string) (lambda (&rest _) "")))  ; 模拟空输入
+                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) nil))  ; Always return nil to simulate trashing
+                          ((symbol-function 'read-string) (lambda (&rest _) "")))  ; Simulate empty input
                   (org-gtd-complete-inbox-process-inbox)
                   (with-current-buffer (find-file-noselect inbox-file)
                     (should (string= (buffer-string) "")))))
@@ -245,6 +245,7 @@
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (defun test-org-gtd-complete-cleanup-temp ()
+  "Clean up temporary directories created for tests."
   (let ((temp-dirs (directory-files temporary-file-directory t "test-org-gtd-complete-")))
     (dolist (dir temp-dirs)
       (when (file-directory-p dir)
