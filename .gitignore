@@ -16,4 +16,4 @@ dist/
 # Undo-tree save-files
 *.~undo-tree
 
-.aider*
+.aider.*
