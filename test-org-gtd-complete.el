@@ -115,8 +115,9 @@
                   (with-current-buffer (find-file-noselect (expand-file-name "gtd-someday.org" temp-dir))
                     (revert-buffer t t)  ; Reload the file
                     (goto-char (point-min))
-                    (should (re-search-forward (regexp-quote test-item) nil t)))))
-              (test-org-gtd-complete-cleanup-temp)))))))
+                    (should (re-search-forward (regexp-quote test-item) nil t))
+                    (kill-buffer))))
+            (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-not-actionable-trash ()
   "Test path: Not actionable, trash."
@@ -135,7 +136,8 @@
                           ((symbol-function 'read-string) (lambda (&rest _) "")))  ; Simulate empty input
                   (org-gtd-complete-inbox-process-inbox)
                   (with-current-buffer (find-file-noselect inbox-file)
-                    (should (string= (buffer-string) "")))))
+                    (should (string= (buffer-string) ""))
+                    (kill-buffer))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-in-two-minutes ()
@@ -158,7 +160,8 @@
                   (org-gtd-complete-inbox-process-inbox)
                   ;; Add assertions, e.g., check if item was processed
                   (should (not (with-current-buffer (find-file-noselect inbox-file)
-                                 (re-search-forward test-item nil t))))))
+                                 (re-search-forward test-item nil t))))
+                  (kill-buffer)))
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-not-two-minutes-delegated ()
@@ -185,11 +188,12 @@
                   (with-current-buffer (find-file-noselect (expand-file-name "gtd-projects.org" temp-dir))
                     (revert-buffer t t)  ; Reload the file
                     (goto-char (point-min))
-                    (should (re-search-forward (regexp-quote test-item) nil t)))
+                    (should (re-search-forward (regexp-quote test-item) nil t))
+                    (should (re-search-forward ":WAITING" nil t))
+                    (kill-buffer))
                   (with-current-buffer (find-file-noselect (expand-file-name "gtd-projects.org" temp-dir))
-                    (revert-buffer t t)  ; Reload the file
-                    (goto-char (point-min))
-                    (should (re-search-forward ":WAITING" nil t)))))
+                    (revert-buffer t t)  ; Reload the file  (Note: This is redundant, but keeping as is)
+                    (kill-buffer))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-not-two-minutes-not-delegated-project ()
@@ -215,7 +219,8 @@
                   (with-current-buffer (find-file-noselect (expand-file-name "gtd-projects.org" temp-dir))
                     (revert-buffer t t)  ; Reload the file
                     (goto-char (point-min))
-                    (should (re-search-forward (regexp-quote test-item) nil t)))))
+                    (should (re-search-forward (regexp-quote test-item) nil t))
+                    (kill-buffer))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-not-two-minutes-not-delegated-not-project ()
@@ -241,15 +246,21 @@
                   (with-current-buffer (find-file-noselect (expand-file-name "gtd-single-actions.org" temp-dir))
                     (revert-buffer t t)  ; Reload the file
                     (goto-char (point-min))
-                    (should (re-search-forward (regexp-quote test-item) nil t)))))
+                    (should (re-search-forward (regexp-quote test-item) nil t))
+                    (kill-buffer))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (defun test-org-gtd-complete-cleanup-temp ()
-  "Clean up temporary directories created for tests."
+  "Clean up temporary directories and buffers created for tests."
   (let ((temp-dirs (directory-files temporary-file-directory t "test-org-gtd-complete-")))
     (dolist (dir temp-dirs)
       (when (file-directory-p dir)
-        (delete-directory dir t 'trash)))))
+        (delete-directory dir t 'trash)))
+    ;; Kill temporary buffers
+    (dolist (buf (buffer-list))
+      (when (and (buffer-file-name buf)
+                 (string-match-p "test-org-gtd-complete-" (buffer-file-name buf)))
+        (kill-buffer buf)))))
 
 (provide 'test-org-gtd-complete)
 
