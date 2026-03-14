@@ -36,7 +36,12 @@
   "Unified project planning function.
 NAME: Project name string.
 MODE: Mode, can be 'create, 'enhance, or 'review'."
-  (error "Not implemented: org-gtd-complete-projects-plan"))
+  (let ((target-file (expand-file-name "gtd-projects.org" org-gtd-complete-base-directory)))
+    (with-current-buffer (find-file-noselect target-file)
+      (goto-char (point-max))
+      (insert (format "* %s\n" name))
+      (save-buffer))
+    t))
 
 ;;;###autoload
 (defun org-gtd-complete-projects-brainstorm (topic)

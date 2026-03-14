@@ -52,7 +52,7 @@ Organize items into appropriate lists based on decisions."
          (reference-file (expand-file-name "gtd-reference.org" base-dir))
          (waiting-file (expand-file-name "gtd-waiting.org" base-dir))
          (projects-file (expand-file-name "gtd-projects.org" base-dir))
-         (actions-file (expand-file-name "gtd-actions.org" base-dir))
+         (actions-file (expand-file-name "gtd-single-actions.org" base-dir))
          (inbox-items (org-gtd-complete-lists--get-inbox)))
     (setq inbox-items (org-gtd-complete-lists--get-inbox))  ; Reload
     (if (file-exists-p inbox-file)
@@ -107,31 +107,44 @@ Organize items into appropriate lists based on decisions."
                               (message "Do it now: %s" title)  ; Stop here if yes
                             (let ((delegatable (y-or-n-p "Can it be delegated? ")))
                               (if delegatable
-                                  (let ((person (read-string "Delegate to whom? ")))
-                                    (org-gtd-complete-lists-delegate title person)  ; Corrected function name
-                                    ;; Add check for project after delegation
-                                    (let ((is-project (y-or-n-p "Is this delegated task part of a project? ")))
-                                      (if is-project
-                                          (org-gtd-complete-projects-plan title 'create)
-                                        (org-gtd-complete-lists-show :actions))))  ; If not, show actions or handle accordingly
+                                  (let ((person (read-string "Delegate to whom? "))
+                                        (is-project (y-or-n-p "Is this delegated task part of a project? ")))
+                                    (with-current-buffer (find-file-noselect (if is-project
+                                                                                 (expand-file-name "gtd-projects.org" base-dir)
+                                                                               (expand-file-name "gtd-single-actions.org" base-dir)))
+                                      (goto-char (point-max))
+                                      (insert (format "* %s :WAITING:DELEGATED_TO:%s:\n" title person))
+                                      (save-buffer)))
                                 (let ((project (y-or-n-p "Is it a project? ")))
                                   (if project
-                                      (org-gtd-complete-projects-plan title 'create)
-                                    (org-gtd-complete-lists-show :actions)))))))
+                                      (let ((target-file (expand-file-name "gtd-projects.org" base-dir)))
+                                        (with-current-buffer (find-file-noselect target-file)
+                                          (goto-char (point-max))
+                                          (insert (format "* %s\n" title))
+                                          (save-buffer)))
+                                    (let ((target-file (expand-file-name "gtd-single-actions.org" base-dir)))
+                                      (with-current-buffer (find-file-noselect target-file)
+                                        (goto-char (point-max))
+                                        (insert (format "* %s\n" title))
+                                        (save-buffer)))))))))
                       ;; Not actionable
                       (let ((reference (y-or-n-p "Is it reference material? "))
                             (someday (y-or-n-p "Should it go to Someday/Maybe? ")))
                         (cond
                          (reference
-                          (org-gtd-complete-add-reference title))
+                          (with-current-buffer (find-file-noselect reference-file)
+                            (goto-char (point-max))
+                            (insert (format "* %s\n" title))
+                            (save-buffer)))
                          (someday
                           (with-current-buffer (find-file-noselect someday-file)
                             (goto-char (point-max))
                             (insert (format "* %s\n" title))
-                            (save-buffer))
-                          (message "Moved to Someday/Maybe: %s" title))
+                            (save-buffer)))
                          (t
-                          (message "Trashed: %s" title)))))))))
+                          (with-current-buffer (find-file-noselect inbox-file)
+                            (erase-buffer)
+                            (save-buffer))))))))))
           (message "Inbox items retrieved: %s" inbox-items))  ; Debug: Check retrieved items
       (message "Inbox file does not exist or is empty"))
     ;; Add cleanup code before the last message

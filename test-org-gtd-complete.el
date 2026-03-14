@@ -40,203 +40,215 @@
   (save-window-excursion
     (save-excursion
       (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-             (input "New test item")
-             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-        (unwind-protect
-            (let ((org-gtd-complete-base-directory temp-dir))
-              (org-gtd-complete-capture input)
-              (with-current-buffer (find-file-noselect inbox-file)
-                (goto-char (point-min))
-                (should (re-search-forward (concat "^\\* " (regexp-quote input) " \\[Captured at: .+\\]") nil t))
-                (kill-buffer)))
-          (when (file-directory-p temp-dir)
-            (delete-directory temp-dir t 'trash)))))))
+             (org-gtd-complete-base-directory temp-dir))
+        (org-gtd-complete-setup)
+        (let* ((input "New test item")
+               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+          (unwind-protect
+              (progn
+                (org-gtd-complete-capture input)
+                (with-current-buffer (find-file-noselect inbox-file)
+                  (goto-char (point-min))
+                  (should (re-search-forward (concat "^\\* " (regexp-quote input) " \\[Captured at: .+\\]") nil t))
+                  (kill-buffer)))
+            (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-items-correctly ()
   "Should process inbox items correctly."
   (save-window-excursion
     (save-excursion
       (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-             (test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-             (expected-output "Inbox processing complete, but some items remain.")
-             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-        (with-temp-file inbox-file
-          (insert test-item))
-        (unwind-protect
-            (let ((org-gtd-complete-base-directory temp-dir))
-              (cl-letf (((symbol-function 'y-or-n-p) (lambda (&rest args) t)))  ; Always return t for simulation
-                (should (string= (org-gtd-complete-inbox-process-inbox) expected-output))))
-          (when (file-directory-p temp-dir)
-            (delete-directory temp-dir t 'trash)))))))
+             (org-gtd-complete-base-directory temp-dir))
+        (org-gtd-complete-setup)
+        (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
+               (expected-output "Inbox processing complete, but some items remain.")
+               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+          (with-temp-file inbox-file
+            (insert test-item))
+          (unwind-protect
+              (progn
+                (cl-letf (((symbol-function 'y-or-n-p) (lambda (&rest args) t)))  ; Always return t for simulation
+                  (should (string= (org-gtd-complete-inbox-process-inbox) expected-output))))
+            (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-not-actionable-reference ()
   "Test path: Not actionable, is reference."
   (save-window-excursion
     (save-excursion
       (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-             (test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-        (with-temp-file inbox-file
-          (insert test-item))
-        (unwind-protect
-            (let ((org-gtd-complete-base-directory temp-dir))
-              (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
-                                                       (cond ((string-match "Is .+ actionable?" prompt) nil)  ; No
-                                                              ((string-match "Is it reference material?" prompt) t)  ; Yes
-                                                              (t nil)))))  ; Other defaults to no
-                (org-gtd-complete-inbox-process-inbox)
-                ;; Add assertions, e.g., check if item was added to reference
-                (should (file-exists-p (expand-file-name "gtd-reference.org" temp-dir)))))
-          (when (file-directory-p temp-dir)
-            (delete-directory temp-dir t 'trash)))))))
+             (org-gtd-complete-base-directory temp-dir))
+        (org-gtd-complete-setup)
+        (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
+               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+          (with-temp-file inbox-file
+            (insert test-item))
+          (unwind-protect
+              (progn
+                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
+                                                         (cond ((string-match "Is .+ actionable?" prompt) nil)  ; No
+                                                                ((string-match "Is it reference material?" prompt) t)  ; Yes
+                                                                (t nil)))))  ; Other defaults to no
+                  (org-gtd-complete-inbox-process-inbox)
+                  ;; Add assertions, e.g., check if item was added to reference
+                  (should (file-exists-p (expand-file-name "gtd-reference.org" temp-dir)))))
+            (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-not-actionable-someday ()
   "Test path: Not actionable, should go to Someday/Maybe."
   (save-window-excursion
     (save-excursion
       (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-             (test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-        (with-temp-file inbox-file
-          (insert test-item))
-        (unwind-protect
-            (let ((org-gtd-complete-base-directory temp-dir))
-              (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
-                                                       (cond ((string-match "Is .+ actionable?" prompt) nil)  ; No
-                                                              ((string-match "Is it reference material?" prompt) nil)  ; No
-                                                              ((string-match "Should it go to Someday/Maybe?" prompt) t)  ; Yes
-                                                              (t nil)))))  ; Other defaults to no
-                (org-gtd-complete-inbox-process-inbox)
-                ;; Add assertions, e.g., check if item was added to Someday/Maybe
-                (should (file-exists-p (expand-file-name "gtd-someday.org" temp-dir)))
-                (with-current-buffer (find-file-noselect (expand-file-name "gtd-someday.org" temp-dir))
-                  (goto-char (point-min))
-                  (should (search-forward test-item nil t)))))
-          (when (file-directory-p temp-dir)
-            (delete-directory temp-dir t 'trash)))))))
+             (org-gtd-complete-base-directory temp-dir))
+        (org-gtd-complete-setup)
+        (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
+               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+          (with-temp-file inbox-file
+            (insert test-item))
+          (unwind-protect
+              (progn
+                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
+                                                         (cond ((string-match "Is .+ actionable?" prompt) nil)  ; No
+                                                                ((string-match "Is it reference material?" prompt) nil)  ; No
+                                                                ((string-match "Should it go to Someday/Maybe?" prompt) t)  ; Yes
+                                                                (t nil)))))  ; Other defaults to no
+                  (org-gtd-complete-inbox-process-inbox)
+                  (with-current-buffer (find-file-noselect (expand-file-name "gtd-someday.org" temp-dir))
+                    (revert-buffer t t)  ; Reload the file
+                    (goto-char (point-min))
+                    (should (re-search-forward (regexp-quote test-item) nil t)))))
+              (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-not-actionable-trash ()
   "Test path: Not actionable, trash."
   (save-window-excursion
     (save-excursion
       (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-             (test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-        (with-temp-file inbox-file
-          (insert test-item))
-        (unwind-protect
-            (let ((org-gtd-complete-base-directory temp-dir))
-              (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
-                                                       (cond ((string-match "Is .+ actionable?" prompt) nil)  ; No
-                                                              ((string-match "Is it reference material?" prompt) nil)  ; No
-                                                              ((string-match "Should it go to Someday/Maybe?" prompt) nil)  ; No
-                                                              (t nil)))))  ; Other defaults to no
-                (org-gtd-complete-inbox-process-inbox)
-                ;; Add assertions, e.g., check if inbox is empty
-                (with-current-buffer (find-file-noselect inbox-file)
-                  (should (string= (buffer-string) "")))))
-          (when (file-directory-p temp-dir)
-            (delete-directory temp-dir t 'trash)))))))
+             (org-gtd-complete-base-directory temp-dir))
+        (org-gtd-complete-setup)
+        (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
+               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+          (with-temp-file inbox-file
+            (insert test-item))
+          (unwind-protect
+              (progn
+                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) nil))  ; 始终返回 nil 以模拟丢弃
+                          ((symbol-function 'read-string) (lambda (&rest _) "")))  ; 模拟空输入
+                  (org-gtd-complete-inbox-process-inbox)
+                  (with-current-buffer (find-file-noselect inbox-file)
+                    (should (string= (buffer-string) "")))))
+            (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-in-two-minutes ()
   "Test path: Actionable, can be done in 2 minutes."
   (save-window-excursion
     (save-excursion
       (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-             (test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-        (with-temp-file inbox-file
-          (insert test-item))
-        (unwind-protect
-            (let ((org-gtd-complete-base-directory temp-dir))
-              (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
-                                                       (cond ((string-match "Is .+ actionable?" prompt) t)
-                                                             ((string-match "Can it be done in 2 minutes?" prompt) t)
-                                                             (t nil)))))  ; Other defaults to no
-                (org-gtd-complete-inbox-process-inbox)
-                ;; Add assertions, e.g., check if item was processed
-                (should (not (with-current-buffer (find-file-noselect inbox-file)
-                               (re-search-forward test-item nil t))))))
-          (when (file-directory-p temp-dir)
-            (delete-directory temp-dir t 'trash)))))))
+             (org-gtd-complete-base-directory temp-dir))
+        (org-gtd-complete-setup)
+        (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
+               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+          (with-temp-file inbox-file
+            (insert test-item))
+          (unwind-protect
+              (progn
+                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
+                                                         (cond ((string-match "Is .+ actionable?" prompt) t)
+                                                               ((string-match "Can it be done in 2 minutes?" prompt) t)
+                                                               (t nil)))))  ; Other defaults to no
+                  (org-gtd-complete-inbox-process-inbox)
+                  ;; Add assertions, e.g., check if item was processed
+                  (should (not (with-current-buffer (find-file-noselect inbox-file)
+                                 (re-search-forward test-item nil t))))))
+            (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-not-two-minutes-delegated ()
   "Test path: Actionable, not in 2 minutes, can be delegated."
   (save-window-excursion
     (save-excursion
       (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-             (test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-        (with-temp-file inbox-file
-          (insert test-item))
-        (unwind-protect
-            (let ((org-gtd-complete-base-directory temp-dir))
-              (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
-                                                       (cond ((string-match "Is .+ actionable?" prompt) t)
-                                                             ((string-match "Can it be done in 2 minutes?" prompt) nil)
-                                                             ((string-match "Can it be delegated?" prompt) t)
-                                                             (t nil))))
-                        ((symbol-function 'read-string) (lambda (prompt &rest args) "Simulated Person")))  ; Simulate return value
-                (org-gtd-complete-inbox-process-inbox)
-                ;; Add assertions, e.g., check if item was delegated
-                (should (file-exists-p (expand-file-name "gtd-waiting.org" temp-dir)))
-                (with-current-buffer (find-file-noselect (expand-file-name "gtd-waiting.org" temp-dir))
-                  (goto-char (point-min))
-                  (should (search-forward test-item nil t)))))
-          (when (file-directory-p temp-dir)
-            (delete-directory temp-dir t 'trash)))))))
+             (org-gtd-complete-base-directory temp-dir))
+        (org-gtd-complete-setup)
+        (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
+               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+          (with-temp-file inbox-file
+            (insert test-item))
+          (unwind-protect
+              (progn
+                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
+                                                         (cond ((string-match "Is .+ actionable?" prompt) t)
+                                                               ((string-match "Can it be done in 2 minutes?" prompt) nil)
+                                                               ((string-match "Can it be delegated?" prompt) t)
+                                                               ((string-match "Is this delegated task part of a project?" prompt) t)
+                                                               (t nil))))
+                          ((symbol-function 'read-string) (lambda (prompt &rest args) "Simulated Person")))  ; Simulate return value
+                  (org-gtd-complete-inbox-process-inbox)
+                  (with-current-buffer (find-file-noselect (expand-file-name "gtd-projects.org" temp-dir))
+                    (revert-buffer t t)  ; Reload the file
+                    (goto-char (point-min))
+                    (should (re-search-forward (regexp-quote test-item) nil t)))
+                  (with-current-buffer (find-file-noselect (expand-file-name "gtd-projects.org" temp-dir))
+                    (revert-buffer t t)  ; Reload the file
+                    (goto-char (point-min))
+                    (should (re-search-forward ":WAITING" nil t)))))
+            (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-not-two-minutes-not-delegated-project ()
   "Test path: Actionable, not in 2 minutes, not delegated, is project."
   (save-window-excursion
     (save-excursion
       (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-             (test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-        (with-temp-file inbox-file
-          (insert test-item))
-        (unwind-protect
-            (let ((org-gtd-complete-base-directory temp-dir))
-              (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
-                                                       (cond ((string-match "Is .+ actionable?" prompt) t)
-                                                             ((string-match "Can it be done in 2 minutes?" prompt) nil)
-                                                             ((string-match "Can it be delegated?" prompt) nil)
-                                                             ((string-match "Is it a project?" prompt) t)
-                                                             (t nil)))))
-                (org-gtd-complete-inbox-process-inbox)
-                ;; Add assertions, e.g., check if item was added to projects
-                (should (file-exists-p (expand-file-name "gtd-projects.org" temp-dir)))
-                (with-current-buffer (find-file-noselect (expand-file-name "gtd-projects.org" temp-dir))
-                  (goto-char (point-min))
-                  (should (search-forward test-item nil t)))))
-          (when (file-directory-p temp-dir)
-            (delete-directory temp-dir t 'trash)))))))
+             (org-gtd-complete-base-directory temp-dir))
+        (org-gtd-complete-setup)
+        (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
+               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+          (with-temp-file inbox-file
+            (insert test-item))
+          (unwind-protect
+              (progn
+                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
+                                                         (cond ((string-match "Is .+ actionable?" prompt) t)
+                                                               ((string-match "Can it be done in 2 minutes?" prompt) nil)
+                                                               ((string-match "Can it be delegated?" prompt) nil)
+                                                               ((string-match "Is it a project?" prompt) t)
+                                                               (t nil)))))
+                  (org-gtd-complete-inbox-process-inbox)
+                  (with-current-buffer (find-file-noselect (expand-file-name "gtd-projects.org" temp-dir))
+                    (revert-buffer t t)  ; Reload the file
+                    (goto-char (point-min))
+                    (should (re-search-forward (regexp-quote test-item) nil t)))))
+            (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-not-two-minutes-not-delegated-not-project ()
   "Test path: Actionable, not in 2 minutes, not delegated, not project."
   (save-window-excursion
     (save-excursion
       (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-             (test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-        (with-temp-file inbox-file
-          (insert test-item))
-        (unwind-protect
-            (let ((org-gtd-complete-base-directory temp-dir))
-              (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
-                                                       (cond ((string-match "Is .+ actionable?" prompt) t)
-                                                             ((string-match "Can it be done in 2 minutes?" prompt) nil)
-                                                             ((string-match "Can it be delegated?" prompt) nil)
-                                                             ((string-match "Is it a project?" prompt) nil)
-                                                             (t nil)))))
-                (org-gtd-complete-inbox-process-inbox)
-                ;; Add assertions, e.g., check if item was added to actions
-                (should (file-exists-p (expand-file-name "gtd-actions.org" temp-dir)))
-                (with-current-buffer (find-file-noselect (expand-file-name "gtd-actions.org" temp-dir))
-                  (goto-char (point-min))
-                  (should (search-forward test-item nil t)))))
-          (when (file-directory-p temp-dir)
-            (delete-directory temp-dir t 'trash)))))))
+             (org-gtd-complete-base-directory temp-dir))
+        (org-gtd-complete-setup)
+        (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
+               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+          (with-temp-file inbox-file
+            (insert test-item))
+          (unwind-protect
+              (progn
+                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
+                                                         (cond ((string-match "Is .+ actionable?" prompt) t)
+                                                               ((string-match "Can it be done in 2 minutes?" prompt) nil)
+                                                               ((string-match "Can it be delegated?" prompt) nil)
+                                                               ((string-match "Is it a project?" prompt) nil)
+                                                               (t nil)))))
+                  (org-gtd-complete-inbox-process-inbox)
+                  (with-current-buffer (find-file-noselect (expand-file-name "gtd-single-actions.org" temp-dir))
+                    (revert-buffer t t)  ; Reload the file
+                    (goto-char (point-min))
+                    (should (re-search-forward (regexp-quote test-item) nil t)))))
+            (test-org-gtd-complete-cleanup-temp)))))))
+
+(defun test-org-gtd-complete-cleanup-temp ()
+  (let ((temp-dirs (directory-files temporary-file-directory t "test-org-gtd-complete-")))
+    (dolist (dir temp-dirs)
+      (when (file-directory-p dir)
+        (delete-directory dir t 'trash)))))
 
 (provide 'test-org-gtd-complete)
 
