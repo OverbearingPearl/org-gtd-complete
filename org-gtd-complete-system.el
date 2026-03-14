@@ -34,7 +34,6 @@
 ;;;###autoload
 (defun org-gtd-complete-system-setup ()
   "Initialize GTD system setup."
-  (require 'org-gtd-complete)
   (let ((base-dir org-gtd-complete-base-directory)
         (files (list "gtd-inbox.org"
                      "gtd-projects.org"
@@ -46,8 +45,8 @@
         (unless (file-exists-p full-path)
           (with-current-buffer (find-file-noselect full-path)
             (insert "* Initial content for " file "\n")
-            (save-buffer)))))
-  (message "GTD system setup complete.")))
+            (save-buffer))))))
+  (message "GTD system setup complete."))
 
 ;;;###autoload
 (defun org-gtd-complete-system-status ()
@@ -65,7 +64,6 @@
 KEY: Configuration key.
 VALUE: Configuration value (when setting)."
   (error "Not implemented: org-gtd-complete-system-configure"))
-
 
 (provide 'org-gtd-complete-system)
 

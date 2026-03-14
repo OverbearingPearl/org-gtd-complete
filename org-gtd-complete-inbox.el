@@ -17,6 +17,7 @@
 ;;; Code:
 
 (require 'org-gtd-complete-lists)
+(require 'org-gtd-complete-projects)
 
 (defvar org-gtd-complete-inbox-overlay nil "Overlay for highlighting current item.")
 
@@ -47,19 +48,13 @@ Ask five questions for each item and execute decisions immediately:
 Organize items into appropriate lists based on decisions."
   (let* ((base-dir org-gtd-complete-base-directory)
          (inbox-file (expand-file-name org-gtd-complete-lists--inbox-file base-dir))
+         (someday-file (expand-file-name "gtd-someday.org" base-dir))
+         (reference-file (expand-file-name "gtd-reference.org" base-dir))
+         (waiting-file (expand-file-name "gtd-waiting.org" base-dir))
+         (projects-file (expand-file-name "gtd-projects.org" base-dir))
+         (actions-file (expand-file-name "gtd-actions.org" base-dir))
          (inbox-items (org-gtd-complete-lists--get-inbox)))
-    ;; Create base directory if it doesn't exist
-    (unless (file-directory-p base-dir)
-      (make-directory base-dir t)
-      (message "Created base directory: %s" base-dir))
-    ;; Create inbox file if it doesn't exist
-    (unless (file-exists-p inbox-file)
-      (with-temp-buffer
-        (org-mode)
-        (write-region "" nil inbox-file nil 0)
-        (message "Created inbox file: %s" inbox-file)))
-    (message "Checking inbox file: %s" inbox-file)  ; Debug: Check file path
-    (setq inbox-items (org-gtd-complete-lists--get-inbox))  ; Reload after potential creation
+    (setq inbox-items (org-gtd-complete-lists--get-inbox))  ; Reload
     (if (file-exists-p inbox-file)
         (if inbox-items
             (progn
@@ -117,11 +112,11 @@ Organize items into appropriate lists based on decisions."
                                     ;; Add check for project after delegation
                                     (let ((is-project (y-or-n-p "Is this delegated task part of a project? ")))
                                       (if is-project
-                                          (org-gtd-complete-plan-project title 'create)
+                                          (org-gtd-complete-projects-plan title 'create)
                                         (org-gtd-complete-lists-show :actions))))  ; If not, show actions or handle accordingly
                                 (let ((project (y-or-n-p "Is it a project? ")))
                                   (if project
-                                      (org-gtd-complete-plan-project title 'create)
+                                      (org-gtd-complete-projects-plan title 'create)
                                     (org-gtd-complete-lists-show :actions)))))))
                       ;; Not actionable
                       (let ((reference (y-or-n-p "Is it reference material? "))
@@ -130,6 +125,10 @@ Organize items into appropriate lists based on decisions."
                          (reference
                           (org-gtd-complete-add-reference title))
                          (someday
+                          (with-current-buffer (find-file-noselect someday-file)
+                            (goto-char (point-max))
+                            (insert (format "* %s\n" title))
+                            (save-buffer))
                           (message "Moved to Someday/Maybe: %s" title))
                          (t
                           (message "Trashed: %s" title)))))))))
