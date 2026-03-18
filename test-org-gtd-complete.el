@@ -250,7 +250,7 @@
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (defun test-org-gtd-complete-cleanup-temp ()
-  "Clean up temporary directories and buffers created for tests."
+  "Clean up temporary directories and buffers created for test."
   (let ((temp-dirs (directory-files temporary-file-directory t "test-org-gtd-complete-")))
     (dolist (dir temp-dirs)
       (when (file-directory-p dir)
