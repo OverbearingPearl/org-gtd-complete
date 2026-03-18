@@ -132,12 +132,12 @@
             (insert test-item))
           (unwind-protect
               (progn
-                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) nil))  ; Always return nil to simulate trashing
-                          ((symbol-function 'read-string) (lambda (&rest _) "")))  ; Simulate empty input
+                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) nil))
+                          ((symbol-function 'read-string) (lambda (&rest _) "")))
                   (org-gtd-complete-inbox-process-inbox)
-                  (with-current-buffer (find-file-noselect inbox-file)
-                    (should (string= (buffer-string) ""))
-                    (kill-buffer))))
+                  (with-temp-buffer
+                    (insert-file-contents inbox-file)
+                    (should (string= (buffer-string) "")))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-in-two-minutes ()
@@ -156,12 +156,11 @@
                 (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
                                                          (cond ((string-match "Is .+ actionable?" prompt) t)
                                                                ((string-match "Can it be done in 2 minutes?" prompt) t)
-                                                               (t nil)))))  ; Other defaults to no
+                                                               (t nil)))))
                   (org-gtd-complete-inbox-process-inbox)
-                  ;; Add assertions, e.g., check if item was processed
-                  (should (not (with-current-buffer (find-file-noselect inbox-file)
-                                 (re-search-forward test-item nil t))))
-                  (kill-buffer)))
+                  (with-temp-buffer
+                    (insert-file-contents inbox-file)
+                    (should (not (re-search-forward test-item nil t))))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-not-two-minutes-delegated ()

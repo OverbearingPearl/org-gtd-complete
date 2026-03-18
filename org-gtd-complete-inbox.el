@@ -142,17 +142,17 @@ Organize items into appropriate lists based on decisions."
                             (insert (format "* %s\n" title))
                             (save-buffer)))
                          (t
-                          (with-current-buffer (find-file-noselect inbox-file)
-                            (erase-buffer)
-                            (save-buffer))))))))))
+                          (with-temp-buffer
+                            (write-region (point-min) (point-max) inbox-file))))))))))
           (message "Inbox items retrieved: %s" inbox-items))  ; Debug: Check retrieved items
       (message "Inbox file does not exist or is empty"))
-    ;; Add cleanup code before the last message
+    (when-let ((buf (get-file-buffer inbox-file)))
+      (kill-buffer buf))
+    ;; Re-check inbox after processing
+    (setq inbox-items (org-gtd-complete-lists--get-inbox))
     (when org-gtd-complete-inbox-overlay
       (delete-overlay org-gtd-complete-inbox-overlay)
       (message "Overlay cleaned up in view buffer"))
-    ;; Re-check inbox after processing
-    (setq inbox-items (org-gtd-complete-lists--get-inbox))
     (if inbox-items
         (message "Inbox processing complete, but some items remain.")
       (message "Inbox is empty."))))
