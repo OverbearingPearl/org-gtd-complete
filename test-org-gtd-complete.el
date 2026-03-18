@@ -71,7 +71,7 @@
                   (should (string= (org-gtd-complete-inbox-process-inbox) expected-output))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
-(ert-deftest test-org-gtd-complete-process-inbox-not-actionable-reference ()
+(ert-deftest test-org-gtd-complete-process-inbox-reference ()
   "Test path: Not actionable, is reference."
   (save-window-excursion
     (save-excursion
@@ -93,7 +93,7 @@
                   (should (file-exists-p (expand-file-name "gtd-reference.org" temp-dir)))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
-(ert-deftest test-org-gtd-complete-process-inbox-not-actionable-someday ()
+(ert-deftest test-org-gtd-complete-process-inbox-someday ()
   "Test path: Not actionable, should go to Someday/Maybe."
   (save-window-excursion
     (save-excursion
@@ -119,7 +119,7 @@
                     (kill-buffer))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
-(ert-deftest test-org-gtd-complete-process-inbox-not-actionable-trash ()
+(ert-deftest test-org-gtd-complete-process-inbox-trash ()
   "Test path: Not actionable, trash."
   (save-window-excursion
     (save-excursion
@@ -140,7 +140,7 @@
                     (should (string= (buffer-string) "")))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
-(ert-deftest test-org-gtd-complete-process-inbox-actionable-in-two-minutes ()
+(ert-deftest test-org-gtd-complete-process-inbox-actionable-2-minutes ()
   "Test path: Actionable, can be done in 2 minutes."
   (save-window-excursion
     (save-excursion
@@ -163,7 +163,7 @@
                     (should (not (re-search-forward test-item nil t))))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
-(ert-deftest test-org-gtd-complete-process-inbox-actionable-not-two-minutes-delegated ()
+(ert-deftest test-org-gtd-complete-process-inbox-actionable-delegated ()
   "Test path: Actionable, not in 2 minutes, can be delegated."
   (save-window-excursion
     (save-excursion
@@ -196,7 +196,7 @@
                     (kill-buffer))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
-(ert-deftest test-org-gtd-complete-process-inbox-actionable-not-two-minutes-not-delegated-project ()
+(ert-deftest test-org-gtd-complete-process-inbox-actionable-project ()
   "Test path: Actionable, not in 2 minutes, not delegated, is project."
   (save-window-excursion
     (save-excursion
@@ -223,7 +223,7 @@
                     (kill-buffer))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
-(ert-deftest test-org-gtd-complete-process-inbox-actionable-not-two-minutes-not-delegated-not-project ()
+(ert-deftest test-org-gtd-complete-process-inbox-actionable ()
   "Test path: Actionable, not in 2 minutes, not delegated, not project."
   (save-window-excursion
     (save-excursion
@@ -250,7 +250,7 @@
                     (kill-buffer))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
-(ert-deftest test-org-gtd-complete-process-inbox-delegation-non-project ()
+(ert-deftest test-org-gtd-complete-process-inbox-delegation ()
   "Test delegating a non-project item."
   (save-window-excursion
     (save-excursion
