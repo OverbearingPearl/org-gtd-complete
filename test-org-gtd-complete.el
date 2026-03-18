@@ -180,18 +180,19 @@
                                                          (cond ((string-match "Is .+ actionable?" prompt) t)
                                                                ((string-match "Can it be done in 2 minutes?" prompt) nil)
                                                                ((string-match "Can it be delegated?" prompt) t)
-                                                               ((string-match "Is this delegated task part of a project?" prompt) t)
+                                                               ((string-match "Is this delegated task part of a project?" prompt) t)  ; Explicitly simulate project affiliation
                                                                (t nil))))
                           ((symbol-function 'read-string) (lambda (prompt &rest args) "Simulated Person")))  ; Simulate return value
                   (org-gtd-complete-inbox-process-inbox)
                   (with-current-buffer (find-file-noselect (expand-file-name "gtd-projects.org" temp-dir))
                     (revert-buffer t t)  ; Reload the file
                     (goto-char (point-min))
-                    (should (re-search-forward (regexp-quote test-item) nil t))
-                    (should (re-search-forward ":WAITING" nil t))
+                    (should (re-search-forward (regexp-quote test-item) nil t))  ; Check item exists
+                    (should (string-match ":WAITING:" (buffer-string)))  ; Check WAITING tag
+                    (should (string-match ":DELEGATED_TO:Simulated Person:" (buffer-string)))  ; Check delegated tag
                     (kill-buffer))
                   (with-current-buffer (find-file-noselect (expand-file-name "gtd-projects.org" temp-dir))
-                    (revert-buffer t t)  ; Reload the file  (Note: This is redundant, but keeping as is)
+                    (revert-buffer t t)  ; Reload the file
                     (kill-buffer))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
@@ -248,6 +249,34 @@
                     (should (re-search-forward (regexp-quote test-item) nil t))
                     (kill-buffer))))
             (test-org-gtd-complete-cleanup-temp)))))))
+
+(ert-deftest test-org-gtd-complete-process-inbox-delegation-non-project ()
+  "Test delegating a non-project item."
+  (save-window-excursion
+    (save-excursion
+      (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
+             (org-gtd-complete-base-directory temp-dir)
+             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+        (org-gtd-complete-setup)
+        (with-temp-file inbox-file
+          (insert "* Test item [Captured at: 2023-01-01 12:00:00]"))
+        (unwind-protect
+            (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
+                                                     (cond ((string-match "Is .+ actionable?" prompt) t)
+                                                           ((string-match "Can it be done in 2 minutes?" prompt) nil)
+                                                           ((string-match "Can it be delegated?" prompt) t)
+                                                           ((string-match "Is it a project?" prompt) nil)  ; Explicitly non-project
+                                                           (t nil))))
+                      ((symbol-function 'read-string) (lambda (prompt &rest args) "Simulated Person")))
+              (org-gtd-complete-inbox-process-inbox)
+              (with-current-buffer (find-file-noselect (expand-file-name "gtd-single-actions.org" temp-dir))  ; Expect in single actions
+                (revert-buffer t t)  ; Reload the file
+                (goto-char (point-min))
+                (should (re-search-forward (regexp-quote "* Test item") nil t))  ; Check item exists
+                (should (string-match ":WAITING:" (buffer-string)))  ; Check WAITING tag
+                (should (string-match ":DELEGATED_TO:Simulated Person:" (buffer-string)))  ; Check delegated tag
+                (kill-buffer)))
+          (test-org-gtd-complete-cleanup-temp))))))
 
 (defun test-org-gtd-complete-cleanup-temp ()
   "Clean up temporary directories and buffers created for test."
