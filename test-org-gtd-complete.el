@@ -224,33 +224,6 @@
                     (kill-buffer))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
-(ert-deftest test-org-gtd-complete-process-inbox-actionable-project ()
-  "Test path: Actionable, not in 2 minutes, not delegated, is project."
-  (save-window-excursion
-    (save-excursion
-      (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-             (org-gtd-complete-base-directory temp-dir))
-        (org-gtd-complete-setup)
-        (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-          (with-temp-file inbox-file
-            (insert test-item))
-          (unwind-protect
-              (progn
-                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
-                                                         (cond ((string-match "Is .+ actionable?" prompt) t)
-                                                               ((string-match "Can it be done in 2 minutes?" prompt) nil)
-                                                               ((string-match "Can it be delegated?" prompt) nil)
-                                                               ((string-match "Is it a project?" prompt) t)
-                                                               (t nil)))))
-                  (org-gtd-complete-inbox-process-inbox)
-                  (with-current-buffer (find-file-noselect (expand-file-name "gtd-projects.org" temp-dir))
-                    (revert-buffer t t)  ; Reload the file
-                    (goto-char (point-min))
-                    (should (re-search-forward (regexp-quote test-item) nil t))
-                    (kill-buffer))))
-            (test-org-gtd-complete-cleanup-temp)))))))
-
 (ert-deftest test-org-gtd-complete-process-inbox-actionable ()
   "Test path: Actionable, not in 2 minutes, not delegated, not project."
   (save-window-excursion
@@ -272,6 +245,33 @@
                                                                (t nil)))))
                   (org-gtd-complete-inbox-process-inbox)
                   (with-current-buffer (find-file-noselect (expand-file-name "gtd-single-actions.org" temp-dir))
+                    (revert-buffer t t)  ; Reload the file
+                    (goto-char (point-min))
+                    (should (re-search-forward (regexp-quote test-item) nil t))
+                    (kill-buffer))))
+            (test-org-gtd-complete-cleanup-temp)))))))
+
+(ert-deftest test-org-gtd-complete-process-inbox-actionable-project ()
+  "Test path: Actionable, not in 2 minutes, not delegated, is project."
+  (save-window-excursion
+    (save-excursion
+      (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
+             (org-gtd-complete-base-directory temp-dir))
+        (org-gtd-complete-setup)
+        (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
+               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+          (with-temp-file inbox-file
+            (insert test-item))
+          (unwind-protect
+              (progn
+                (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
+                                                         (cond ((string-match "Is .+ actionable?" prompt) t)
+                                                               ((string-match "Can it be done in 2 minutes?" prompt) nil)
+                                                               ((string-match "Can it be delegated?" prompt) nil)
+                                                               ((string-match "Is it a project?" prompt) t)
+                                                               (t nil)))))
+                  (org-gtd-complete-inbox-process-inbox)
+                  (with-current-buffer (find-file-noselect (expand-file-name "gtd-projects.org" temp-dir))
                     (revert-buffer t t)  ; Reload the file
                     (goto-char (point-min))
                     (should (re-search-forward (regexp-quote test-item) nil t))
