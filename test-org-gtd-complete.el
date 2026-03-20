@@ -310,7 +310,9 @@
     (dolist (buf (buffer-list))
       (when (and (buffer-file-name buf)
                  (string-match-p "test-org-gtd-complete-" (buffer-file-name buf)))
-        (kill-buffer buf)))))
+        (kill-buffer buf)))
+    (when (get-buffer "*GTD Inbox View*")
+      (kill-buffer "*GTD Inbox View*"))))
 
 (provide 'test-org-gtd-complete)
 
