@@ -153,6 +153,23 @@ Organize items into appropriate lists based on decisions."
     (when org-gtd-complete-inbox-overlay
       (delete-overlay org-gtd-complete-inbox-overlay)
       (message "Overlay cleaned up in view buffer"))
+    (when (get-buffer "*GTD Inbox View*")
+      (with-current-buffer "*GTD Inbox View*"
+        (read-only-mode -1)
+        (erase-buffer)
+        (insert "| Item          | Captured At          | Residency Time     |\n")
+        (insert "|---------------|----------------------|--------------------|\n")
+        (let ((new-inbox-items (org-gtd-complete-lists--get-inbox)))
+          (dolist (item new-inbox-items)
+            (let* ((full-title (plist-get item :title))
+                   (timestamp-str (and (string-match "\\[Captured at: \\([^\]]+\\)\\]" full-title) (match-string 1 full-title)))
+                   (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" full-title) full-title))
+                   (captured-time (and timestamp-str (date-to-time timestamp-str)))
+                   (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
+                   (age-string (and age (org-gtd-complete-inbox-format-age-compact age))))
+              (insert (format "| %s | %s | %s |\n" clean-title timestamp-str age-string))))
+          (org-table-align)
+          (read-only-mode 1))))
     (if inbox-items
         (message "Inbox processing complete, but some items remain.")
       (message "Inbox is empty."))))
