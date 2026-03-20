@@ -142,10 +142,13 @@ Organize items into appropriate lists based on decisions."
                             (insert (format "* %s\n" title))
                             (save-buffer)))
                          (t
-                          (with-temp-buffer
-                            (write-region (point-min) (point-max) inbox-file))))))))))
-          (message "Inbox items retrieved: %s" inbox-items))  ; Debug: Check retrieved items
-      (message "Inbox file does not exist or is empty"))
+                          (with-current-buffer (find-file-noselect inbox-file)
+                            (goto-char (point-min))
+                            (when (search-forward (concat "* " title) nil t)
+                              (org-mark-subtree)
+                              (kill-region (region-beginning) (region-end))
+                              (save-buffer)))))))))))
+          (message "Inbox file does not exist or is empty")))
     (when-let ((buf (get-file-buffer inbox-file)))
       (kill-buffer buf))
     ;; Re-check inbox after processing
