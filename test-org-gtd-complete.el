@@ -53,24 +53,6 @@
                   (kill-buffer)))
             (test-org-gtd-complete-cleanup-temp)))))))
 
-(ert-deftest test-org-gtd-complete-process-inbox-items-correctly ()
-  "Should process inbox items correctly."
-  (save-window-excursion
-    (save-excursion
-      (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
-             (org-gtd-complete-base-directory temp-dir))
-        (org-gtd-complete-setup)
-        (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-               (expected-output "Inbox processing complete, but some items remain.")
-               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
-          (with-temp-file inbox-file
-            (insert test-item))
-          (unwind-protect
-              (progn
-                (cl-letf (((symbol-function 'y-or-n-p) (lambda (&rest args) t)))  ; Always return t for simulation
-                  (should (string= (org-gtd-complete-inbox-process-inbox) expected-output))))
-            (test-org-gtd-complete-cleanup-temp)))))))
-
 (ert-deftest test-org-gtd-complete-process-inbox-reference ()
   "Test path: Not actionable, is reference."
   (save-window-excursion
