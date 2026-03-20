@@ -149,9 +149,6 @@ Organize items into appropriate lists based on decisions."
                               (kill-region (region-beginning) (region-end))
                               (save-buffer)))))))))))
           (message "Inbox file does not exist or is empty")))
-    (when-let ((buf (get-file-buffer inbox-file)))
-      (kill-buffer buf))
-    ;; Re-check inbox after processing
     (setq inbox-items (org-gtd-complete-lists--get-inbox))
     (when org-gtd-complete-inbox-overlay
       (delete-overlay org-gtd-complete-inbox-overlay)
