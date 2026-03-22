@@ -18,44 +18,7 @@
 
 (require 'org-gtd-complete-lists)
 (require 'org-gtd-complete-projects)
-
-(defvar org-gtd-complete-inbox-overlay nil "Overlay for highlighting current item.")
-
-(defun org-gtd-complete-inbox-format-age-compact (seconds)
-  "Format SECONDS into a compact string, e.g., '2d 1h 30m'."
-  (let ((days (floor seconds 86400))
-        (hours (floor (mod seconds 86400) 3600))
-        (minutes (floor (mod seconds 3600) 60))
-        (secs (floor (mod seconds 60)))
-        parts)
-    (when (> days 0) (push (format "%dd" days) parts))
-    (when (> hours 0) (push (format "%dh" hours) parts))
-    (when (> minutes 0) (push (format "%dm" minutes) parts))
-    (when (or (> secs 0) (null parts)) (push (format "%ds" secs) parts))  ; Add seconds if nothing else
-    (if parts
-        (string-join (nreverse parts) " ")
-      "0s")))  ; Default to 0s if no parts
-
-(defun org-gtd-complete-inbox-refresh-view ()
-  "Refresh the '*GTD Inbox View*' buffer."
-  (when (get-buffer "*GTD Inbox View*")
-    (with-current-buffer "*GTD Inbox View*"
-      (let ((in-buffer-read-only buffer-read-only))
-        (read-only-mode -1)  ; Temporarily disable read-only mode
-        (erase-buffer)
-        (insert "| Item          | Captured At          | Residency Time     |\n")  ; Table header
-        (insert "|---------------|----------------------|--------------------|\n")  ; Separator
-        (let ((new-inbox-items (org-gtd-complete-lists--get-inbox)))
-          (dolist (item new-inbox-items)
-            (let* ((full-title (plist-get item :title))
-                   (timestamp-str (and (string-match "\\[Captured at: \\([^\]]+\\)\\]" full-title) (match-string 1 full-title)))
-                   (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" full-title) full-title))
-                   (captured-time (and timestamp-str (date-to-time timestamp-str)))
-                   (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
-                   (age-string (and age (org-gtd-complete-inbox-format-age-compact age))))
-              (insert (format "| %s | %s | %s |\n" clean-title timestamp-str age-string)))))
-        (org-table-align)
-        (when in-buffer-read-only (read-only-mode 1))))))  ; Restore read-only mode
+(require 'org-gtd-complete-views)
 
 ;;;###autoload
 (defun org-gtd-complete-inbox-process-inbox ()
@@ -93,7 +56,7 @@ Organize items into appropriate lists based on decisions."
                              (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" full-title) full-title))  ; Clean title
                              (captured-time (and timestamp-str (date-to-time timestamp-str)))
                              (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
-                             (age-string (and age (org-gtd-complete-inbox-format-age-compact age))))
+                             (age-string (and age (org-gtd-complete-views-format-age-compact age))))
                         (insert (format "| %s | %s | %s |\n" clean-title timestamp-str age-string))))
                     (org-table-align))  ; Align the table
                   (read-only-mode 1)  ; Make buffer read-only
@@ -105,21 +68,21 @@ Organize items into appropriate lists based on decisions."
                        (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" title) title))  ; Add clean-title here
                        (captured-time (and timestamp-str (date-to-time timestamp-str)))
                        (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
-                       (age-string (and age (org-gtd-complete-inbox-format-age-compact age))))
+                       (age-string (and age (org-gtd-complete-views-format-age-compact age))))
                   (message "Processing item: %s (Residency time: %s)" title age-string)
                   ;; Add highlighting code here
                   (let ((view-buffer (get-buffer "*GTD Inbox View*")))
                     (when view-buffer
                       (with-current-buffer view-buffer
-                        (when org-gtd-complete-inbox-overlay (delete-overlay org-gtd-complete-inbox-overlay))
+                        (when org-gtd-complete-views-inbox-overlay (delete-overlay org-gtd-complete-views-inbox-overlay))
                         (save-excursion
                           (goto-char (point-min))
                           (if (search-forward clean-title nil t)
                               (progn
                                 (let ((start (line-beginning-position))
                                       (end (line-end-position)))
-                                  (setq org-gtd-complete-inbox-overlay (make-overlay start end view-buffer))
-                                  (overlay-put org-gtd-complete-inbox-overlay 'face 'highlight))))))))
+                                  (setq org-gtd-complete-views-inbox-overlay (make-overlay start end view-buffer))
+                                  (overlay-put org-gtd-complete-views-inbox-overlay 'face 'highlight))))))))
                   (let* ((actionable (y-or-n-p (format "Is '%s' actionable? " title))))
                     (if actionable
                         ;; Sequential questioning
@@ -168,10 +131,10 @@ Organize items into appropriate lists based on decisions."
                           (org-gtd-complete-inbox-remove-task inbox-file title)))))))))
           (message "Inbox file does not exist or is empty")))
     (setq inbox-items (org-gtd-complete-lists--get-inbox))
-    (when org-gtd-complete-inbox-overlay
-      (delete-overlay org-gtd-complete-inbox-overlay)
+    (when org-gtd-complete-views-inbox-overlay
+      (delete-overlay org-gtd-complete-views-inbox-overlay)
       (message "Overlay cleaned up in view buffer"))
-    (org-gtd-complete-inbox-refresh-view)
+    (org-gtd-complete-views-refresh-inbox-view)
     (if inbox-items
         (message "Inbox processing complete, but some items remain.")
       (message "Inbox is empty."))))
@@ -195,7 +158,7 @@ INPUT: Content string to capture."
     (insert (format "* %s [Captured at: %s]\n" input (format-time-string "%Y-%m-%d %H:%M:%S")))
     (save-buffer)
     (message "Captured: %s" input)
-    (org-gtd-complete-inbox-refresh-view)))
+    (org-gtd-complete-views-refresh-inbox-view)))
 
 (provide 'org-gtd-complete-inbox)
 
