@@ -124,10 +124,12 @@ Organize items into appropriate lists based on decisions."
                               (org-gtd-complete-inbox-remove-task inbox-file title))
                           (let ((someday (y-or-n-p "Should it go to Someday/Maybe? ")))
                             (if someday
-                                (with-current-buffer (find-file-noselect someday-file)
-                                  (goto-char (point-max))
-                                  (insert (format "* %s\n" title))
-                                  (save-buffer))
+                                (progn
+                                  (with-current-buffer (find-file-noselect someday-file)
+                                    (goto-char (point-max))
+                                    (insert (format "* %s\n" title))
+                                    (save-buffer))
+                                  (org-gtd-complete-inbox-remove-task inbox-file title))
                               (org-gtd-complete-inbox-remove-task inbox-file title))))))))))
           (message "Inbox file does not exist or is empty")))
     (setq inbox-items (org-gtd-complete-lists--get-inbox))

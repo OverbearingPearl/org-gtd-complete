@@ -99,13 +99,13 @@
              (org-gtd-complete-base-directory temp-dir))
         (org-gtd-complete-setup)
         (let* ((test-item "* Test item [Captured at: 2023-01-01 12:00:00]")
-               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+               (inbox-file (expand-file-name "gtd-inbox.org" temp-dir))
+               (someday-file (expand-file-name "gtd-someday.org" temp-dir)))
           (with-temp-file inbox-file
             (insert test-item))
           (unwind-protect
               (progn
-                (dolist (file (list inbox-file
-                                    (expand-file-name "gtd-someday.org" temp-dir)))
+                (dolist (file (list inbox-file someday-file))
                   (when (get-file-buffer file)
                     (with-current-buffer (get-file-buffer file)
                       (auto-revert-mode 1))))
@@ -115,10 +115,16 @@
                                                                ((string-match "Should it go to Someday/Maybe?" prompt) t)  ; Yes
                                                                (t nil)))))  ; Other defaults to no
                   (org-gtd-complete-inbox-process-inbox)
-                  (with-current-buffer (find-file-noselect (expand-file-name "gtd-someday.org" temp-dir))
+                  ;; Check if item was added to someday
+                  (with-current-buffer (find-file-noselect someday-file)
                     (revert-buffer t t)  ; Reload the file
                     (goto-char (point-min))
-                    (should (re-search-forward (regexp-quote test-item) nil t)))))
+                    (should (re-search-forward (regexp-quote test-item) nil t)))
+                  ;; Check if item was removed from inbox
+                  (with-temp-buffer
+                    (insert-file-contents inbox-file)
+                    (should (not (save-excursion (goto-char (point-min)) (re-search-forward (regexp-quote test-item) nil t))))
+                  (should (string-match-p "^\\s-*$" (buffer-string))))))  ; Ensure inbox is empty or item is gone
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-trash ()
