@@ -30,6 +30,8 @@ Ask five questions for each item and execute decisions immediately:
 4. Can it be delegated?
 5. Is it a project?
 Organize items into appropriate lists based on decisions."
+  (org-gtd-complete-views-refresh-inbox-view)  ; Refresh and create buffer if needed
+  (switch-to-buffer "*GTD Inbox View*")  ; Switch to the buffer immediately
   (let* ((base-dir org-gtd-complete-base-directory)
          (inbox-file (expand-file-name org-gtd-complete-lists--inbox-file base-dir))
          (someday-file (expand-file-name "gtd-someday.org" base-dir))
@@ -117,7 +119,6 @@ Organize items into appropriate lists based on decisions."
     (when org-gtd-complete-views-inbox-overlay
       (delete-overlay org-gtd-complete-views-inbox-overlay)
       (message "Overlay cleaned up in view buffer"))
-    (org-gtd-complete-views-refresh-inbox-view)
     (if inbox-items
         (message "Inbox processing complete, but some items remain.")
       (message "Inbox is empty."))))
