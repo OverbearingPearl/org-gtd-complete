@@ -125,7 +125,9 @@ Organize items into appropriate lists based on decisions."
                         ;; Sequential questioning
                         (let ((two-minutes (y-or-n-p "Can it be done in 2 minutes? ")))
                           (if two-minutes
-                              (message "Do it now: %s" title)  ; Stop here if yes
+                              (progn
+                                (message "Do it now: %s" title)
+                                (org-gtd-complete-inbox-remove-task inbox-file title))
                             (let ((delegatable (y-or-n-p "Can it be delegated? ")))
                               (if delegatable
                                   (let ((person (read-string "Delegate to whom? "))
@@ -163,12 +165,7 @@ Organize items into appropriate lists based on decisions."
                             (insert (format "* %s\n" title))
                             (save-buffer)))
                          (t
-                          (with-current-buffer (find-file-noselect inbox-file)
-                            (goto-char (point-min))
-                            (when (search-forward (concat "* " title) nil t)
-                              (org-mark-subtree)
-                              (kill-region (region-beginning) (region-end))
-                              (save-buffer)))))))))))
+                          (org-gtd-complete-inbox-remove-task inbox-file title)))))))))
           (message "Inbox file does not exist or is empty")))
     (setq inbox-items (org-gtd-complete-lists--get-inbox))
     (when org-gtd-complete-inbox-overlay
@@ -178,6 +175,17 @@ Organize items into appropriate lists based on decisions."
     (if inbox-items
         (message "Inbox processing complete, but some items remain.")
       (message "Inbox is empty."))))
+
+(defun org-gtd-complete-inbox-remove-task (file title)
+  "Remove the task with TITLE from the file FILE.
+FILE is the path to the Org file containing the task.
+TITLE is the title of the task to remove."
+  (with-current-buffer (find-file-noselect file)
+    (goto-char (point-min))
+    (when (search-forward (concat "* " title) nil t)
+      (org-mark-subtree)
+      (kill-region (region-beginning) (region-end))
+      (save-buffer))))
 
 (defun org-gtd-complete-inbox-capture (input)
   "Internal implementation to capture input to inbox.
