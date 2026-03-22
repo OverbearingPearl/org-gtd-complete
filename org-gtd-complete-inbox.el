@@ -114,21 +114,21 @@ Organize items into appropriate lists based on decisions."
                                         (insert (format "* %s\n" title))
                                         (save-buffer)))))))))
                       ;; Not actionable
-                      (let ((reference (y-or-n-p "Is it reference material? "))
-                            (someday (y-or-n-p "Should it go to Someday/Maybe? ")))
-                        (cond
-                         (reference
-                          (with-current-buffer (find-file-noselect reference-file)
-                            (goto-char (point-max))
-                            (insert (format "* %s\n" title))
-                            (save-buffer)))
-                         (someday
-                          (with-current-buffer (find-file-noselect someday-file)
-                            (goto-char (point-max))
-                            (insert (format "* %s\n" title))
-                            (save-buffer)))
-                         (t
-                          (org-gtd-complete-inbox-remove-task inbox-file title)))))))))
+                      (let ((reference (y-or-n-p "Is it reference material? ")))
+                        (if reference
+                            (progn
+                              (with-current-buffer (find-file-noselect reference-file)
+                                (goto-char (point-max))
+                                (insert (format "* %s\n" title))
+                                (save-buffer))
+                              (org-gtd-complete-inbox-remove-task inbox-file title))
+                          (let ((someday (y-or-n-p "Should it go to Someday/Maybe? ")))
+                            (if someday
+                                (with-current-buffer (find-file-noselect someday-file)
+                                  (goto-char (point-max))
+                                  (insert (format "* %s\n" title))
+                                  (save-buffer))
+                              (org-gtd-complete-inbox-remove-task inbox-file title))))))))))
           (message "Inbox file does not exist or is empty")))
     (setq inbox-items (org-gtd-complete-lists--get-inbox))
     (when org-gtd-complete-views-inbox-overlay
