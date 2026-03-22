@@ -137,9 +137,11 @@
                                                                (t nil))))
                           ((symbol-function 'read-string) (lambda (&rest _) "")))
                   (org-gtd-complete-inbox-process-inbox)
+                  (should (file-exists-p inbox-file))
                   (with-temp-buffer
                     (insert-file-contents inbox-file)
-                    (should (string= (buffer-string) "")))))
+                    (should (string= (buffer-string) ""))
+                    (should (not (save-excursion (goto-char (point-min)) (re-search-forward (regexp-quote test-item) nil t)))))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-2-minutes ()
@@ -164,9 +166,11 @@
                                                                ((string-match "Can it be done in 2 minutes?" prompt) t)
                                                                (t nil)))))
                   (org-gtd-complete-inbox-process-inbox)
+                  (should (file-exists-p inbox-file))
                   (with-temp-buffer
                     (insert-file-contents inbox-file)
-                    (should (not (re-search-forward test-item nil t))))))
+                    (should (string= (buffer-string) ""))
+                    (should (not (save-excursion (goto-char (point-min)) (re-search-forward (regexp-quote test-item) nil t)))))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
 (ert-deftest test-org-gtd-complete-process-inbox-actionable-delegated ()
