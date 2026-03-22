@@ -52,8 +52,7 @@
                  (age-string (and age (org-gtd-complete-views-format-age-compact age))))
             (insert (format "| %s | %s | %s |\n" clean-title timestamp-str age-string)))))
       (org-table-align)
-      (when in-buffer-read-only (read-only-mode 1))
-      (pop-to-buffer (current-buffer)))))  ; Automatically switch to the buffer
+      (read-only-mode 1))))  ; Always make the buffer read-only after refreshing
 
 (provide 'org-gtd-complete-views)
 
