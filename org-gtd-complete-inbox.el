@@ -42,25 +42,6 @@ Organize items into appropriate lists based on decisions."
     (if (file-exists-p inbox-file)
         (if inbox-items
             (progn
-              ;; Create and display read-only buffer if it doesn't exist
-              (let ((view-buffer (get-buffer "*GTD Inbox View*")))
-                (with-current-buffer (or view-buffer (get-buffer-create "*GTD Inbox View*"))
-                  (org-mode)  ; Switch to Org mode
-                  (unless view-buffer  ; Only insert content if buffer is newly created
-                    (erase-buffer)
-                    (insert "| Item          | Captured At          | Residency Time     |\n")  ; Table header
-                    (insert "|---------------|----------------------|--------------------|\n")  ; Separator
-                    (dolist (item inbox-items)
-                      (let* ((full-title (plist-get item :title))
-                             (timestamp-str (and (string-match "\\[Captured at: \\([^\]]+\\)\\]" full-title) (match-string 1 full-title)))
-                             (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" full-title) full-title))  ; Clean title
-                             (captured-time (and timestamp-str (date-to-time timestamp-str)))
-                             (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
-                             (age-string (and age (org-gtd-complete-views-format-age-compact age))))
-                        (insert (format "| %s | %s | %s |\n" clean-title timestamp-str age-string))))
-                    (org-table-align))  ; Align the table
-                  (read-only-mode 1)  ; Make buffer read-only
-                  (pop-to-buffer (current-buffer))))  ; Switch to buffer
               ;; Now process each item interactively
               (dolist (item inbox-items)
                 (let* ((title (plist-get item :title))

@@ -35,24 +35,25 @@
 
 (defun org-gtd-complete-views-refresh-inbox-view ()
   "Refresh the '*GTD Inbox View*' buffer."
-  (when (get-buffer "*GTD Inbox View*")
-    (with-current-buffer "*GTD Inbox View*"
-      (let ((in-buffer-read-only buffer-read-only))
-        (read-only-mode -1)
-        (erase-buffer)
-        (insert "| Item          | Captured At          | Residency Time     |\n")
-        (insert "|---------------|----------------------|--------------------|\n")
-        (let ((new-inbox-items (org-gtd-complete-lists--get-inbox)))
-          (dolist (item new-inbox-items)
-            (let* ((full-title (plist-get item :title))
-                   (timestamp-str (and (string-match "\\[Captured at: \\([^\]]+\\)\\]" full-title) (match-string 1 full-title)))
-                   (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" full-title) full-title))
-                   (captured-time (and timestamp-str (date-to-time timestamp-str)))
-                   (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
-                   (age-string (and age (org-gtd-complete-views-format-age-compact age))))
-              (insert (format "| %s | %s | %s |\n" clean-title timestamp-str age-string)))))
-        (org-table-align)
-        (when in-buffer-read-only (read-only-mode 1))))))
+  (with-current-buffer (get-buffer-create "*GTD Inbox View*")  ; Ensure buffer is created
+    (let ((in-buffer-read-only buffer-read-only))
+      (org-mode)  ; Switch to Org mode if not already
+      (read-only-mode -1)
+      (erase-buffer)
+      (insert "| Item          | Captured At          | Residency Time     |\n")
+      (insert "|---------------|----------------------|--------------------|\n")
+      (let ((new-inbox-items (org-gtd-complete-lists--get-inbox)))
+        (dolist (item new-inbox-items)
+          (let* ((full-title (plist-get item :title))
+                 (timestamp-str (and (string-match "\\[Captured at: \\([^\]]+\\)\\]" full-title) (match-string 1 full-title)))
+                 (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" full-title) full-title))
+                 (captured-time (and timestamp-str (date-to-time timestamp-str)))
+                 (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
+                 (age-string (and age (org-gtd-complete-views-format-age-compact age))))
+            (insert (format "| %s | %s | %s |\n" clean-title timestamp-str age-string)))))
+      (org-table-align)
+      (when in-buffer-read-only (read-only-mode 1))
+      (pop-to-buffer (current-buffer)))))  ; Automatically switch to the buffer
 
 (provide 'org-gtd-complete-views)
 
