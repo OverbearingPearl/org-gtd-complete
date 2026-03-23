@@ -65,7 +65,7 @@ Organize items into appropriate lists based on decisions."
                                   (end (line-end-position)))
                               (setq org-gtd-complete-views-inbox-overlay (make-overlay start end view-buffer))
                               (overlay-put org-gtd-complete-views-inbox-overlay 'face 'highlight))))))
-                    (let* ((actionable (y-or-n-p (format "Is '%s' actionable? " title))))
+                    (let* ((actionable (y-or-n-p (format "Is '%s' actionable? " clean-title))))  ; Changed to clean-title
                       (if actionable
                           ;; Sequential questioning
                           (let ((two-minutes (y-or-n-p "Can it be done in 2 minutes? ")))
