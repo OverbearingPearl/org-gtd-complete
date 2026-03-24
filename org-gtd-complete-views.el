@@ -54,6 +54,8 @@
             (dolist (edit org-gtd-complete-inbox-pending-edits)
               (when (string= (car edit) unique-key)
                 (setq display-title (format "%s => %s" full-title (cdr edit)))))
+            (when (member unique-key org-gtd-complete-inbox-items-to-delete)
+              (setq display-title (format "+%s+" display-title)))
             (insert (format "| %s | %s | %s |\n" display-title (or captured-at "N/A") age-string))))
         (org-table-align)
         (read-only-mode 1)
