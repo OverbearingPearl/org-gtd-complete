@@ -138,7 +138,6 @@ Organize items into appropriate lists based on decisions."
 
 (defun org-gtd-complete-inbox-edit-title ()
   "Mark the current inbox title for editing and refresh the view."
-  (interactive)
   (if org-gtd-complete-inbox--current-inbox-index
       (let* ((inbox-items (org-gtd-complete-lists--get-inbox))
              (current-index org-gtd-complete-inbox--current-inbox-index)
