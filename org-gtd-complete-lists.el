@@ -68,16 +68,20 @@
 (defun org-gtd-complete-lists--query-file (file)
   "Query items from FILE.
 FILE: File name string."
-  (let ((full-path (expand-file-name file org-gtd-complete-base-directory)))  ; Use base directory
+  (let ((full-path (expand-file-name file org-gtd-complete-base-directory)))
     (if (file-exists-p full-path)
         (with-temp-buffer
           (insert-file-contents full-path)
+          (org-mode)
           (goto-char (point-min))
           (let (items)
-            (while (re-search-forward "^\\(\\*+\\) \\(.*\\)$" nil t)
-              (let ((level (length (match-string 1)))
-                    (title (match-string 2)))
-                (push (list :title title :level level) items)))
+            (org-element-map (org-element-parse-buffer) 'headline
+              (lambda (hl)
+                (when (= (org-element-property :level hl) 1)
+                  (push (list :title (org-element-property :raw-value hl)
+                              :level (org-element-property :level hl)
+                              :captured-at (org-element-property :CAPTURED_AT hl))
+                        items))))
             (nreverse items)))
       (message "File %s does not exist" full-path)
       nil)))

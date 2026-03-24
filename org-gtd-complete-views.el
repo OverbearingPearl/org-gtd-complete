@@ -35,9 +35,9 @@
 
 (defun org-gtd-complete-views-refresh-inbox-view ()
   "Refresh the '*GTD Inbox View*' buffer."
-  (with-current-buffer (get-buffer-create "*GTD Inbox View*")  ; Ensure buffer is created
+  (with-current-buffer (get-buffer-create "*GTD Inbox View*")
     (let ((in-buffer-read-only buffer-read-only))
-      (org-mode)  ; Switch to Org mode if not already
+      (org-mode)
       (read-only-mode -1)
       (erase-buffer)
       (insert "| Item          | Captured At          | Residency Time     |\n")
@@ -45,14 +45,13 @@
       (let ((new-inbox-items (org-gtd-complete-lists--get-inbox)))
         (dolist (item new-inbox-items)
           (let* ((full-title (plist-get item :title))
-                 (timestamp-str (and (string-match "\\[Captured at: \\([^\]]+\\)\\]" full-title) (match-string 1 full-title)))
-                 (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" full-title) full-title))
-                 (captured-time (and timestamp-str (date-to-time timestamp-str)))
+                 (captured-at (plist-get item :captured-at))
+                 (captured-time (and captured-at (date-to-time captured-at)))
                  (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
                  (age-string (and age (org-gtd-complete-views-format-age-compact age))))
-            (insert (format "| %s | %s | %s |\n" clean-title timestamp-str age-string)))))
+            (insert (format "| %s | %s | %s |\n" full-title (or captured-at "N/A") age-string)))))
       (org-table-align)
-      (read-only-mode 1))))  ; Always make the buffer read-only after refreshing
+      (read-only-mode 1))))
 
 (provide 'org-gtd-complete-views)
 

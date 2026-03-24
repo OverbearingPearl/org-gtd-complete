@@ -30,25 +30,8 @@
 ;; This package provides a complete GTD implementation for org-mode,
 ;; including six horizon levels: Purpose, Vision, Goals, Areas,
 ;; Projects, and Actions.
-;;
-;; Usage:
-;;
-;; (require 'org-gtd-complete)
-;;
-;; Core workflow functions:
-;;
-;; `org-gtd-complete-capture' - Capture any thought, task or commitment
-;; `org-gtd-complete-process-inbox' - Process inbox items
-;; `org-gtd-complete-review' - Review the GTD system
-;; `org-gtd-complete-do' - Engage with actions based on context
-;; `org-gtd-complete-plan-project' - Unified project planning function supporting creation and enhancement
-;;
 
 ;;; Code:
-
-;; ============================================================
-;; Submodule dependencies
-;; ============================================================
 
 (require 'org-gtd-complete-projects)
 (require 'org-gtd-complete-contexts)
@@ -65,10 +48,6 @@
   :type 'directory
   :group 'org-gtd-complete)
 
-;; ============================================================
-;; Capture
-;; ============================================================
-
 ;;;###autoload
 (defun org-gtd-complete-capture (input)
   "Capture any thought, task or commitment to inbox.
@@ -81,10 +60,6 @@ INPUT: Content string to capture."
   "Display trigger list questions to help empty the mind."
   (interactive)
   (org-gtd-complete-review-trigger-list))
-
-;; ============================================================
-;; Organize
-;; ============================================================
 
 ;;;###autoload
 (defun org-gtd-complete-process-inbox ()
@@ -124,10 +99,7 @@ INPUT: Content string to capture."
   "Unified project planning function supporting creation and enhancement.
 NAME: Project name string.
 MODE: Mode, can be 'create (new project), 'enhance (enhance existing)
-      or 'review (enhance during review).  Default is 'create.
-
-For new projects: Start complete natural planning five steps.
-For existing projects: Intelligently continue unfinished planning steps."
+      or 'review (enhance during review).  Default is 'create."
   (interactive "sProject name: ")
   (org-gtd-complete-projects-plan name mode))
 
@@ -201,10 +173,6 @@ FILE: Original file where the action is located."
   (interactive "sAction to schedule: \nsWhen (YYYY-MM-DD): \nsOriginal file: ")
   (org-gtd-complete-calendar-schedule action when file))
 
-;; ============================================================
-;; Reflect
-;; ============================================================
-
 ;;;###autoload
 (defun org-gtd-complete-review (&optional level)
   "Review the GTD system.
@@ -243,10 +211,6 @@ PURPOSE: Purpose name string."
   (interactive)
   (org-gtd-complete-horizons-connect-project-to-purpose proj purpose))
 
-;; ============================================================
-;; Engage
-;; ============================================================
-
 ;;;###autoload
 (defun org-gtd-complete-do ()
   "Select and execute actions based on current context.
@@ -274,10 +238,6 @@ CONTEXT: Context string."
   (interactive)
   (org-gtd-complete-calendar-show-week))
 
-;; ============================================================
-;; System Management
-;; ============================================================
-
 ;;;###autoload
 (defun org-gtd-complete-setup ()
   "Initialize GTD system setup."
@@ -299,21 +259,13 @@ VALUE: Configuration value (when setting)."
   (interactive)
   (org-gtd-complete-system-configure key value))
 
-;; ============================================================
-;; Utility
-;; ============================================================
-
 ;;;###autoload
 (defun org-gtd-complete-show (what &rest filters)
   "Show lists based on what and filters.
 WHAT: What to show.
 FILTERS: Additional filters."
-  (interactive "sWhat to show: ")  ; Adjust interactive based on expected input
+  (interactive "sWhat to show: ")
   (apply 'org-gtd-complete-lists-show what filters))
-
-;; ============================================================
-;; Minor Mode
-;; ============================================================
 
 ;;;###autoload
 (define-minor-mode org-gtd-complete-mode
@@ -323,10 +275,6 @@ FILTERS: Additional filters."
   (if org-gtd-complete-mode
       (org-gtd-complete-setup)
     (message "Org-GTD-Complete mode disabled.")))
-
-;; ============================================================
-;; Testing
-;; ============================================================
 
 (when (require 'ert nil t)
   (add-hook 'ert-batch-backtrace-mode-hook #'org-gtd-complete-mode)

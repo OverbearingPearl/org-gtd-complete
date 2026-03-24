@@ -32,8 +32,8 @@ Ask five questions for each item and execute decisions immediately:
 4. Can it be delegated?
 5. Is it a project?
 Organize items into appropriate lists based on decisions."
-  (org-gtd-complete-views-refresh-inbox-view)  ; Refresh and create buffer if needed
-  (switch-to-buffer "*GTD Inbox View*")  ; Switch to the buffer immediately
+  (org-gtd-complete-views-refresh-inbox-view)
+  (switch-to-buffer "*GTD Inbox View*")
   (let* ((base-dir org-gtd-complete-base-directory)
          (inbox-file (expand-file-name org-gtd-complete-lists--inbox-file base-dir))
          (someday-file (expand-file-name "gtd-someday.org" base-dir))
@@ -42,35 +42,30 @@ Organize items into appropriate lists based on decisions."
          (projects-file (expand-file-name "gtd-projects.org" base-dir))
          (actions-file (expand-file-name "gtd-single-actions.org" base-dir))
          (inbox-items (org-gtd-complete-lists--get-inbox)))
-    (setq inbox-items (org-gtd-complete-lists--get-inbox))  ; Reload
+    (setq inbox-items (org-gtd-complete-lists--get-inbox))
     (if (file-exists-p inbox-file)
         (if inbox-items
             (progn
-              ;; Now process each item interactively
-              (let ((index 0))  ; Add index counter
+              (let ((index 0))
                 (dolist (item inbox-items)
-                  (setq org-gtd-complete--current-inbox-index index)  ; Set the current index
+                  (setq org-gtd-complete--current-inbox-index index)
                   (let* ((title (plist-get item :title))
-                         (timestamp-str (and (string-match "\\[Captured at: \\([^\]]+\\)\\]" title) (match-string 1 title)))
-                         (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" title) title))  ; Add clean-title here
-                         (captured-time (and timestamp-str (date-to-time timestamp-str)))
-                         (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
+                         (captured-time (plist-get item :captured-at))
+                         (age (and captured-time (float-time (time-subtract (current-time) (date-to-time captured-time)))))
                          (age-string (and age (org-gtd-complete-views-format-age-compact age))))
                     (message "Processing item: %s (Residency time: %s)" title age-string)
-                    ;; Add highlighting code here based on index
                     (let ((view-buffer (get-buffer "*GTD Inbox View*")))
                       (when view-buffer
                         (with-current-buffer view-buffer
                           (when org-gtd-complete-views-inbox-overlay (delete-overlay org-gtd-complete-views-inbox-overlay))
                           (save-excursion
-                            (goto-line (+ 3 index))  ; Go to the line for this index (assuming items start at line 3)
+                            (goto-line (+ 3 index))
                             (let ((start (line-beginning-position))
                                   (end (line-end-position)))
                               (setq org-gtd-complete-views-inbox-overlay (make-overlay start end view-buffer))
                               (overlay-put org-gtd-complete-views-inbox-overlay 'face 'highlight))))))
-                    (let* ((actionable (y-or-n-p (format "Is '%s' actionable? " clean-title))))  ; Changed to clean-title
+                    (let* ((actionable (y-or-n-p (format "Is '%s' actionable? " title))))
                       (if actionable
-                          ;; Sequential questioning
                           (let ((two-minutes (y-or-n-p "Can it be done in 2 minutes? ")))
                             (if two-minutes
                                 (progn
@@ -98,7 +93,6 @@ Organize items into appropriate lists based on decisions."
                                           (goto-char (point-max))
                                           (insert (format "* %s\n" title))
                                           (save-buffer)))))))))
-                        ;; Not actionable
                         (let ((reference (y-or-n-p "Is it reference material? ")))
                           (if reference
                               (progn
@@ -116,9 +110,9 @@ Organize items into appropriate lists based on decisions."
                                       (save-buffer))
                                     (org-gtd-complete-inbox-remove-task inbox-file title))
                                 (org-gtd-complete-inbox-remove-task inbox-file title)))))))
-                    (setq index (1+ index))))))  ; Increment index after processing
+                    (setq index (1+ index))))))
           (message "Inbox file does not exist or is empty")))
-    (org-gtd-complete-views-refresh-inbox-view)  ; Refresh buffer after processing all items
+    (org-gtd-complete-views-refresh-inbox-view)
     (setq inbox-items (org-gtd-complete-lists--get-inbox))
     (when org-gtd-complete-views-inbox-overlay
       (delete-overlay org-gtd-complete-views-inbox-overlay)
@@ -143,7 +137,9 @@ TITLE is the title of the task to remove."
 INPUT: Content string to capture."
   (with-current-buffer (find-file-noselect (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
     (goto-char (point-max))
-    (insert (format "* %s [Captured at: %s]\n" input (format-time-string "%Y-%m-%d %H:%M:%S")))
+    (org-insert-heading-respect-content)
+    (insert input)
+    (org-set-property "CAPTURED_AT" (format-time-string "%Y-%m-%d %H:%M:%S"))
     (save-buffer)
     (message "Captured: %s" input)
     (org-gtd-complete-views-refresh-inbox-view)))
