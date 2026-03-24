@@ -91,7 +91,7 @@ INPUT: Content string to capture."
     (with-current-buffer (find-file-noselect file)
       (goto-char (point-min))
       (when (search-forward (concat "* " old-title) nil t)
-        (org-entry-put (point) "ITEM" new-title)
+        (replace-match (concat "* " new-title))
         (save-buffer)))))
 
 ;;;###autoload
