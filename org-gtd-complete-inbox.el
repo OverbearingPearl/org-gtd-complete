@@ -20,7 +20,7 @@
 (require 'org-gtd-complete-projects)
 (require 'org-gtd-complete-views)
 
-(defvar org-gtd-complete--current-inbox-index nil "Index of the current inbox item being processed.")
+(defvar org-gtd-complete-inbox--current-inbox-index nil "Index of the current inbox item being processed.")
 
 ;;;###autoload
 (defun org-gtd-complete-inbox-process-inbox ()
@@ -48,7 +48,7 @@ Organize items into appropriate lists based on decisions."
             (progn
               (let ((index 0))
                 (dolist (item inbox-items)
-                  (setq org-gtd-complete--current-inbox-index index)
+                  (setq org-gtd-complete-inbox--current-inbox-index index)
                   (let* ((title (plist-get item :title))
                          (captured-time (plist-get item :captured-at))
                          (age (and captured-time (float-time (time-subtract (current-time) (date-to-time captured-time)))))
