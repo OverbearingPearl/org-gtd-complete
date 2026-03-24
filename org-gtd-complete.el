@@ -71,28 +71,14 @@ INPUT: Content string to capture."
   "Edit the current inbox title and refresh the inbox view."
   (interactive)
   (let* ((inbox-items (org-gtd-complete-lists--get-inbox))
-         (current-index (org-gtd-complete--get-current-index))
+         (current-index (org-gtd-complete-inbox--get-current-index))
          (item (and current-index (nth current-index inbox-items)))
          (old-title (and item (plist-get item :title))))
     (if item
         (let ((new-title (read-string "New title: " old-title)))
-          (org-gtd-complete--update-inbox-title item new-title)
+          (org-gtd-complete-inbox--update-inbox-title item new-title)
           (org-gtd-complete-views-refresh-inbox-view))
       (message "No current inbox item to edit."))))
-
-(defun org-gtd-complete--get-current-index ()
-  "Return the index of the current inbox item being processed."
-  org-gtd-complete--current-inbox-index)
-
-(defun org-gtd-complete--update-inbox-title (item new-title)
-  "Update the title of the inbox item in the file."
-  (let* ((file (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
-         (old-title (plist-get item :title)))
-    (with-current-buffer (find-file-noselect file)
-      (goto-char (point-min))
-      (when (search-forward (concat "* " old-title) nil t)
-        (replace-match (concat "* " new-title))
-        (save-buffer)))))
 
 ;;;###autoload
 (defun org-gtd-complete-plan-project (name &optional mode)

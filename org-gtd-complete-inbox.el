@@ -144,6 +144,20 @@ INPUT: Content string to capture."
     (message "Captured: %s" input)
     (org-gtd-complete-views-refresh-inbox-view)))
 
+(defun org-gtd-complete-inbox--get-current-index ()
+  "Return the index of the current inbox item being processed."
+  org-gtd-complete--current-inbox-index)
+
+(defun org-gtd-complete-inbox--update-inbox-title (item new-title)
+  "Update the title of the inbox item in the file."
+  (let* ((file (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
+         (old-title (plist-get item :title)))
+    (with-current-buffer (find-file-noselect file)
+      (goto-char (point-min))
+      (when (search-forward (concat "* " old-title) nil t)
+        (replace-match (concat "* " new-title))
+        (save-buffer)))))
+
 (provide 'org-gtd-complete-inbox)
 
 ;;; org-gtd-complete-inbox.el ends here
