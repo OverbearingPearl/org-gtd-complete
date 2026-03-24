@@ -206,7 +206,7 @@ NEW-TITLE is the new title string."
         (save-buffer)))))
 
 (defun org-gtd-complete-inbox-update-title (file unique-key new-title)
-  "Update the title in FILE using UNIQUE-KEY to new-title."
+  "Update the title in FILE using UNIQUE-KEY to NEW-TITLE."
   (with-current-buffer (find-file-noselect file)
     (goto-char (point-min))
     (let ((title-part (car (split-string unique-key "-"))))
