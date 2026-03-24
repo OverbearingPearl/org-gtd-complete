@@ -149,7 +149,9 @@ INPUT: Content string to capture."
   org-gtd-complete--current-inbox-index)
 
 (defun org-gtd-complete-inbox--update-inbox-title (item new-title)
-  "Update the title of the inbox item in the file."
+  "Update the title of the inbox ITEM in the file.
+ITEM is the item plist to update.
+NEW-TITLE is the new title string."
   (let* ((file (expand-file-name org-gtd-complete-lists--inbox-file org-gtd-complete-base-directory))
          (old-title (plist-get item :title)))
     (with-current-buffer (find-file-noselect file)
