@@ -49,11 +49,10 @@
                  (captured-time (and captured-at (date-to-time captured-at)))
                  (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
                  (age-string (and age (org-gtd-complete-views-format-age-compact age)))
-                 (unique-key (org-gtd-complete-inbox--generate-unique-key item))  ; Use unique key
-                 (display-title full-title))  ; 默认使用原标题
-            ;; 检查是否有待处理的编辑
+                 (unique-key (org-gtd-complete-inbox--generate-unique-key item))
+                 (display-title full-title))
             (dolist (edit org-gtd-complete-inbox-pending-edits)
-              (when (string= (car edit) unique-key)  ; 匹配唯一键
+              (when (string= (car edit) unique-key)
                 (setq display-title (format "%s => %s" full-title (cdr edit)))))
             (insert (format "| %s | %s | %s |\n" display-title (or captured-at "N/A") age-string))))
         (org-table-align)
