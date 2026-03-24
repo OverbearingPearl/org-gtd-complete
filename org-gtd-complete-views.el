@@ -49,9 +49,22 @@
                  (captured-time (and captured-at (date-to-time captured-at)))
                  (age (and captured-time (float-time (time-subtract (current-time) captured-time))))
                  (age-string (and age (org-gtd-complete-views-format-age-compact age))))
-            (insert (format "| %s | %s | %s |\n" full-title (or captured-at "N/A") age-string)))))
-      (org-table-align)
-      (read-only-mode 1))))
+            (insert (format "| %s | %s | %s |\n" full-title (or captured-at "N/A") age-string))))
+        (org-table-align)
+        (read-only-mode 1)
+        (when (and org-gtd-complete-inbox--current-inbox-index
+                   (>= org-gtd-complete-inbox--current-inbox-index 0)
+                   (< org-gtd-complete-inbox--current-inbox-index (length new-inbox-items)))
+          (let* ((index org-gtd-complete-inbox--current-inbox-index)
+                 (start (save-excursion
+                          (goto-line (+ 3 index))
+                          (line-beginning-position)))
+                 (end (save-excursion
+                        (goto-line (+ 3 index))
+                        (line-end-position))))
+            (when (and start end)
+              (setq org-gtd-complete-views-inbox-overlay (make-overlay start end))
+              (overlay-put org-gtd-complete-views-inbox-overlay 'face 'highlight))))))))
 
 (provide 'org-gtd-complete-views)
 

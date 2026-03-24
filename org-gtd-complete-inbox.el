@@ -22,6 +22,10 @@
 
 (defvar org-gtd-complete-inbox--current-inbox-index nil "Index of the current inbox item being processed.")
 
+(defvar org-gtd-complete-inbox-pending-edits '() "List of pending edits, each as (old-title . new-title).")
+
+(defvar org-gtd-complete-inbox-items-to-delete '() "List of items to delete.")
+
 ;;;###autoload
 (defun org-gtd-complete-inbox-process-inbox ()
   "Process all items in inbox.
@@ -49,6 +53,7 @@ Organize items into appropriate lists based on decisions."
               (let ((index 0))
                 (dolist (item inbox-items)
                   (setq org-gtd-complete-inbox--current-inbox-index index)
+                  (message "Debug: Updated current index to %s" index)
                   (let* ((title (plist-get item :title))
                          (captured-time (plist-get item :captured-at))
                          (age (and captured-time (float-time (time-subtract (current-time) (date-to-time captured-time)))))
@@ -70,7 +75,7 @@ Organize items into appropriate lists based on decisions."
                             (if two-minutes
                                 (progn
                                   (message "Do it now: %s" title)
-                                  (org-gtd-complete-inbox-remove-task inbox-file title))
+                                  (push title org-gtd-complete-inbox-items-to-delete))
                               (let ((delegatable (y-or-n-p "Can it be delegated? ")))
                                 (if delegatable
                                     (let ((person (read-string "Delegate to whom? "))
@@ -100,7 +105,7 @@ Organize items into appropriate lists based on decisions."
                                   (goto-char (point-max))
                                   (insert (format "* %s\n" title))
                                   (save-buffer))
-                                (org-gtd-complete-inbox-remove-task inbox-file title))
+                                (push title org-gtd-complete-inbox-items-to-delete))
                             (let ((someday (y-or-n-p "Should it go to Someday/Maybe? ")))
                               (if someday
                                   (progn
@@ -108,10 +113,18 @@ Organize items into appropriate lists based on decisions."
                                       (goto-char (point-max))
                                       (insert (format "* %s\n" title))
                                       (save-buffer))
-                                    (org-gtd-complete-inbox-remove-task inbox-file title))
-                                (org-gtd-complete-inbox-remove-task inbox-file title)))))))
+                                    (push title org-gtd-complete-inbox-items-to-delete))
+                                (push title org-gtd-complete-inbox-items-to-delete)))))))
                     (setq index (1+ index))))))
           (message "Inbox file does not exist or is empty")))
+    (dolist (title org-gtd-complete-inbox-items-to-delete)
+      (org-gtd-complete-inbox-remove-task inbox-file title))
+    ;; Apply pending edits
+    (dolist (edit org-gtd-complete-inbox-pending-edits)
+      (let ((old-title (car edit))
+            (new-title (cdr edit)))
+        (org-gtd-complete-inbox-update-title inbox-file old-title new-title)))
+    (setq org-gtd-complete-inbox-pending-edits '())
     (org-gtd-complete-views-refresh-inbox-view)
     (setq inbox-items (org-gtd-complete-lists--get-inbox))
     (when org-gtd-complete-views-inbox-overlay
@@ -119,7 +132,26 @@ Organize items into appropriate lists based on decisions."
       (message "Overlay cleaned up in view buffer"))
     (if inbox-items
         (message "Inbox processing complete, but some items remain.")
-      (message "Inbox is empty."))))
+      (message "Inbox is empty."))
+    (setq org-gtd-complete-inbox--current-inbox-index nil)
+    (message "Debug: Reset current index to nil")))
+
+(defun org-gtd-complete-inbox-edit-title ()
+  "Mark the current inbox title for editing and refresh the view."
+  (interactive)
+  (if org-gtd-complete-inbox--current-inbox-index
+      (let* ((inbox-items (org-gtd-complete-lists--get-inbox))
+             (current-index org-gtd-complete-inbox--current-inbox-index)
+             (item (and current-index (nth current-index inbox-items)))
+             (old-title (and item (plist-get item :title))))
+        (if item
+            (let ((new-title (read-string "New title: " old-title)))
+              ;; Mark edit request
+              (add-to-list 'org-gtd-complete-inbox-pending-edits (cons old-title new-title))
+              (message "Marked edit for '%s' to '%s'; will apply in process-inbox." old-title new-title)
+              (org-gtd-complete-views-refresh-inbox-view))
+          (message "No valid inbox item for the current index.")))
+    (message "No current inbox index set; run inbox processing first.")))
 
 (defun org-gtd-complete-inbox-remove-task (file title)
   "Remove the task with TITLE from the file FILE.
@@ -159,6 +191,14 @@ NEW-TITLE is the new title string."
       (when (search-forward (concat "* " old-title) nil t)
         (replace-match (concat "* " new-title))
         (save-buffer)))))
+
+(defun org-gtd-complete-inbox-update-title (file old-title new-title)
+  "Update the title in FILE from OLD-TITLE to NEW-TITLE."
+  (with-current-buffer (find-file-noselect file)
+    (goto-char (point-min))
+    (when (search-forward (concat "* " old-title) nil t)
+      (replace-match (concat "* " new-title))
+      (save-buffer))))
 
 (provide 'org-gtd-complete-inbox)
 
