@@ -20,6 +20,8 @@
 (require 'org-gtd-complete-projects)
 (require 'org-gtd-complete-views)
 
+(defvar org-gtd-complete--current-inbox-index nil "Index of the current inbox item being processed.")
+
 ;;;###autoload
 (defun org-gtd-complete-inbox-process-inbox ()
   "Process all items in inbox.
@@ -47,6 +49,7 @@ Organize items into appropriate lists based on decisions."
               ;; Now process each item interactively
               (let ((index 0))  ; Add index counter
                 (dolist (item inbox-items)
+                  (setq org-gtd-complete--current-inbox-index index)  ; Set the current index
                   (let* ((title (plist-get item :title))
                          (timestamp-str (and (string-match "\\[Captured at: \\([^\]]+\\)\\]" title) (match-string 1 title)))
                          (clean-title (if timestamp-str (replace-regexp-in-string (concat "\\[Captured at: " timestamp-str "\\]") "" title) title))  ; Add clean-title here
