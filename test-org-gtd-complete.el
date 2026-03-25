@@ -324,6 +324,70 @@
                     (should (re-search-forward (regexp-quote test-item) nil t)))))
             (test-org-gtd-complete-cleanup-temp)))))))
 
+(ert-deftest test-org-gtd-complete-process-inbox-empty-file ()
+  "Test processing when inbox file is empty."
+  (save-window-excursion
+    (save-excursion
+      (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
+             (org-gtd-complete-base-directory temp-dir)
+             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+        (org-gtd-complete-setup)
+        ;; Create an empty file
+        (with-temp-file inbox-file)
+        (unwind-protect
+            (progn
+              (org-gtd-complete-inbox-process-inbox)
+              (with-temp-buffer
+                (insert-file-contents inbox-file)
+                (should (string= (buffer-string) ""))))
+          (test-org-gtd-complete-cleanup-temp))))))
+
+(ert-deftest test-org-gtd-complete-process-inbox-nonexistent-file ()
+  "Test processing when inbox file does not exist."
+  (save-window-excursion
+    (save-excursion
+      (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
+             (org-gtd-complete-base-directory temp-dir)
+             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))  ;; File won't be created
+        (unwind-protect
+            (progn
+              (org-gtd-complete-inbox-process-inbox)
+              (should-not (file-exists-p inbox-file)))
+          (test-org-gtd-complete-cleanup-temp))))))
+
+(ert-deftest test-org-gtd-complete-process-inbox-multiple-items ()
+  "Test processing multiple items in the inbox."
+  (save-window-excursion
+    (save-excursion
+      (let* ((temp-dir (make-temp-file "test-org-gtd-complete-" t))
+             (org-gtd-complete-base-directory temp-dir)
+             (inbox-file (expand-file-name "gtd-inbox.org" temp-dir)))
+        (org-gtd-complete-setup)
+        ;; Create inbox with multiple items
+        (with-temp-file inbox-file
+          (insert "* Item 1\n:PROPERTIES:\n:CAPTURED_AT: 2023-01-01 12:00:00\n:END:\n")
+          (insert "* Item 2\n:PROPERTIES:\n:CAPTURED_AT: 2023-01-01 12:01:00\n:END:\n"))
+        (unwind-protect
+            (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt)
+                                                     ;; Simulate decisions for both items, e.g., both actionable and not in 2 minutes
+                                                     (cond ((string-match "Is .+ actionable?" prompt) t)
+                                                           ((string-match "Can it be done in 2 minutes?" prompt) nil)
+                                                           ((string-match "Can it be delegated?" prompt) nil)
+                                                           ((string-match "Is it a project?" prompt) nil)
+                                                           (t nil))))
+                      ((symbol-function 'read-string) (lambda (&rest _) "")))
+              (org-gtd-complete-inbox-process-inbox)
+              ;; Verify outcomes, e.g., both items moved to single-actions.org
+              (let ((actions-file (expand-file-name "gtd-single-actions.org" temp-dir)))
+                (with-temp-buffer
+                  (insert-file-contents actions-file)
+                  (should (re-search-forward "Item 1" nil t))
+                  (should (re-search-forward "Item 2" nil t)))
+                (with-temp-buffer
+                  (insert-file-contents inbox-file)
+                  (should (string-match-p "^\\s-*$" (buffer-string))))))  ;; Inbox should be empty
+          (test-org-gtd-complete-cleanup-temp))))))
+
 (defun test-org-gtd-complete-cleanup-temp ()
   "Clean up temporary directories and buffers created for test."
   (let ((temp-dirs (directory-files temporary-file-directory t "test-org-gtd-complete-")))
