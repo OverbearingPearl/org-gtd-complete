@@ -109,7 +109,8 @@ Organize items into appropriate lists based on decisions."
                                               (with-current-buffer (find-file-noselect target-file)
                                                 (goto-char (point-max))
                                                 (insert (format "* %s\n" title))
-                                                (save-buffer)))))))))
+                                                (save-buffer))
+                                              (push (org-gtd-complete-inbox--generate-unique-key item) org-gtd-complete-inbox-items-to-delete))))))))
                               (let ((reference (y-or-n-p "Is it reference material? ")))
                                 (if reference
                                     (progn
