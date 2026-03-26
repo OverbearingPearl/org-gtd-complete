@@ -80,8 +80,7 @@ jobs:
                   --eval "(checkdoc-current-buffer)" \
                   --eval "(let ((wbuf (get-buffer \"*Warnings*\"))) \
                             (when (and wbuf (> (length (with-current-buffer wbuf (buffer-string))) 0)) \
-                              (princ (with-current-buffer wbuf (buffer-string))) \
-                              (kill-emacs 1)))" \
+                              (princ (with-current-buffer wbuf (buffer-string)))))" \
                   --eval "(kill-emacs 0)" 2>&1
 
             echo "========================================="
